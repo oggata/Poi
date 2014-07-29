@@ -1,0 +1,211 @@
+{
+    "status": 200,
+    "quest": [
+        { 
+            "title" : "xxxxxxxxx", 
+            "detail": "xxxxxxxx" 
+        }
+    ],
+    "stages": [
+        { 
+            "id"             : 0, 
+            "title"          : "デバッグ用",
+            "detail"         : "aaaaaaaaa",
+            "time_limit"     : 2700,
+            "genre"          : "enemy",
+            "mission_count"  : 1,
+            "map"            : {"image":"sprite/ghost.png","w":32,"h":48,"x":5,"y":5},
+            "reward"         : {"coin":100,"exp":100},
+            "item_coin"      : 0,
+            "items"          : [{"type":"levelup","count":2},{"type":"bomb","count":1}]
+        },
+        { 
+            "id"             : 1, 
+            "title"          : "1.はじめてのポイ",
+            "detail"         : "",
+            "time_limit"     : 2700,
+            "genre"          : "occupy",
+            "mission_count"  : 0,
+            "map"            : {"image":"sprite/ghost.png","w":32,"h":48,"x":5,"y":5},
+            "reward"         : {"coin":100,"exp":100},
+            "item_coin"      : 0,
+            "items"          : [{"type":"levelup","count":0}],
+            "datas"          : [
+                {"id":19,"type":"azito"  ,"img":"map/q_map_ajito.png",   "hp":100,"maxHp":100,"depTime":0,"depMaxTime":30,"reproduction":true,"destroy":false,"enemyId":2,"route":[19,11,4,12]},
+                {"id":2,"type":"twitter","img":"map/q_map_twitter.png","hp":5,"maxHp":5,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false  ,"enemyId":0,"route":[]},
+                {"id":6,"type":"twitter","img":"map/q_map_twitter.png","hp":5,"maxHp":5,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false  ,"enemyId":0,"route":[]},
+                {"id":4, "type":"poi"    ,"img":"map/q_map_poi.png","hp":2,"maxHp":2,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false     ,"enemyId":0,"route":[]},
+                {"id":16,  "type":"tree"    ,"img":"map/q_map_tree.png"  ,"hp":30  ,"maxHp":50  ,"depTime":0  ,"depMaxTime":0  ,"reproduction":false ,"destroy":false  ,"enemyId":0, "route":[]},
+                {"id":22,  "type":"tree"    ,"img":"map/q_map_tree.png"  ,"hp":30  ,"maxHp":50  ,"depTime":0  ,"depMaxTime":0  ,"reproduction":false ,"destroy":false  ,"enemyId":0, "route":[]},
+                {"id":30,  "type":"tree"    ,"img":"map/q_map_tree.png"  ,"hp":30  ,"maxHp":50  ,"depTime":0  ,"depMaxTime":0  ,"reproduction":false ,"destroy":false  ,"enemyId":0, "route":[]}
+            ],
+            "enemies" : [
+                {"enemyId":1,"route":[29,24,18,25]},
+                {"enemyId":1,"route":[31,26,20,27]}
+            ],
+            "cleard_enemies" : [
+                {"enemyId":2,"route":[20]},
+                {"enemyId":2,"route":[11]},
+                {"enemyId":2,"route":[22]},
+                {"enemyId":2,"route":[19]},
+                {"enemyId":2,"route":[25]}
+            ]
+        },
+        { 
+            "id"             : 2, 
+            "title"          : "2.xxxxxxxx",
+            "detail"         : "",
+            "time_limit"     : 2700,
+            "genre"          : "occupy",
+            "mission_count"  : 0,
+            "map"            : {"image":"sprite/ghost.png","w":32,"h":48,"x":5,"y":5},
+            "reward"         : {"coin":100,"exp":100},
+            "item_coin"      : 0,
+            "items"          : [{"type":"levelup","count":0}],
+            "datas"          : [
+                {"id":19,"type":"azito"  ,"img":"map/q_map_ajito.png",   "hp":100,"maxHp":100,"depTime":0,"depMaxTime":30,"reproduction":true,"destroy":false,"enemyId":2,"route":[19,11,4,12]},
+                {"id":2,"type":"twitter","img":"map/q_map_twitter.png","hp":5,"maxHp":5,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false  ,"enemyId":0,"route":[]},
+                {"id":6,"type":"twitter","img":"map/q_map_twitter.png","hp":5,"maxHp":5,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false  ,"enemyId":0,"route":[]},
+                {"id":4, "type":"poi"    ,"img":"map/q_map_poi.png","hp":2,"maxHp":2,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false     ,"enemyId":0,"route":[]},
+                {"id":30,  "type":"tree"    ,"img":"map/q_map_tree.png"  ,"hp":50  ,"maxHp":50  ,"depTime":0  ,"depMaxTime":0  ,"reproduction":false ,"destroy":false  ,"enemyId":0, "route":[]}
+            ],
+            "enemies" : [
+                {"enemyId":1,"route":[29,24,18,25]},
+                {"enemyId":1,"route":[31,26,20,27]}
+            ],
+            "cleard_enemies" : [
+                {"enemyId":2,"route":[20]},
+                {"enemyId":2,"route":[11]},
+                {"enemyId":2,"route":[22]},
+                {"enemyId":2,"route":[19]},
+                {"enemyId":2,"route":[25]}
+            ]
+        },
+        { 
+            "id"             : 3, 
+            "title"          : "3.xxxxxxxx",
+            "detail"         : "",
+            "time_limit"     : 2700,
+            "genre"          : "occupy",
+            "mission_count"  : 0,
+            "map"            : {"image":"sprite/ghost.png","w":32,"h":48,"x":5,"y":5},
+            "reward"         : {"coin":100,"exp":100},
+            "item_coin"      : 0,
+            "items"          : [{"type":"levelup","count":0}],
+            "datas"          : [
+                {"id":19,"type":"azito"  ,"img":"map/q_map_ajito.png",   "hp":100,"maxHp":100,"depTime":0,"depMaxTime":30,"reproduction":true,"destroy":false,"enemyId":2,"route":[19,11,4,12]},
+                {"id":2,"type":"twitter","img":"map/q_map_twitter.png","hp":5,"maxHp":5,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false  ,"enemyId":0,"route":[]},
+                {"id":6,"type":"twitter","img":"map/q_map_twitter.png","hp":5,"maxHp":5,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false  ,"enemyId":0,"route":[]},
+                {"id":4, "type":"poi"    ,"img":"map/q_map_poi.png","hp":2,"maxHp":2,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false     ,"enemyId":0,"route":[]},
+                {"id":30,  "type":"tree"    ,"img":"map/q_map_tree.png"  ,"hp":50  ,"maxHp":50  ,"depTime":0  ,"depMaxTime":0  ,"reproduction":false ,"destroy":false  ,"enemyId":0, "route":[]}
+            ],
+            "enemies" : [
+                {"enemyId":1,"route":[29,24,18,25]},
+                {"enemyId":1,"route":[31,26,20,27]}
+            ],
+            "cleard_enemies" : [
+                {"enemyId":2,"route":[20]},
+                {"enemyId":2,"route":[11]},
+                {"enemyId":2,"route":[22]},
+                {"enemyId":2,"route":[19]},
+                {"enemyId":2,"route":[25]}
+            ]
+        },
+        { 
+            "id"             : 4, 
+            "title"          : "4.xxxxxxxx",
+            "detail"         : "",
+            "time_limit"     : 2700,
+            "genre"          : "occupy",
+            "mission_count"  : 0,
+            "map"            : {"image":"sprite/ghost.png","w":32,"h":48,"x":5,"y":5},
+            "reward"         : {"coin":100,"exp":100},
+            "item_coin"      : 0,
+            "items"          : [{"type":"levelup","count":0}],
+            "datas"          : [
+                {"id":19,"type":"azito"  ,"img":"map/q_map_ajito.png",   "hp":100,"maxHp":100,"depTime":0,"depMaxTime":30,"reproduction":true,"destroy":false,"enemyId":2,"route":[19,11,4,12]},
+                {"id":2,"type":"twitter","img":"map/q_map_twitter.png","hp":5,"maxHp":5,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false  ,"enemyId":0,"route":[]},
+                {"id":6,"type":"twitter","img":"map/q_map_twitter.png","hp":5,"maxHp":5,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false  ,"enemyId":0,"route":[]},
+                {"id":4, "type":"poi"    ,"img":"map/q_map_poi.png","hp":2,"maxHp":2,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false     ,"enemyId":0,"route":[]},
+                {"id":30,  "type":"tree"    ,"img":"map/q_map_tree.png"  ,"hp":50  ,"maxHp":50  ,"depTime":0  ,"depMaxTime":0  ,"reproduction":false ,"destroy":false  ,"enemyId":0, "route":[]}
+            ],
+            "enemies" : [
+                {"enemyId":1,"route":[29,24,18,25]},
+                {"enemyId":1,"route":[31,26,20,27]}
+            ],
+            "cleard_enemies" : [
+                {"enemyId":2,"route":[20]},
+                {"enemyId":2,"route":[11]},
+                {"enemyId":2,"route":[22]},
+                {"enemyId":2,"route":[19]},
+                {"enemyId":2,"route":[25]}
+            ]
+        },
+        { 
+            "id"             : 5, 
+            "title"          : "5.xxxxxxxx",
+            "detail"         : "",
+            "time_limit"     : 2700,
+            "genre"          : "occupy",
+            "mission_count"  : 0,
+            "map"            : {"image":"sprite/ghost.png","w":32,"h":48,"x":5,"y":5},
+            "reward"         : {"coin":100,"exp":100},
+            "item_coin"      : 0,
+            "items"          : [{"type":"levelup","count":0}],
+            "datas"          : [
+                {"id":1, "type":"poi"    ,"img":"map/q_map_poi.png","hp":50,"maxHp":50,"depTime":0,"depMaxTime":0,"reproduction":false,"destroy":false     ,"route":[]},
+                {"id":16,"type":"twitter","img":"map/q_map_twitter.png","hp":15,"maxHp":15,"depTime":0,"depMaxTime":0,"reproduction":false,"destroy":false ,"route":[]},
+                {"id":19,"type":"twitter","img":"map/q_map_twitter.png","hp":15,"maxHp":15,"depTime":0,"depMaxTime":0,"reproduction":false,"destroy":false ,"route":[]},
+                {"id":22,"type":"tree"   ,"img":"map/q_map_tree.png","hp":50,"maxHp":50,"depTime":0,"depMaxTime":0,"reproduction":false,"destroy":false    ,"route":[]},
+                {"id":23,"type":"tree"   ,"img":"map/q_map_tree.png","hp":50,"maxHp":50,"depTime":0,"depMaxTime":0,"reproduction":false,"destroy":false    ,"route":[]},
+                {"id":11,"type":"azito"  ,"img":"map/q_map_ajito.png","hp":100,"maxHp":100,"depTime":10,"depMaxTime":10,"reproduction":true,"destroy":false,"route":[11,16,20,17,12,7]},
+                {"id":25,"type":"azito"  ,"img":"map/q_map_ajito.png","hp":100,"maxHp":100,"depTime":5,"depMaxTime":15,"reproduction":true,"destroy":false ,"route":[25,24,22,18,21,23]},
+                {"id":10,"type":"boss"   ,"img":"map/q_map_boss.png","hp":100,"maxHp":100,"depTime":0,"depMaxTime":30,"reproduction":false,"destroy":false ,"route":[10,15,19,14,9,5,3,6]}
+            ],
+            "enemies" : [
+                {"enemyId":2,"route":[15,1,11,25]},
+                {"enemyId":1,"route":[11,25,15,1]}
+            ],
+            "cleard_enemies" : [
+                {"enemyId":2,"route":[20]},
+                {"enemyId":2,"route":[11]},
+                {"enemyId":2,"route":[22]},
+                {"enemyId":2,"route":[19]},
+                {"enemyId":2,"route":[25]}
+            ]
+        },
+        { 
+            "id"             : 6, 
+            "title"          : "6.xxxxxxxx",
+            "detail"         : "",
+            "time_limit"     : 2700,
+            "genre"          : "occupy",
+            "mission_count"  : 0,
+            "map"            : {"image":"sprite/ghost.png","w":32,"h":48,"x":5,"y":5},
+            "reward"         : {"coin":100,"exp":100},
+            "item_coin"      : 0,
+            "items"          : [{"type":"levelup","count":0}],
+            "datas"          : [
+                {"id":1, "type":"poi"    ,"img":"map/q_map_poi.png","hp":50,"maxHp":50,"depTime":0,"depMaxTime":0,"reproduction":false,"destroy":false     ,"route":[]},
+                {"id":16,"type":"twitter","img":"map/q_map_twitter.png","hp":15,"maxHp":15,"depTime":0,"depMaxTime":0,"reproduction":false,"destroy":false ,"route":[]},
+                {"id":19,"type":"twitter","img":"map/q_map_twitter.png","hp":15,"maxHp":15,"depTime":0,"depMaxTime":0,"reproduction":false,"destroy":false ,"route":[]},
+                {"id":22,"type":"tree"   ,"img":"map/q_map_tree.png","hp":50,"maxHp":50,"depTime":0,"depMaxTime":0,"reproduction":false,"destroy":false    ,"route":[]},
+                {"id":23,"type":"tree"   ,"img":"map/q_map_tree.png","hp":50,"maxHp":50,"depTime":0,"depMaxTime":0,"reproduction":false,"destroy":false    ,"route":[]},
+                {"id":11,"type":"azito"  ,"img":"map/q_map_ajito.png","hp":100,"maxHp":100,"depTime":10,"depMaxTime":10,"reproduction":true,"destroy":false,"route":[11,16,20,17,12,7]},
+                {"id":25,"type":"azito"  ,"img":"map/q_map_ajito.png","hp":100,"maxHp":100,"depTime":5,"depMaxTime":15,"reproduction":true,"destroy":false ,"route":[25,24,22,18,21,23]},
+                {"id":10,"type":"boss"   ,"img":"map/q_map_boss.png","hp":100,"maxHp":100,"depTime":0,"depMaxTime":30,"reproduction":false,"destroy":false ,"route":[10,15,19,14,9,5,3,6]}
+            ],
+            "enemies" : [
+                {"enemyId":2,"route":[15,1,11,25]},
+                {"enemyId":1,"route":[11,25,15,1]}
+            ],
+            "cleard_enemies" : [
+                {"enemyId":2,"route":[20]},
+                {"enemyId":2,"route":[11]},
+                {"enemyId":2,"route":[22]},
+                {"enemyId":2,"route":[19]},
+                {"enemyId":2,"route":[25]}
+            ]
+        }
+    ]
+}
