@@ -62,7 +62,7 @@ var Chip = cc.Node.extend({
         }
 
         //マップ配置
-        this.chipSprite.setOpacity(255*0.3);
+        //this.chipSprite.setOpacity(255*0.3);
         this.addChild(this.chipSprite);
         this.chipSprite.setPosition(0,0);
         this.chipSprite.setAnchorPoint(0.5,0.5);

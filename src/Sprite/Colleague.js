@@ -21,7 +21,7 @@ var Colleague = cc.Node.extend({
         this.randId2           = getRandNumberFromRange(1,10);
         //status
         this.lv                = this.storage.lv;
-        this.hp                = 100;
+        this.hp                = this.storage.hp;
         this.maxHp             = this.storage.maxHp;
         this.attack            = this.storage.attack;
         this.defence           = this.storage.defence;
