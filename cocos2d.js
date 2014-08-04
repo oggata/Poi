@@ -43,6 +43,7 @@
             'src/Layer/SysMenu.js',
             'src/Layer/SettingsLayer.js',
             'src/Layer/GameLayer.js',
+            'src/Layer/StoryLayer.js',
             'src/Layer/QuestLayer.js',
             'src/Layer/GameOverLayer.js',
             'src/Layer/ResultLayer.js',

@@ -45,6 +45,17 @@ var ResultLayer = cc.Layer.extend({
             this.txtSpecialItem.setPosition(320/2,380);
             this.addChild(this.txtSpecialItem,CONFIG.UI_DROW_ORDER);
 
+            this.itemInfoText = cc.LabelTTF.create(
+                "タイムストッパー" + "\n"
+                + "マップ上の時間を止める事ができる" + "\n"
+                + "" + "\n"
+            ,"Arial",13);
+            this.itemInfoText.setAnchorPoint(0,0.5);       
+            this.itemInfoText.setPosition(40,120);
+            this.itemInfoText.setHorizontalAlignment(cc.TEXT_ALIGNMENT_LEFT);
+            this.addChild(this.itemInfoText,CONFIG.UI_DROW_ORDER);
+            this.itemInfoText.setVisible(false);
+
             //受け取りボタン
             this.getItemButton = new ButtonItem("-次へ-",200,40,this.onGotItem,this);
             this.getItemButton.setPosition(320/2,80);
@@ -146,9 +157,11 @@ var ResultLayer = cc.Layer.extend({
                 this.rectBaseAlpha = 0.9
             }
             this.rectBase.setOpacity(255*this.rectBaseAlpha);
+            this.itemInfoText.setVisible(true);
         }
         
         if(this.sceneType=="getExp"){
+            this.itemInfoText.setVisible(false);
             this.rectBaseAlpha-=0.03;
             if(this.rectBaseAlpha<0){
                 this.rectBaseAlpha = 0

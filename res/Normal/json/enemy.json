@@ -31,7 +31,7 @@
             "attack"       : 50,
             "defence"      : 10,
             "eye_sight"    : 250,
-            "walk_speed"   :5.1,
+            "walk_speed"   : 0.5,
             "type"         : "normal",
             "track_num"    : 0,
             "bullet"       : "none",

@@ -14,10 +14,10 @@ var Tower = cc.Node.extend({
         this.posX     = posX;
         this.posY     = posY;
         this.type     = type;
-        this.setPosition(posX,posY);
+        //this.setPosition(posX,posY);
 
         if(this.type==1){
-            this.tree     = cc.Sprite.create(s_initSprite);
+            this.tree     = cc.Sprite.create(s_hinageshi);
             this.tree.setPosition(0,50);
             this.addChild(this.tree);
         }else if(this.type==2){
@@ -32,8 +32,9 @@ var Tower = cc.Node.extend({
     },
 
     update:function(){
+
         if(this.game.stage.isColored == true){
-            this.setAlpha(255*0);
+            this.tree.setVisible(false);
             return;
         }
 
@@ -47,9 +48,10 @@ var Tower = cc.Node.extend({
         }else{
             this.setAlpha(255*1);
         }
+
     },
 
     setAlpha:function(alpha){
-    	this.tree.setOpacity(alpha);
+    	//this.tree.setOpacity(alpha);
     }
 });

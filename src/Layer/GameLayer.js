@@ -44,6 +44,7 @@ var GameLayer = cc.Layer.extend({
         this.markerSprite = new TargetMarker();
         this.mapNode.addChild(this.markerSprite);
 
+this.shakeY = 0;
 
 var frameSeqEffect= [];
 for (var y = 0; y <= 0; y++) {
@@ -248,6 +249,10 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
 
     update:function(dt){
 
+        if(this.stage.isColored == true){
+            this.isDamageShake();
+        }
+
         //ミッション達成した後の遷移
         if(this.stage.isEscaped == true){
             this.isMovedResult = true;
@@ -402,7 +407,7 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
                 this.bullets.splice(i,1);
             }
         }
-
+*/
         //enemy bullets
         for(var i=0;i<this.enemyBullets.length;i++){
             if(this.enemyBullets[i].update() == false){
@@ -418,7 +423,7 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
                 //this.enemyBullets.splice(i,1);
             }
         }
-*/
+
 
         this.moveCamera();
         this.gameUI.update();
@@ -476,7 +481,7 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
             this.enemyBullets.push(enemyBullet);
         }
     },
-
+/*
     addColleagueBullet:function(colleague){
         var colleagueBullet = new Bullet(colleague,"colleague");
         colleagueBullet.attack = 10;
@@ -487,7 +492,18 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
         this.mapNode.addChild(colleagueBullet,999);
         this.colleagueBullets.push(colleagueBullet);
     },
-
+*/
+    addColleagueBullet:function(colleague){
+        var colleagueBullet = new Bullet(colleague,"colleague");
+        colleagueBullet.attack = 10;
+        colleagueBullet.set_position(
+            colleague.getPosition().x,
+            colleague.getPosition().y - 50
+        );
+        this.mapNode.addChild(colleagueBullet,999);
+        this.colleagueBullets.push(colleagueBullet);
+    },
+    
     collisionAll:function(){
         //プレイヤー & 仲間
         collisionPlayerAndColleague(this.player,this.colleagues,this);
@@ -556,8 +572,15 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
         this.mapNode.setScale(this.mapScale,this.mapScale);
         this.mapNode.setPosition(
             this.cameraX,
-            this.cameraY
+            this.cameraY + this.shakeY
         );
+    },
+
+    isDamageShake:function(){
+        this.shakeY+=5;
+        if(this.shakeY>=10){
+            this.shakeY = 0;
+        }
     },
 
     addColleagues:function(num,type){

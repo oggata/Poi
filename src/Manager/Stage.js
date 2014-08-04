@@ -57,24 +57,29 @@ var Stage = cc.Class.extend({
                     this.game.mapNode.addChild(this.chipSprite);
                     this.chips.push(this.chipSprite);
 
+
+
                     //目印になるタワーを建てる
                     if(this.chipSprite.type == "poi"){
                         this.tree = new Tower(posX,posY,this.game,2);
                         this.game.mapNode.addChild(this.tree,1000 - posY);
                         this.trees.push(this.tree);
                     }else if(this.chipSprite.type == "twitter"){
-                        this.tree = new Tower(posX,posY,this.game,3);
+                        this.tree = new Tower(posX,posY,this.game,2);
                         this.game.mapNode.addChild(this.tree,1000 - posY);
                         this.trees.push(this.tree);
                     }else if(this.chipSprite.type == "tree"){
                         this.tree = new Tower(posX,posY,this.game,1);
                         this.game.mapNode.addChild(this.tree,1000 - posY);
+                        this.tree.setPosition(posX,posY);
                         this.trees.push(this.tree);
                     }else{
-                        this.tree = new Tower(posX,posY,this.game,1);
+                        this.tree = new Tower(posX,posY,this.game,2);
                         this.game.mapNode.addChild(this.tree,1000 - posY);
                         this.trees.push(this.tree);
                     }
+
+
                     chipNum++;
                     if(this.chipSprite.type == "tree"){
                         this.clearTargetCnt++;
@@ -163,14 +168,14 @@ var Stage = cc.Class.extend({
 
         for(var i=0;i<this.chips.length;i++){
             this.chips[i].update();
-            this.trees[i].setVisible(false);
+            //this.trees[i].setVisible(false);
             if(this.chips[i].type == "tree" || this.chips[i].type == "poi" ||  this.chips[i].type == "twitter"){
                 //占領が完了した場合に木がたつ
                 if(this.chips[i].isOccupied == true && this.chips[i].type == "tree"){
-                    this.trees[i].setVisible(true);
+                    this.trees[i].setVisible(false);
                 }
                 if(this.chips[i].type == "poi" || this.chips[i].type == "twitter"){
-                    this.trees[i].setVisible(true);
+                    this.trees[i].setVisible(false);
                 }
                 this.trees[i].update();
             }

@@ -13,6 +13,7 @@ var GameOverLayer = cc.Layer.extend({
 
             changeLoadingImage();
 
+/*
             //bgm
             playSystemBGM();
             this.storage = storage;
@@ -52,6 +53,7 @@ var GameOverLayer = cc.Layer.extend({
             var changeButton = new ButtonItem("キャラ選択",200,50,this.onCharaSelect,this);
             changeButton.setPosition(160,60);
             this.addChild(changeButton);
+*/
 
             bRet = true;
         }

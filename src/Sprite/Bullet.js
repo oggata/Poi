@@ -44,7 +44,6 @@ var Bullet = cc.Node.extend({
         this.sprite.runAction(this.ra);
         this.addChild(this.sprite);
         this.isEffect    = true;
-
         this.sprite.setPosition(0,30);
     },
 

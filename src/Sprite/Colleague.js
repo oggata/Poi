@@ -36,6 +36,7 @@ if(type == 1){
         this.image             = this.storage.image;
         this.imgWidth          = this.storage.imgWidth; 
         this.imgHeight         = this.storage.imgHeight;
+        this.attackType        = "JUMP";
         this.followType        = "NORMAL";
 }else{
         this.image             = "sprite/chara005.png";
@@ -43,6 +44,7 @@ if(type == 1){
         this.imgHeight         = 26;
         this.hp                = 200;
         this.maxHp             = 200;
+        this.attackType        = "BULLET";
         this.followType        = "DEFENCE";
 }
         //init
@@ -60,6 +62,10 @@ if(type == 1){
 
         this.waitCnt = 0;
         this.waitMaxCnt = this.randId * 10;
+
+
+        this.bulletTime = 0;
+
     },
     
     remove:function() {
@@ -96,16 +102,14 @@ if(type == 1){
 
     update:function() {
 
+//this.doBullet();
         this.sprite.setPosition(0,this.jumpY);
-
         if(this.bulletLncTime>=1){
             //this.iconVoice.setOpacity(255*0);
             this.bulletLncTime++;
             if(this.bulletLncTime>=30*8){
                 this.bulletLncTime = 0;
             }
-        }else{
-           //this.iconVoice.setOpacity(255*1);
         }
 
         if(this.isDamageOn == true){
@@ -122,7 +126,6 @@ if(type == 1){
             this.remove();
             return false;
         }
-
 
         if(this.game.stage.isColored == true){
                 this.waitCnt++;
@@ -147,11 +150,19 @@ if(type == 1){
 
         if(this.game.player.targetType == "ENEMY"){
             this.actionType = "ENEMY";
-            this.moveToPositions(
-                this.game.markerSprite.getPosition().x + this.game.markerSprite.enemyMotionTrack[this.randId].rollingCube.getPosition().x,
-                this.game.markerSprite.getPosition().y + this.game.markerSprite.enemyMotionTrack[this.randId].rollingCube.getPosition().y,
-                1
-            );
+            if(this.attackType == "JUMP"){
+                this.moveToPositions(
+                    this.game.markerSprite.getPosition().x + this.game.markerSprite.enemyMotionTrack[this.randId].rollingCube.getPosition().x,
+                    this.game.markerSprite.getPosition().y + this.game.markerSprite.enemyMotionTrack[this.randId].rollingCube.getPosition().y,
+                    1
+                );
+            }else if(this.attackType == "BULLET"){
+                this.moveToPositions(
+                    this.game.markerSprite.getPosition().x + this.game.markerSprite.enemyFarMotionTrack[this.randId].rollingCube.getPosition().x,
+                    this.game.markerSprite.getPosition().y + this.game.markerSprite.enemyFarMotionTrack[this.randId].rollingCube.getPosition().y,
+                    1
+                );
+            }
         }else if(this.game.player.targetType == "CHIP"){
             this.actionType = "CHIP";
 
@@ -247,7 +258,7 @@ if(type == 1){
     },
 
     moveToPositions:function(posX,posY,jumpType) {
-        if(jumpType==1){
+        if(jumpType==1 && this.attackType == "JUMP"){
             if(this.jumpYDirect=="up"){
                 this.jumpY+=5;
                 if(this.jumpY >= this.randId2*5 + 50){

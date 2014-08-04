@@ -64,6 +64,8 @@ var s_damage_001         = base_dir + "text/damage001.png";
 var s_damage_002         = base_dir + "text/damage002.png";
 
 //sprite
+var s_hinageshi          = "sprite/hinageshi.png";
+
 var s_initSprite         = base_dir + "sprite/initSprite.png";
 var s_enargy             = base_dir + "sprite/enargy.png";
 var s_coin               = base_dir + "sprite/coin.png";
@@ -86,6 +88,7 @@ var s_effect_pipo113     = base_dir + "sprite/pipo-btleffect113.png";
 var s_critical_message   = base_dir + "ui/critical_message.png";
 var s_field              = base_dir + "ui/field.jpg";
 var s_chara_make_ui      = base_dir + "ui/chara_make_ui.png";
+var s_fukidashi      = base_dir + "ui/fukidashi.png";
 
 var s_item_001           = "sprite/clockrabbit01-vx.png";
 var s_special_item       = "sprite/special_item.png";
@@ -100,6 +103,7 @@ var s_scape_zone         = base_dir + "ui/escape_zone.png";
 
 var s_convert_success    = base_dir + "ui/convert_success.png";
 var s_top   = base_dir + "ui/top.png";
+var s_woman = "ui/st-woman2-suit01.png";
 
 //bgm
 var s_bgm_001            = base_dir + "res/sound/bgm/bgm_maoudamashii_cyber09.mp3";
@@ -195,5 +199,8 @@ var g_resources       = [
     s_item_001,
     s_cleared_effect,
     s_text_stage_clear,
-    s_text_game_over
+    s_text_game_over,
+    s_hinageshi,
+    s_fukidashi,
+    s_woman
 ];

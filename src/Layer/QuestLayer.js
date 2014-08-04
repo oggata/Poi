@@ -175,7 +175,11 @@ var QuestLayer = cc.Layer.extend({
             //ステージ情報（難易度）を取得する
             this.storage = getStageDataFromJson(this.storage,stageNum);
 
-            scene.addChild(CharaSelectLayer.create(this.storage));
+            //scene.addChild(CharaSelectLayer.create(this.storage));
+
+            scene.addChild(StoryLayer.create(this.storage));
+
+
             cc.Director.getInstance().replaceScene(cc.TransitionSlideInR.create(1.2, scene));
         }, this);
     },
@@ -195,7 +199,9 @@ var QuestLayer = cc.Layer.extend({
                 //ステージ情報（難易度）を取得する
                 this.storage = getStageDataFromJson(this.storage,this.storage.maxStageNumber);
 
-                scene.addChild(CharaSelectLayer.create(this.storage));
+                //scene.addChild(CharaSelectLayer.create(this.storage));
+                scene.addChild(StoryLayer.create(this.storage));
+
                 cc.Director.getInstance().replaceScene(cc.TransitionSlideInR.create(1.2, scene));
             }, this);
         }

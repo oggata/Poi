@@ -19,6 +19,13 @@ var TargetMarker = cc.Node.extend({
             this.addChild(this.cube,999);
         }
 
+        this.enemyFarMotionTrack = new Array();
+        for (var i=0 ; i < 20 ; i++){
+            this.cube = new Cube(i,120,120,"ENEMY");
+            this.enemyFarMotionTrack.push(this.cube);
+            this.addChild(this.cube,999);
+        }
+
         this.mapMotionTrack = new Array();
         for (var i=0 ; i < 20 ; i++){
             this.cube = new Cube(i,50,50,"CHIP");
@@ -45,6 +52,10 @@ var TargetMarker = cc.Node.extend({
 
         for(var i=0;i<this.enemyMotionTrack.length;i++){
             this.enemyMotionTrack[i].update();
+        }
+
+        for(var i=0;i<this.enemyFarMotionTrack.length;i++){
+            this.enemyFarMotionTrack[i].update();
         }
 
         for(var i=0;i<this.weaponMotionTrack.length;i++){
