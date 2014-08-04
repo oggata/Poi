@@ -15,6 +15,7 @@ var Stage = cc.Class.extend({
         this.trees            = [];
         this.isColored        = false;
         this.isEscaped        = false;
+        this.isGameOver       = false;
         this.clearTargetCnt   = 0;
         this.field = cc.Sprite.create(s_field);
         this.field.setPosition(795,318);
@@ -151,11 +152,12 @@ var Stage = cc.Class.extend({
                         this.chips[i].colorAlpha=1;
                     }
                 }
-
+/*
                 //仲間が姿を消す
                 for(var i=0;i<this.game.colleagues.length;i++){
                     this.game.colleagues[i].hp = 0;
                 }
+*/
             }
         }
 

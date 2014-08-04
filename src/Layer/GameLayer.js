@@ -44,6 +44,41 @@ var GameLayer = cc.Layer.extend({
         this.markerSprite = new TargetMarker();
         this.mapNode.addChild(this.markerSprite);
 
+
+var frameSeqEffect= [];
+for (var y = 0; y <= 0; y++) {
+    for (var x = 0; x <= 7; x++) {
+        var frame = cc.SpriteFrame.create(effect_fire,cc.rect(120*x,120*y,120,120));
+        frameSeqEffect.push(frame);
+    }
+}
+this.wa = cc.Animation.create(frameSeqEffect,0.1);
+this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
+this.battleAnimation = cc.Sprite.create(effect_sander,cc.rect(0,0,120,120));
+this.battleAnimation.runAction(this.ra);
+this.battleAnimation.setScale(1.5,1.5);
+this.battleAnimation.setOpacity(255*0.8);
+this.battleAnimation.setPosition(0,0);
+this.mapNode.addChild(this.battleAnimation,999999999);
+
+
+var frameSeqOccupy= [];
+for (var y = 0; y <= 0; y++) {
+    for (var x = 0; x <= 7; x++) {
+        var frame = cc.SpriteFrame.create(effect_water,cc.rect(120*x,120*y,120,120));
+        frameSeqOccupy.push(frame);
+    }
+}
+this.wa = cc.Animation.create(frameSeqOccupy,0.1);
+this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
+this.occupyAnimation = cc.Sprite.create(effect_water,cc.rect(0,0,120,120));
+this.occupyAnimation.runAction(this.ra);
+this.occupyAnimation.setScale(1.5,1.5);
+this.occupyAnimation.setOpacity(255*0.8);
+this.occupyAnimation.setPosition(0,0);
+this.mapNode.addChild(this.occupyAnimation,999999999);
+
+
         //timerSprite
         this.timerSprite = cc.Sprite.create(s_timer,cc.rect(50*0,0,50,50));
         this.timerSprite.setPosition(800,220);
@@ -71,6 +106,62 @@ var GameLayer = cc.Layer.extend({
         }
 
         this.collCnt=0;
+
+
+        //ゲームオーバー or クリア後の背景
+        this.back = cc.LayerColor.create(cc.c4b(0,0,0,255),320,480);
+        this.back.setPosition(0,0);
+        this.addChild(this.back,CONFIG.UI_DROW_ORDER);
+        this.rectBaseAlpha = 0;
+        this.back.setOpacity(0);
+
+        //(ゲームオーバー時)retryボタン
+        this.retryButton = new ButtonItem("リトライ",200,50,this.onCharaSelect,this);
+        this.retryButton.setPosition(160,120);
+        this.addChild(this.retryButton,CONFIG.UI_DROW_ORDER);
+        this.retryButton.setVisible(false);
+
+        //(ゲームオーバー時)nextボタン
+        this.changeButton = new ButtonItem("キャラ選択",200,50,this.onCharaSelect,this);
+        this.changeButton.setPosition(160,60);
+        this.addChild(this.changeButton,CONFIG.UI_DROW_ORDER);
+        this.changeButton.setVisible(false);
+
+        //(クリア)の文字
+        this.txtGameOver = cc.Sprite.create(s_text_game_over);
+        this.txtGameOver.setPosition(320/2,480/2);
+        this.addChild(this.txtGameOver,CONFIG.UI_DROW_ORDER);
+        this.txtGameOver.setVisible(false);
+
+        //(クリア)の文字
+        this.txtSpecialItem = cc.Sprite.create(s_text_stage_clear);
+        this.txtSpecialItem.setPosition(320/2,480/2);
+        this.addChild(this.txtSpecialItem,CONFIG.UI_DROW_ORDER);
+        this.txtSpecialItem.setVisible(false);
+
+        //クリア後のアニメーションを作成
+        var frameSeq = [];
+        for (var y = 0; y <= 10; y++) {
+            for (var x = 0; x <= 2; x++) {
+                var frame = cc.SpriteFrame.create(s_cleared_effect,cc.rect(640*x,480*y,640,480));
+                frameSeq.push(frame);
+            }
+        }
+        this.wa = cc.Animation.create(frameSeq,0.1);
+        this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
+        this.clearedEffectAnimation = cc.Sprite.create(s_cleared_effect,cc.rect(0,0,640,480));
+        this.clearedEffectAnimation.runAction(this.ra);
+        this.addChild(this.clearedEffectAnimation,CONFIG.UI_DROW_ORDER);
+        this.isEffect    = true;
+        this.clearedEffectAnimation.setPosition(320/2,480/2);
+        this.clearedEffectAnimation.setVisible(false);
+
+        //クリア後に表示する結果画面ボタン
+        this.resultButton = new ButtonItem("-結果画面へ-",200,40,this.goResultLayer,this);
+        this.resultButton.setPosition(320/2,80);
+        this.addChild(this.resultButton,CONFIG.UI_DROW_ORDER);
+        this.resultButton.setVisible(false);
+
         return true;
     },
 
@@ -78,7 +169,7 @@ var GameLayer = cc.Layer.extend({
         if(this.isMissionVisible == true){
             playSystemButton();
             this.isMissionVisible = false;
-            this.sp.setVisible(false);
+            //this.sp.setVisible(false);
             this.titleLabel.setVisible(false);
             this.startButton.setVisible(false);
             this.rectBase.setVisible(false);
@@ -132,25 +223,21 @@ var GameLayer = cc.Layer.extend({
         this.cutIn = new CutIn();
         this.cutIn.setPosition(0,200);
         this.addChild(this.cutIn,999);
-        this.cutIn.set_text("スタート!");
+        this.cutIn.set_text("GameStart!");
 
+        //背景
         this.rectBase = cc.LayerColor.create(cc.c4b(0,0,0,255 * 0.8),320,480);
         this.rectBase.setPosition(0,0);
         this.addChild(this.rectBase,CONFIG.UI_DROW_ORDER);
 
-        //タイトル背景
-        this.sp = cc.Sprite.create(s_mission_start);
-        this.sp.setAnchorPoint(0,0);
-        this.addChild(this.sp,CONFIG.UI_DROW_ORDER);
-
         //時間制限
         this.titleLimit = cc.LabelTTF.create("制限時間 : " + Math.floor(this.missionTimeLimit / 30) + "秒","Arial",20);   
-        this.titleLimit.setPosition(320/2,200);
+        this.titleLimit.setPosition(320/2,480/2 + 30);
         this.addChild(this.titleLimit,CONFIG.UI_DROW_ORDER);
 
         //タイトル文字
         this.titleLabel = cc.LabelTTF.create(this.missionLabel,"Arial",25);   
-        this.titleLabel.setPosition(320/2,170);
+        this.titleLabel.setPosition(320/2,480/2);
         this.addChild(this.titleLabel,CONFIG.UI_DROW_ORDER);
 
         //スタートボタン
@@ -160,6 +247,27 @@ var GameLayer = cc.Layer.extend({
     },
 
     update:function(dt){
+
+        //ミッション達成した後の遷移
+        if(this.stage.isEscaped == true){
+            this.isMovedResult = true;
+            this.clearedEffectAnimation.setVisible(true);
+            this.rectBaseAlpha+=0.05;
+            this.back.setOpacity(255*this.rectBaseAlpha);
+            if(this.rectBaseAlpha>=0.5){
+                this.rectBaseAlpha=0.5;
+            }
+            this.txtSpecialItem.setVisible(true);
+            this.resultButton.setVisible(true);
+        }
+        if(this.stage.isGameOver == true){
+            this.rectBaseAlpha+=0.05;
+            this.back.setOpacity(255*this.rectBaseAlpha);
+            if(this.rectBaseAlpha>=0.5){
+                this.rectBaseAlpha=0.5;
+            }
+        }
+
         //ページ遷移した場合はupdateは実行しない
         if(this.isMovedResult == true) return;
         //ミッションが表示中はupdateは実行しない
@@ -192,6 +300,9 @@ var GameLayer = cc.Layer.extend({
                 this.player.targetChip.getPosition().y
             );
             this.updateTimer();
+            this.battleAnimation.setVisible(false);
+            this.occupyAnimation.setVisible(true);
+            this.occupyAnimation.setPosition(this.markerSprite.getPosition().x,this.markerSprite.getPosition().y);
         }else if(this.player.targetType == "ENEMY"){
             this.targetSprite.setVisible(false);
             this.markerSprite.setVisible(true);
@@ -202,11 +313,19 @@ var GameLayer = cc.Layer.extend({
                 );
             }
             this.player.moveToTargetMarker(this.markerSprite);
+            this.battleAnimation.setVisible(true);
+            this.occupyAnimation.setVisible(false);
+            this.battleAnimation.setPosition(this.markerSprite.getPosition().x,this.markerSprite.getPosition().y);
         }else{
             this.targetSprite.setVisible(true);
             this.markerSprite.setVisible(false);
             this.player.moveToTargetMarker(this.targetSprite);
+
+            this.battleAnimation.setVisible(false);
+            this.occupyAnimation.setVisible(false);
         }
+
+        
 
         //Playerの死亡時には生き残っている仲間がいれはスイッチする
         if(this.player.hp <= 0){
@@ -338,12 +457,6 @@ var GameLayer = cc.Layer.extend({
             this.missionCnt = this.storage.killedEnemyCnt;
         }else{
             this.missionCnt = 0;
-        }
-
-        //ミッション達成した後の遷移
-        if(this.stage.isEscaped == true){
-            this.isMovedResult = true;
-            this.goResultLayer();
         }
     },
 
@@ -555,21 +668,25 @@ var GameLayer = cc.Layer.extend({
         }
         this.storage.calcTotal();
         this.saveData();
-        if(this.storage.stageNumber >= CONFIG.MAX_STAGE_NUMBER){
-            //全クリア
-            var scene = cc.Scene.create();
-            scene.addChild(StaffRollLayer.create(this.storage));
-            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
-        }else{
-            var scene = cc.Scene.create();
-            //次のステージへいくためにstorageは必ず受けた渡す
-            scene.addChild(ResultLayer.create(this.storage));
-            //時計回り
-            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.5,scene));
-        }
+        
+        var scene = cc.Scene.create();
+        //次のステージへいくためにstorageは必ず受けた渡す
+        scene.addChild(ResultLayer.create(this.storage));
+        //時計回り
+        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.5,scene));
     },
 
+
+
     goGameOverLayer:function (pSender) {
+        //this.back.setOpacity(255*0.7);
+        this.retryButton.setVisible(true);
+        this.changeButton.setVisible(true);
+        this.txtGameOver.setVisible(true);
+        this.stage.isGameOver = true;
+    },
+
+    goGameOverLayerBak:function (pSender) {
         this.storage.calcTotal();
 
         this.saveData();
@@ -588,6 +705,24 @@ var GameLayer = cc.Layer.extend({
             var toObj = JSON.parse(toObjString);
             window.localStorage.setItem("gameStorage",JSON.stringify(toObj));
         }*/
+    },
+
+    onCharaSelect:function () {
+        this.storage = getStageDataFromJson(this.storage,this.storage.stageNumber);
+        cc.LoaderScene.preload(g_resources, function () {
+            var scene = cc.Scene.create();
+            scene.addChild(CharaSelectLayer.create(this.storage));
+            cc.Director.getInstance().replaceScene(cc.TransitionSlideInL.create(1.2, scene));
+        }, this);
+    },
+    
+    onRetryGame:function () {
+        this.storage = getStageDataFromJson(this.storage,this.storage.stageNumber);
+        cc.LoaderScene.preload(g_resources, function () {
+            var scene = cc.Scene.create();
+            scene.addChild(GameLayer.create(this.storage));
+            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+        }, this);
     },
 
     isToucheable:function (){

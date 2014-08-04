@@ -18,14 +18,13 @@ var EnemyBody = cc.Node.extend({
             this.cube = cc.LayerColor.create(cc.c4b(0,255,0,255),5,5);
             this.addChild(this.cube,999);
         }
-        this.setScale(1.5,1.5);
     },
 
     initializeParam:function(code){
         this.direction       = "front";
-        this.imagePath       = s_enemy_snake_body_m;
-        this.imgWidth        = 111;
-        this.imgHeight       = 78;
+        this.imagePath       = s_enemy_snake_body;
+        this.imgWidth        = 222.3333;
+        this.imgHeight       = 155.75;
         //歩行方向
         this.beforeX         = this.getPosition().x;
         this.beforeY         = this.getPosition().y;
@@ -100,8 +99,9 @@ var EnemyBody = cc.Node.extend({
     initSprite:function(){
         //足下の影
         this.shadow = cc.Sprite.create(s_shadow);
-        this.shadow.setPosition(0,-20);
+        this.shadow.setPosition(0,-10);
         this.shadow.setOpacity(255*0.4);
+        this.shadow.setScale(5,5);
         this.addChild(this.shadow);
 
         var frameSeq = [];
@@ -113,6 +113,7 @@ var EnemyBody = cc.Node.extend({
         this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
         this.sprite = cc.Sprite.create(this.imagePath,cc.rect(0,0,this.imgWidth,this.imgHeight));
         this.sprite.runAction(this.ra);
+        this.sprite.setPosition(0,50);
         this.addChild(this.sprite);
 
         //デバッグ

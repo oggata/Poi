@@ -21,16 +21,11 @@ var Enemy = cc.Node.extend({
         this.depChipId = this.routes[this.routeId];
         this.setPosition(this.depX,this.depY);
 
-        //HPゲージ
-        this.gauge = new Gauge(30,4,'red');
-        this.gauge.setPosition(-20,20);
-        this.addChild(this.gauge,100);
+
         //initialize
         this.initializeParam(code);
         this.initSprite();
         this.update();
-
-        this.setScale(3,3);
     },
 
     loadEnemyJson : function() {
@@ -163,15 +158,10 @@ var Enemy = cc.Node.extend({
                 Math.floor(this.game.mapHeight - this.enemyBodies[i].getPosition().y)
             );
         }
-/*
-        //cubes
-        for(var i=0;i<this.motionTrack.length;i++){
-            this.motionTrack[i].update();
-        }
-*/
+
         //自身が通った座標の履歴
         this.trackSnakeInterval++;
-        if(this.trackSnakeInterval >= 15){
+        if(this.trackSnakeInterval >= 30){
             this.trackSnakeInterval=0;
             //add
             var track = new Track(1,this,this.game);
@@ -339,9 +329,15 @@ if(this.dmCnt==0){
     initSprite:function(){
         //足下の影
         this.shadow = cc.Sprite.create(s_shadow);
-        this.shadow.setPosition(0,0);
+        this.shadow.setPosition(0,-10);
         this.shadow.setOpacity(255*0.4);
+        this.shadow.setScale(5,5);
         this.addChild(this.shadow);
+
+        //HPゲージ
+        this.gauge = new Gauge(30,4,'red');
+        this.gauge.setPosition(-20,70);
+        this.addChild(this.gauge,100);
 
         var frameSeq = [];
         for (var i = 0; i < 3; i++) {
@@ -351,7 +347,7 @@ if(this.dmCnt==0){
         this.wa = cc.Animation.create(frameSeq,0.2);
         this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
         this.sprite = cc.Sprite.create(this.imagePath,cc.rect(0,0,this.imgWidth,this.imgHeight));
-        this.sprite.setPosition(0,20);
+        this.sprite.setPosition(0,50);
         this.sprite.runAction(this.ra);
         this.addChild(this.sprite);
 

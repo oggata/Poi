@@ -40,9 +40,7 @@ var Bullet = cc.Node.extend({
         this.wa = cc.Animation.create(frameSeq,0.1);
         this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
         this.sprite = cc.Sprite.create(effect_fire,cc.rect(0,0,60,60));
-
-this.sprite.setOpacity(255*0.8);
-
+        this.sprite.setOpacity(255*0.8);
         this.sprite.runAction(this.ra);
         this.addChild(this.sprite);
         this.isEffect    = true;

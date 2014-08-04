@@ -19,8 +19,7 @@ var s_chara_select       = base_dir + "ui/charactor_select.png";
 var s_target             = base_dir + "ui/butterfly.png";
 var s_header             = base_dir + "ui/header.png";
 var s_result_clear       = base_dir + "ui/result_clear.png";
-var s_result_gameover    = base_dir + "ui/result_gameover.png";
-var s_mission_start      = base_dir + "ui/mission_start.png"; 
+
 var s_input_device       = base_dir + "ui/input_device.png"; 
 var s_input_device2      = base_dir + "ui/input_device2.png"; 
 var s_temple             = base_dir + "ui/temple.png"; 
@@ -52,8 +51,13 @@ var s_twitter_button     = base_dir + "button/twitter.png";
 var s_twitter_button_on  = base_dir + "button/twitterOn.png";
 
 //effect
-var effect_fire          = base_dir + "effect/pipo-btleffect036_60.png";
-var effect_water         = base_dir + "effect/pipo-btleffect038.png";
+var effect_fire          = base_dir + "effect/pipo-btleffect002.png";
+//var effect_fire          = base_dir + "effect/pipo-btleffect037.png";
+var effect_water         = base_dir + "effect/pipo-btleffect006.png";
+//var effect_water         = base_dir + "effect/pipo-btleffect038.png";
+var effect_wind          = base_dir + "effect/pipo-btleffect039.png";
+var effect_sander        = base_dir + "effect/pipo-btleffect040.png";
+var effect_eye        = base_dir + "effect/pipo-btleffect072.png";
 
 //text
 var s_damage_001         = base_dir + "text/damage001.png";
@@ -75,8 +79,6 @@ var s_enemy_devil        = base_dir + "sprite/devil_001.png";
 var s_enemy_devil_boss   = base_dir + "sprite/devil_002.png";
 var s_enemy_snake_body   = base_dir + "sprite/snake_body.png";
 var s_enemy_snake_head   = base_dir + "sprite/snake_head.png";
-var s_enemy_snake_body_m = base_dir + "sprite/snake_body_M.png";
-var s_enemy_snake_head_m = base_dir + "sprite/snake_head_M.png";
 var s_enemy_chameleon    = base_dir + "sprite/chameleon_blue_s.png";
 var s_enemy_chameleon_m  = base_dir + "sprite/chameleon_blue_m.png";
 var s_promin_pipo002     = base_dir + "sprite/pipo-mapeffect009.png";
@@ -84,6 +86,13 @@ var s_effect_pipo113     = base_dir + "sprite/pipo-btleffect113.png";
 var s_critical_message   = base_dir + "ui/critical_message.png";
 var s_field              = base_dir + "ui/field.jpg";
 var s_chara_make_ui      = base_dir + "ui/chara_make_ui.png";
+
+var s_item_001           = "sprite/clockrabbit01-vx.png";
+var s_special_item       = "sprite/special_item.png";
+var s_text_stage_clear   = "text/stage_clear.png";
+var s_text_game_over   = "text/game_over.png";
+
+var s_cleared_effect     = "sprite/kamifubuki64.png";
 
 var s_attack_rolling     = base_dir + "sprite/attack_rolling.png";
 var s_break              = base_dir + "sprite/break.png";
@@ -142,20 +151,19 @@ var g_resources       = [
     stages_json,
     charactor_json,
     s_result_clear,
-    s_result_gameover,
-    s_mission_start,
     s_enemy_devil,
     s_enemy_devil_boss,
     s_enemy_snake_body,
     s_enemy_snake_head,
-    s_enemy_snake_body_m,
-    s_enemy_snake_head_m,
     s_enemy_chameleon,
     s_enemy_chameleon_m,
     s_target,
     loading_png,
     effect_water,
     effect_fire,
+    effect_wind,
+    effect_sander,
+    effect_eye,
     s_enargy,
     s_header,
     s_shadow,
@@ -183,5 +191,9 @@ var g_resources       = [
     s_editbox_frame,
     s_timer,
     s_field,
-    s_marker
+    s_marker,
+    s_item_001,
+    s_cleared_effect,
+    s_text_stage_clear,
+    s_text_game_over
 ];

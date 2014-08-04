@@ -16,42 +16,76 @@ var ResultLayer = cc.Layer.extend({
     init:function () {
         var bRet = false;
         if (this._super()) {
+            //getItem->getExp->powerUp->finish
+            this.sceneType = "getItem";
+
             //bgm
             playSystemBGM();
             changeLoadingImage();
 
             //back
-            var back = cc.Sprite.create(loading_png);
+            var back = cc.Sprite.create(s_result_clear);
             back.setAnchorPoint(0,0);
-            this.addChild(back, 0, 1);
+            this.addChild(back,0,1);
 
-            //back
-            var sp = cc.Sprite.create(s_result_clear);
-            sp.setAnchorPoint(0,0);
-            this.addChild(sp, 0, 1);
+            //背景
+            this.rectBase = cc.LayerColor.create(cc.c4b(0,0,0,255 * 0.8),320,480);
+            this.rectBase.setPosition(0,0);
+            this.addChild(this.rectBase,CONFIG.UI_DROW_ORDER);
+            this.rectBaseAlpha = 0;
+            this.rectBase.setOpacity(255*this.rectBaseAlpha);
 
-            //スコア
-            this.scoreText = cc.LabelTTF.create(
-                getZeroPaddingNumber(this.storage.gameScore,6),
-                "Arial",
-                50
-            );
-            this.scoreText.setAnchorPoint(0.5,0);       
-            this.scoreText.setPosition(320/2,250);
-            this.addChild(this.scoreText);
+            //取得アイテム
+            this.specialItem = cc.Sprite.create(s_item_001);
+            //this.specialItem.setAnchorPoint(0,0);
+            this.specialItem.setPosition(320/2,480/2);
+            this.addChild(this.specialItem,CONFIG.UI_DROW_ORDER);
 
-            //結果
+            this.txtSpecialItem = cc.Sprite.create(s_special_item);
+            this.txtSpecialItem.setPosition(320/2,380);
+            this.addChild(this.txtSpecialItem,CONFIG.UI_DROW_ORDER);
+
+            //受け取りボタン
+            this.getItemButton = new ButtonItem("-次へ-",200,40,this.onGotItem,this);
+            this.getItemButton.setPosition(320/2,80);
+            this.addChild(this.getItemButton,CONFIG.UI_DROW_ORDER);
+            this.addChild(this.getItemButton);
+
             this.resultText = cc.LabelTTF.create(
-                  "復元×" + getZeroPaddingNumber(this.storage.occupiedCnt,6) + "\n"
-                + "キル×" + getZeroPaddingNumber(this.storage.killedEnemyCnt,6) + "\n"
-                + "生産×" + getZeroPaddingNumber(this.storage.productCnt,6) + "\n"
-                + "お金×" + getZeroPaddingNumber(this.storage.coinAmount,6) + "\n"
-            ,"Arial",15);
-            this.resultText.setAnchorPoint(0,0);       
-            this.resultText.setPosition(50,150);
+                  "報酬-------------------" + "\n"
+                + "" + "\n"
+                + "" + "\n"
+                + "経験値-----------------" + "\n"
+                + "" + "\n"
+                + "" + "\n"
+            ,"Arial",20);
+            this.resultText.setAnchorPoint(0,0.5);       
+            this.resultText.setPosition(40,250);
             this.resultText.setHorizontalAlignment(cc.TEXT_ALIGNMENT_LEFT);
             this.addChild(this.resultText);
 
+            //お金
+            this.amount = 0;
+            this.amountText = cc.LabelTTF.create(
+                this.amount,
+                "Arial",
+                38
+            );
+            this.amountText.setAnchorPoint(0.5,0);       
+            this.amountText.setPosition(320/2,270);
+            this.addChild(this.amountText);
+
+            //経験値
+            this.exp= 0;
+            this.expText = cc.LabelTTF.create(
+                getZeroPaddingNumber(this.exp,6),
+                "Arial",
+                38
+            );
+            this.expText.setAnchorPoint(0.5,0);       
+            this.expText.setPosition(320/2,200);
+            this.addChild(this.expText);
+ 
             //ホームボタン
             var homeButton = cc.MenuItemImage.create(
                 s_home_button,
@@ -69,16 +103,7 @@ var ResultLayer = cc.Layer.extend({
             this.addChild(this.menu);
             this.menu.setPosition(0,0);
 
-            //nextボタン
-            var nextButton = new ButtonItem("次のステージ",200,50,this.onNextGame,this);
-            nextButton.setPosition(160,120);
-            this.addChild(nextButton);
-
-            //nextボタン
-            var changeButton = new ButtonItem("キャラ選択",200,50,this.onCharaSelect,this);
-            changeButton.setPosition(160,60);
-            this.addChild(changeButton);
-
+/*
             //ツイッターへ投稿するボタン
             var twitterButton = cc.MenuItemImage.create(
                 s_twitter_button,
@@ -104,10 +129,60 @@ var ResultLayer = cc.Layer.extend({
             );
             this.addChild(this.menu);
             this.menu.setPosition(0,0);
+*/
 
+            this.scheduleUpdate();
+            this.setTouchEnabled(true);
             bRet = true;
         }
         return bRet;
+    },
+
+    update:function(dt){
+
+        if(this.sceneType=="getItem"){
+            this.rectBaseAlpha+=0.03;
+            if(this.rectBaseAlpha>0.9){
+                this.rectBaseAlpha = 0.9
+            }
+            this.rectBase.setOpacity(255*this.rectBaseAlpha);
+        }
+        
+        if(this.sceneType=="getExp"){
+            this.rectBaseAlpha-=0.03;
+            if(this.rectBaseAlpha<0){
+                this.rectBaseAlpha = 0
+            }
+            this.rectBase.setOpacity(255*this.rectBaseAlpha);
+            this.specialItem.setVisible(false);
+            this.txtSpecialItem.setVisible(false);
+
+            this.amount++;
+            this.amountText.setString("$" + getZeroPaddingNumber(this.amount,5));
+            if(this.amount >= 150){
+                this.amount = 150;
+            }
+
+            this.exp++;
+            this.expText.setString(this.exp + "exp")
+            if(this.exp >= 300){
+                this.exp = 300;
+            }
+        }
+
+        if(this.sceneType=="powerUp"){
+            this.amountText.setVisible(false);
+            this.expText.setVisible(false);
+            this.resultText.setString(
+                  "キャラクターLvevelUP!" + "\n"
+                + "[Lv1->Lv2]" + "\n"
+                + "" + "\n"
+            );
+        }
+
+        if(this.sceneType=="finish"){
+        }
+
     },
 
     onCharaSelect:function () {
@@ -126,6 +201,19 @@ var ResultLayer = cc.Layer.extend({
             scene.addChild(GameLayer.create(this.storage));
             cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
         }, this);
+    },
+
+    onGotItem:function () {
+        if(this.sceneType=="getItem"){////getItem->getExp->powerUp->finish
+            this.sceneType="getExp";
+        }else if(this.sceneType=="getExp"){
+            this.sceneType="powerUp";
+        }else if(this.sceneType=="powerUp"){
+            this.sceneType="finish";
+            onBackCallback();
+        }else if(this.sceneType=="finish"){
+            onBackCallback();
+        }
     },
 
     onTweet:function(){

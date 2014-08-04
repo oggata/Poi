@@ -10,6 +10,7 @@ var Cube = cc.Node.extend({
     ctor:function (num,rangeMin,rangeMax,type) {
         this._super();
         this.type = type;
+        this.num = num;
         this.rangeMin = rangeMin;
         this.rangeMax = rangeMax;
         this.frowaringDirection = 1;
@@ -47,12 +48,24 @@ var Cube = cc.Node.extend({
             }
         }
 
-        if(this.cubeAngle>=360){
-            this.cubeAngle = 0;
+        if(this.type == "WEAPON"){
+            if(0 <= this.num && this.num <= 5){
+                this.rollingCube.setPosition(this.num*40-100,100);
+            }else if(5 < this.num && this.num <= 10){
+                this.rollingCube.setPosition((this.num-5)*40-100,-100);
+            }else if(10 < this.num && this.num <= 15){
+                this.rollingCube.setPosition(100,(this.num-10)*40-100);
+            }else if(15 < this.num && this.num <= 20){
+                this.rollingCube.setPosition(-100,(this.num-15)*40-100);
+            }
+        }else{
+            if(this.cubeAngle>=360){
+                this.cubeAngle = 0;
+            }
+            var cubeRad = this.cubeAngle * Math.PI / 180;
+            var cubeX = this.eyeSightRange * Math.cos(cubeRad) + 0;
+            var cubeY = this.eyeSightRange * Math.sin(cubeRad) + 0;
+            this.rollingCube.setPosition(cubeX,cubeY);
         }
-        var cubeRad = this.cubeAngle * Math.PI / 180;
-        var cubeX = this.eyeSightRange * Math.cos(cubeRad) + 0;
-        var cubeY = this.eyeSightRange * Math.sin(cubeRad) + 0;
-        this.rollingCube.setPosition(cubeX,cubeY);
     }
 });

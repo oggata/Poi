@@ -13,17 +13,10 @@ var Chip = cc.Node.extend({
         this.game              = game;
         this.id                = id;
         this.isOccupied        = false;
-
         this.posX              = posX;
         this.posY              = posY;
-        this.coloredCnt        = 0;
         this.colorAlpha        = 0;
-        this.isSetColor        = false;
-
         this.isSetTower        = false;
-
-        this.coloredTime       = 1;
-        this.setColoredTime();
 
         //デバッグ用の中心を表示するサインマーカー
         if(CONFIG.DEBUG_FLAG==1){
@@ -68,26 +61,9 @@ var Chip = cc.Node.extend({
         this.chipSprite.setAnchorPoint(0.5,0.5);
         this.setPosition(posX,posY);
 
-
         if(this.type == "normal"){
             this.chipSprite.setVisible(false);
-        }else{
-            /*
-            //モーショントラックの作成
-            this.motionTrack = new Array();
-            for (var i=0 ; i < 10 ; i++){
-                this.cube = new Cube(i,30,40,"CHIP");
-                this.motionTrack.push(this.cube);
-                this.addChild(this.cube,999);
-            }*/
         }
-
-        //世界が色づいたときのマップ
-        this.colored = cc.Sprite.create(s_mapchip_001_colored);
-        this.colored.setOpacity(255*0);
-        this.colored.setPosition(0,0);
-        this.colored.setAnchorPoint(0.5,0.5);
-        this.addChild(this.colored);
 /*
         //mapNumber
         this.missionLabel = cc.LabelTTF.create(this.id,"Arial",14);
@@ -110,33 +86,11 @@ var Chip = cc.Node.extend({
 
     update:function() {
 
-
         //世界が色づいたときの処理
         if(this.colorAlpha >= 1){
-            this.coloredCnt++;
-            if(this.coloredCnt>=2*this.coloredTime){
-                if(this.isSetColor==false){
-                    this.isSetColor=true;
-                    /*
-                    var frameSeq = [];
-                    for (var y = 0; y <= 3; y++) {
-                        for (var x = 0; x <= 4; x++) {
-                            var frame = cc.SpriteFrame.create(s_effect_pipo113,cc.rect(192*x,192*y,192,192));
-                            frameSeq.push(frame);
-                        }
-                    }
-                    var wa = cc.Animation.create(frameSeq,0.1);
-                    this.energyRep = cc.Repeat.create(cc.Animate.create(wa),1);
-                    this.energyRep.retain();
-                    this.energySprite = cc.Sprite.create(s_enargy,cc.rect(0,0,48,96));
-                    this.energySprite.retain();
-                    this.energySprite.setPosition(0,70);
-                    this.energySprite.runAction(this.energyRep);
-                    this.addChild(this.energySprite);
-                    */
-                    this.colored.setOpacity(255*0.8);
-                }
-            }
+            this.chipSprite.setVisible(false);
+            this.timeLabel.setVisible(false);
+            return;
         }
 
         //ポイ生成マスの場合に、仲間を生成する
@@ -145,12 +99,12 @@ var Chip = cc.Node.extend({
                 if(this.game.player.targetChip.id == this.id){
                     if(this.type == "poi"){
                         if(this.hp <= 0){
-                            this.game.addColleagues(1,1);
+                            this.game.addColleagues(5,1);
                         }
                     }
                     if(this.type == "twitter"){
                         if(this.hp <= 0){
-                            this.game.addColleagues(1,2);
+                            this.game.addColleagues(5,2);
                         }
                     }
                 }
@@ -216,81 +170,4 @@ var Chip = cc.Node.extend({
         return true;
     },
 
-    setColoredTime:function(){
-        if(this.id == 13){
-            this.coloredTime       = 1;
-        }
-        if(this.id == 18){
-            this.coloredTime       = 2;
-        }
-        if(this.id == 14){
-            this.coloredTime       = 3;
-        }
-        if(this.id == 9){
-            this.coloredTime       = 4;
-        }
-        if(this.id == 5){
-            this.coloredTime       = 5;
-        }
-        if(this.id == 8){
-            this.coloredTime       = 6;
-        }
-        if(this.id == 12){
-            this.coloredTime       = 7;
-        }
-        if(this.id == 7){
-            this.coloredTime       = 8;
-        }
-        if(this.id == 21){
-            this.coloredTime       = 9;
-        }
-        if(this.id == 24){
-            this.coloredTime       = 10;
-        }
-        if(this.id == 22){
-            this.coloredTime       = 11;
-        }
-        if(this.id == 19){
-            this.coloredTime       = 12;
-        }
-        if(this.id == 15){
-            this.coloredTime       = 13;
-        }
-        if(this.id == 10){
-            this.coloredTime       = 14;
-        }
-        if(this.id == 6){
-            this.coloredTime       = 15;
-        }
-        if(this.id == 3){
-            this.coloredTime       = 16;
-        }
-        if(this.id == 1){
-            this.coloredTime       = 17;
-        }
-        if(this.id == 2){
-            this.coloredTime       = 18;
-        }
-        if(this.id == 4){
-            this.coloredTime       = 19;
-        }
-        if(this.id == 7){
-            this.coloredTime       = 20;
-        }
-        if(this.id == 11){
-            this.coloredTime       = 21;
-        }
-        if(this.id == 16){
-            this.coloredTime       = 22;
-        }
-        if(this.id == 20){
-            this.coloredTime       = 23;
-        }
-        if(this.id == 23){
-            this.coloredTime       = 24;
-        }
-        if(this.id == 25){
-            this.coloredTime       = 25;
-        }
-    },
 });

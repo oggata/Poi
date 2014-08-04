@@ -31,16 +31,19 @@ var Colleague = cc.Node.extend({
         //image
         this.charactorCode     = this.storage.charactorCode;
 
+
 if(type == 1){
         this.image             = this.storage.image;
         this.imgWidth          = this.storage.imgWidth; 
         this.imgHeight         = this.storage.imgHeight;
+        this.followType        = "NORMAL";
 }else{
         this.image             = "sprite/chara005.png";
         this.imgWidth          = 20; 
         this.imgHeight         = 26;
         this.hp                = 200;
         this.maxHp             = 200;
+        this.followType        = "DEFENCE";
 }
         //init
         this.direction         = "front";
@@ -54,6 +57,9 @@ if(type == 1){
         this.bulletLncTime     = 0;
         this.jumpY             = 0;
         this.jumpYDirect       = "up";
+
+        this.waitCnt = 0;
+        this.waitMaxCnt = this.randId * 10;
     },
     
     remove:function() {
@@ -93,13 +99,13 @@ if(type == 1){
         this.sprite.setPosition(0,this.jumpY);
 
         if(this.bulletLncTime>=1){
-            this.iconVoice.setOpacity(255*0);
+            //this.iconVoice.setOpacity(255*0);
             this.bulletLncTime++;
             if(this.bulletLncTime>=30*8){
                 this.bulletLncTime = 0;
             }
         }else{
-           this.iconVoice.setOpacity(255*1);
+           //this.iconVoice.setOpacity(255*1);
         }
 
         if(this.isDamageOn == true){
@@ -117,6 +123,28 @@ if(type == 1){
             return false;
         }
 
+
+        if(this.game.stage.isColored == true){
+                this.waitCnt++;
+                if(this.waitCnt>= this.waitMaxCnt){
+                    this.moveToPositions(
+                        this.game.stage.escape.getPosition().x,
+                        this.game.stage.escape.getPosition().y,
+                        0
+                    );
+                }
+
+                if(this.game.stage.escape.getPosition().x - 50 <= this.getPosition().x
+                    && this.getPosition().x <= this.game.stage.escape.getPosition().x + 50
+                    && this.game.stage.escape.getPosition().y - 50 <= this.getPosition().y
+                    && this.getPosition().y <= this.game.stage.escape.getPosition().y + 50
+                ){
+                    this.hp = 0;
+                }
+
+        }else{
+
+
         if(this.game.player.targetType == "ENEMY"){
             this.actionType = "ENEMY";
             this.moveToPositions(
@@ -126,16 +154,26 @@ if(type == 1){
             );
         }else if(this.game.player.targetType == "CHIP"){
             this.actionType = "CHIP";
-            this.moveToPositions(
-                this.game.markerSprite.getPosition().x + this.game.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().x,
-                this.game.markerSprite.getPosition().y + this.game.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().y,
-                0
-            );
+
+            if(this.followType=="NORMAL"){
+                this.moveToPositions(
+                    this.game.markerSprite.getPosition().x + this.game.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().x,
+                    this.game.markerSprite.getPosition().y + this.game.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().y,
+                    0
+                );
+            }else if(this.followType=="DEFENCE"){
+                this.moveToPositions(
+                    this.game.markerSprite.getPosition().x + this.game.markerSprite.weaponMotionTrack[this.randId].rollingCube.getPosition().x,
+                    this.game.markerSprite.getPosition().y + this.game.markerSprite.weaponMotionTrack[this.randId].rollingCube.getPosition().y,
+                    0
+                );
+            }
         }else{
             this.actionType = "FOLLOW";
             this.moveTo(this.player);
         }
 
+}
         //向きの制御
         this.directionCnt++;
         if(this.directionCnt >= 5){
@@ -179,11 +217,11 @@ if(type == 1){
         this.sprite = cc.Sprite.create(this.image,cc.rect(0,0,this.imgWidth,this.imgHeight));
         this.sprite.runAction(this.ra);
         this.addChild(this.sprite);
-
+/*
         this.iconVoice = cc.Sprite.create(s_critical_message);
         this.iconVoice.setPosition(10,25);
         this.sprite.addChild(this.iconVoice);
-
+*/
         //デバッグ
         if(CONFIG.DEBUG_FLAG==1){
             this.sigh = cc.LayerColor.create(cc.c4b(255,0,0,255),3,3);
