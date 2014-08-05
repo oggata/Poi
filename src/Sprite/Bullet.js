@@ -9,32 +9,29 @@
 var Bullet = cc.Node.extend({
     ctor:function (enemy,id) {
         this._super();
-
         this.enemy = enemy;
-
         this.effect_time = 0;
         this.hitTime     = 0;
         this.attack      = enemy.attack;
         this.dx          = 0;
         this.dy          = 0;
-        var frameSeq = [];
-
         this.id = id;
-        if(id == "fire"){
-            for (var i = 0; i <= 5; i++) {
-                var frame = cc.SpriteFrame.create(effect_fire,cc.rect(60*i,0,60,60));
+        CONFIG.BULLET_EFFECT_TIME = 30*1;
+
+        var frameSeq = [];
+/*
+        for (var y = 0; y <= 0; y++) {
+            for (var x = 0; x <= 11; x++) {
+                var frame = cc.SpriteFrame.create(s_promin_pipo002,cc.rect(240*x,240*y,240,240));
                 frameSeq.push(frame);
             }
-        }
-
-        if(id == "colleague"){
-            CONFIG.BULLET_EFFECT_TIME = 30*1;
-            for (var y = 0; y <= 0; y++) {
-                for (var x = 0; x <= 11; x++) {
-                    var frame = cc.SpriteFrame.create(s_promin_pipo002,cc.rect(240*x,240*y,240,240));
-                    frameSeq.push(frame);
-                }
-            } 
+        } 
+*/
+        for (var y = 0; y < 3; y++) {
+            for (var x = 0; x < 5; x++) {
+                var frame = cc.SpriteFrame.create(effect_circle,cc.rect(120*x,120*y,120,120));
+                frameSeq.push(frame);
+            }
         }
 
         this.wa = cc.Animation.create(frameSeq,0.1);
@@ -44,18 +41,32 @@ var Bullet = cc.Node.extend({
         this.sprite.runAction(this.ra);
         this.addChild(this.sprite);
         this.isEffect    = true;
-        this.sprite.setPosition(0,30);
+        //this.sprite.setPosition(0,30);
+        this.sprite.setScale(0.5,0.5);
     },
 
     init:function () {
     },
 
+    moveTo:function(enemy) {
+        this.jumpY=0;
+        this.jumpYDirect = "up";
+
+        if(this.isStop) return;
+        var dX = enemy.getPosition().x - this.getPosition().x;
+        var dY = enemy.getPosition().y - this.getPosition().y;
+        var rad = Math.atan2(dX,dY);
+        var speedX = 3 * Math.sin(rad);
+        var speedY = 3 * Math.cos(rad);
+        this.setPosition(
+            this.getPosition().x + speedX,
+            this.getPosition().y + speedY
+        );
+    },
+
     update:function() {
-        if(this.id == "colleague"){
-            this.setPosition(
-                this.enemy.getPosition().x,
-                this.enemy.getPosition().y - 30
-            );
+        if(this.enemy != null){
+            this.moveTo(this.enemy);
         }
 
         if(this.isEffect == false){

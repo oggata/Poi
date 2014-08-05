@@ -40,6 +40,10 @@ var s_chip_003        = base_dir + "map/q_map_poi.png";
 var s_chip_004        = base_dir + "map/q_map_tree.png";
 var s_chip_005        = base_dir + "map/q_map_twitter.png";
 
+var s_crown           = "map/crown01.png";
+var s_crown2           = "map/crown02.png";
+var s_crown3           = "map/crown03.png";
+
 //button
 var s_button001_scale9   = base_dir + "button/button001_scale9.png";
 
@@ -58,6 +62,7 @@ var effect_water         = base_dir + "effect/pipo-btleffect006.png";
 var effect_wind          = base_dir + "effect/pipo-btleffect039.png";
 var effect_sander        = base_dir + "effect/pipo-btleffect040.png";
 var effect_eye        = base_dir + "effect/pipo-btleffect072.png";
+var effect_circle     = "effect/pipo-btleffect109f.png";
 
 //text
 var s_damage_001         = base_dir + "text/damage001.png";
@@ -168,10 +173,13 @@ var g_resources       = [
     effect_wind,
     effect_sander,
     effect_eye,
+    effect_circle,
     s_enargy,
     s_header,
     s_shadow,
     s_chara001,
+    s_chara002,
+    s_chara003,
     s_chara005,
     s_attack_rolling,
     s_break,
@@ -202,5 +210,8 @@ var g_resources       = [
     s_text_game_over,
     s_hinageshi,
     s_fukidashi,
-    s_woman
+    s_woman,
+    s_crown,
+    s_crown2,
+    s_crown3
 ];

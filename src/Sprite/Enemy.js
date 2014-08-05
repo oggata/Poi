@@ -21,7 +21,6 @@ var Enemy = cc.Node.extend({
         this.depChipId = this.routes[this.routeId];
         this.setPosition(this.depX,this.depY);
 
-
         //initialize
         this.initializeParam(code);
         this.initSprite();
@@ -72,7 +71,7 @@ var Enemy = cc.Node.extend({
         this.damageCnt         = 0;
         this.isDamageOn        = false;
 
-        this.dmCnt             = 0;
+        this.damagedStopCnt             = 0;
         //弾丸発射用
         this.bulletLncTime     = 0;
         this.bulletLncMaxTime  = 30 * 2;
@@ -131,6 +130,43 @@ var Enemy = cc.Node.extend({
         }
     },
 
+    move:function(){
+        if(distance <= this.eyeSight){
+            var dX = this.game.player.getPosition().x - this.getPosition().x;
+            var dY = this.game.player.getPosition().y - this.getPosition().y;
+            var rad = Math.atan2(dX,dY);
+            var speedX = this.walkSpeed * Math.sin(rad);
+            var speedY = this.walkSpeed * Math.cos(rad);
+            if(this.isDamageOn == false){
+                this.setPosition(
+                    this.getPosition().x + speedX,
+                    this.getPosition().y + speedY
+                );
+            }
+        }else{
+            if(this.routes){
+                var posi = this.game.stage.getChipPosition(this.routes[this.routeId]);
+                var dX = posi[0] - this.getPosition().x;
+                var dY = posi[1] - this.getPosition().y;
+                var distance = Math.sqrt(dX * dX + dY * dY);
+                var rad = Math.atan2(dX,dY);
+                var speedX = this.walkSpeed * Math.sin(rad);
+                var speedY = this.walkSpeed * Math.cos(rad);
+                if(speedX > distance || speedY > distance){
+                    this.setPosition(
+                        posi[0],
+                        posi[1]
+                    );
+                }else{
+                    this.setPosition(
+                        this.getPosition().x + speedX,
+                        this.getPosition().y + speedY
+                    );
+                }
+            }
+        }
+    },
+
     update:function() {
         if(this.routes){
             var pos = this.game.stage.getChipPosition(this.routes[this.routeId]);
@@ -185,16 +221,17 @@ var Enemy = cc.Node.extend({
             }
         }
 
-        if(this.dmCnt>=1){
-            this.dmCnt++;
-            if(this.dmCnt>=30*2){
-                this.dmCnt = 0;
+        //ダメージを受けた場合は一定時間その場に停止する
+        if(this.damagedStopCnt>=1){
+            this.damagedStopCnt++;
+            if(this.damagedStopCnt>=30*2){
+                this.damagedStopCnt = 0;
             }
         }
 
         //ダメージを受けた場合は、透過で点滅する
         if(this.isDamageOn == true){
-            this.dmCnt=1;
+            this.damagedStopCnt=1;
             this.addFlashCnt();
             this.damageCnt++;
             if(this.damageCnt>=40){
@@ -203,60 +240,24 @@ var Enemy = cc.Node.extend({
                 this.sprite.setOpacity(255*1);
             }
         }
-
+/*
         var distance = cc.pDistance(
             this.game.player.getPosition(),
             this.getPosition()
         );
-
-
-if(this.dmCnt==0){
-        if(distance <= this.eyeSight){
-            var dX = this.game.player.getPosition().x - this.getPosition().x;
-            var dY = this.game.player.getPosition().y - this.getPosition().y;
-            var rad = Math.atan2(dX,dY);
-            var speedX = this.walkSpeed * Math.sin(rad);
-            var speedY = this.walkSpeed * Math.cos(rad);
-            if(this.isDamageOn == false){
-                this.setPosition(
-                    this.getPosition().x + speedX,
-                    this.getPosition().y + speedY
-                );
-            }
-        }else{
-            if(this.routes){
-                var posi = this.game.stage.getChipPosition(this.routes[this.routeId]);
-                var dX = posi[0] - this.getPosition().x;
-                var dY = posi[1] - this.getPosition().y;
-
-
-                var distance = Math.sqrt(dX * dX + dY * dY);
-
-
-                var rad = Math.atan2(dX,dY);
-                var speedX = this.walkSpeed * Math.sin(rad);
-                var speedY = this.walkSpeed * Math.cos(rad);
-
-                if(speedX > distance || speedY > distance){
-                    this.setPosition(
-                        posi[0],
-                        posi[1]
-                    );
-                }else{
-                    this.setPosition(
-                        this.getPosition().x + speedX,
-                        this.getPosition().y + speedY
-                    );
-                }
-            }
+*/
+        if(this.damagedStopCnt==0){
+            this.move();
         }
-}
 
         this.gauge.update(this.hp/this.maxHp);
 
         //HPが0になった場合は死ぬ
         if(this.hp == 0){
             this.remove();
+            if(this.game.player.targetEnemy == this){
+                this.game.player.targetEnemy = null;
+            }
             return false;
         }
 

@@ -30,42 +30,36 @@ var Colleague = cc.Node.extend({
         this.createCot         = this.storage.createCot;
         //image
         this.charactorCode     = this.storage.charactorCode;
-
-
-if(type == 1){
-        this.image             = this.storage.image;
         this.imgWidth          = this.storage.imgWidth; 
         this.imgHeight         = this.storage.imgHeight;
-        this.attackType        = "JUMP";
-        this.followType        = "NORMAL";
-}else{
-        this.image             = "sprite/chara005.png";
-        this.imgWidth          = 20; 
-        this.imgHeight         = 26;
-        this.hp                = 200;
-        this.maxHp             = 200;
-        this.attackType        = "BULLET";
-        this.followType        = "DEFENCE";
-}
+
+        if(type == 1){
+            this.image         = s_chara001;
+            this.attackType    = "JUMP";
+            this.followType    = "DEFENCE";
+        }else if(type == 2){
+            this.image         = s_chara002;
+            this.attackType    = "BULLET";
+            this.followType    = "DEFENCE";
+        }else if(type == 3){
+            this.image         = s_chara003;
+            this.attackType    = "BULLET";
+            this.followType    = "NORMAL";   
+        }
+
         //init
         this.direction         = "front";
         this.initSprite();
         this.damangeTexts      = new Array();
-        this.isStop            = false;
         this.directionCnt      = 0;
         this.beforeX           = this.getPosition().x;
         this.beforeY           = this.getPosition().y;
         this.isWait            = false;
-        this.bulletLncTime     = 0;
+        this.bulletLncTime     = getRandNumberFromRange(1,90);
         this.jumpY             = 0;
         this.jumpYDirect       = "up";
-
         this.waitCnt = 0;
         this.waitMaxCnt = this.randId * 10;
-
-
-        this.bulletTime = 0;
-
     },
     
     remove:function() {
@@ -91,24 +85,70 @@ if(type == 1){
         }
     },
 
-    doBullet:function(){
-        if(this.bulletLncTime == 0){
-            this.bulletLncTime=1;
-            this.game.addColleagueBullet(this);
-            return true;
+
+    moveToEscapeZone:function(){
+        this.waitCnt++;
+        if(this.waitCnt>= this.waitMaxCnt){
+            this.moveToPositions(
+                this.game.stage.escape.getPosition().x,
+                this.game.stage.escape.getPosition().y,
+                0
+            );
         }
-        return false;
+        if(this.game.stage.escape.getPosition().x - 50 <= this.getPosition().x
+            && this.getPosition().x <= this.game.stage.escape.getPosition().x + 50
+            && this.game.stage.escape.getPosition().y - 50 <= this.getPosition().y
+            && this.getPosition().y <= this.game.stage.escape.getPosition().y + 50
+        ){
+            this.hp = 0;
+        }
+    },
+
+    moveToEnemy:function(){
+        this.actionType = "ENEMY";
+        if(this.attackType == "JUMP"){
+            this.moveToPositions(
+                this.game.markerSprite.getPosition().x + this.game.markerSprite.enemyMotionTrack[this.randId].rollingCube.getPosition().x,
+                this.game.markerSprite.getPosition().y + this.game.markerSprite.enemyMotionTrack[this.randId].rollingCube.getPosition().y,
+                1
+            );
+        }else if(this.attackType == "BULLET"){
+            this.moveToPositions(
+                this.game.markerSprite.getPosition().x + this.game.markerSprite.enemyFarMotionTrack[this.randId].rollingCube.getPosition().x,
+                this.game.markerSprite.getPosition().y + this.game.markerSprite.enemyFarMotionTrack[this.randId].rollingCube.getPosition().y,
+                1
+            );
+        }
+    },
+
+    moveToBuilding:function(){
+        this.actionType = "CHIP";
+        if(this.followType=="NORMAL"){
+            this.moveToPositions(
+                this.game.markerSprite.getPosition().x + this.game.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().x,
+                this.game.markerSprite.getPosition().y + this.game.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().y,
+                0
+            );
+        }else if(this.followType=="DEFENCE"){
+            this.moveToPositions(
+                this.game.markerSprite.getPosition().x + this.game.markerSprite.weaponMotionTrack[this.randId].rollingCube.getPosition().x,
+                this.game.markerSprite.getPosition().y + this.game.markerSprite.weaponMotionTrack[this.randId].rollingCube.getPosition().y,
+                0
+            );
+        }
     },
 
     update:function() {
-
-//this.doBullet();
         this.sprite.setPosition(0,this.jumpY);
-        if(this.bulletLncTime>=1){
-            //this.iconVoice.setOpacity(255*0);
-            this.bulletLncTime++;
-            if(this.bulletLncTime>=30*8){
-                this.bulletLncTime = 0;
+
+        //攻撃タイプが弾丸だった場合は、一定時間毎に弾丸を発射する
+        if(this.attackType == "BULLET"){
+            if(this.player.targetEnemy != null){
+                this.bulletLncTime++;
+                if(this.bulletLncTime>=30*3){
+                    this.bulletLncTime = 0;
+                    this.game.addColleagueBullet(this.player.targetEnemy,this);
+                }
             }
         }
 
@@ -127,64 +167,20 @@ if(type == 1){
             return false;
         }
 
+        //目標を達成した後には、皆エスケープゾーンに向かって走る
         if(this.game.stage.isColored == true){
-                this.waitCnt++;
-                if(this.waitCnt>= this.waitMaxCnt){
-                    this.moveToPositions(
-                        this.game.stage.escape.getPosition().x,
-                        this.game.stage.escape.getPosition().y,
-                        0
-                    );
-                }
-
-                if(this.game.stage.escape.getPosition().x - 50 <= this.getPosition().x
-                    && this.getPosition().x <= this.game.stage.escape.getPosition().x + 50
-                    && this.game.stage.escape.getPosition().y - 50 <= this.getPosition().y
-                    && this.getPosition().y <= this.game.stage.escape.getPosition().y + 50
-                ){
-                    this.hp = 0;
-                }
-
+            this.moveToEscapeZone();
         }else{
-
-
-        if(this.game.player.targetType == "ENEMY"){
-            this.actionType = "ENEMY";
-            if(this.attackType == "JUMP"){
-                this.moveToPositions(
-                    this.game.markerSprite.getPosition().x + this.game.markerSprite.enemyMotionTrack[this.randId].rollingCube.getPosition().x,
-                    this.game.markerSprite.getPosition().y + this.game.markerSprite.enemyMotionTrack[this.randId].rollingCube.getPosition().y,
-                    1
-                );
-            }else if(this.attackType == "BULLET"){
-                this.moveToPositions(
-                    this.game.markerSprite.getPosition().x + this.game.markerSprite.enemyFarMotionTrack[this.randId].rollingCube.getPosition().x,
-                    this.game.markerSprite.getPosition().y + this.game.markerSprite.enemyFarMotionTrack[this.randId].rollingCube.getPosition().y,
-                    1
-                );
+            if(this.game.player.targetType == "ENEMY" && this.game.player.targetEnemy != null){
+                this.moveToEnemy();
+            }else if(this.game.player.targetType == "CHIP"){
+                this.moveToBuilding();
+            }else{
+                this.actionType = "FOLLOW";
+                this.moveTo(this.player);
             }
-        }else if(this.game.player.targetType == "CHIP"){
-            this.actionType = "CHIP";
-
-            if(this.followType=="NORMAL"){
-                this.moveToPositions(
-                    this.game.markerSprite.getPosition().x + this.game.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().x,
-                    this.game.markerSprite.getPosition().y + this.game.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().y,
-                    0
-                );
-            }else if(this.followType=="DEFENCE"){
-                this.moveToPositions(
-                    this.game.markerSprite.getPosition().x + this.game.markerSprite.weaponMotionTrack[this.randId].rollingCube.getPosition().x,
-                    this.game.markerSprite.getPosition().y + this.game.markerSprite.weaponMotionTrack[this.randId].rollingCube.getPosition().y,
-                    0
-                );
-            }
-        }else{
-            this.actionType = "FOLLOW";
-            this.moveTo(this.player);
         }
 
-}
         //向きの制御
         this.directionCnt++;
         if(this.directionCnt >= 5){
@@ -244,8 +240,6 @@ if(type == 1){
     moveTo:function(player) {
         this.jumpY=0;
         this.jumpYDirect = "up";
-
-        if(this.isStop) return;
         var dX = this.game.player.getPosition().x - this.getPosition().x;
         var dY = this.game.player.getPosition().y - this.getPosition().y;
         var rad = Math.atan2(dX,dY);

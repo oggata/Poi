@@ -44,41 +44,41 @@ var GameLayer = cc.Layer.extend({
         this.markerSprite = new TargetMarker();
         this.mapNode.addChild(this.markerSprite);
 
-this.shakeY = 0;
+        this.shakeY = 0;
 
-var frameSeqEffect= [];
-for (var y = 0; y <= 0; y++) {
-    for (var x = 0; x <= 7; x++) {
-        var frame = cc.SpriteFrame.create(effect_fire,cc.rect(120*x,120*y,120,120));
-        frameSeqEffect.push(frame);
-    }
-}
-this.wa = cc.Animation.create(frameSeqEffect,0.1);
-this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
-this.battleAnimation = cc.Sprite.create(effect_sander,cc.rect(0,0,120,120));
-this.battleAnimation.runAction(this.ra);
-this.battleAnimation.setScale(1.5,1.5);
-this.battleAnimation.setOpacity(255*0.8);
-this.battleAnimation.setPosition(0,0);
-this.mapNode.addChild(this.battleAnimation,999999999);
+        //バトルエフェクト
+        var frameSeqEffect= [];
+        for (var y = 0; y <= 0; y++) {
+            for (var x = 0; x <= 7; x++) {
+                var frame = cc.SpriteFrame.create(effect_fire,cc.rect(120*x,120*y,120,120));
+                frameSeqEffect.push(frame);
+            }
+        }
+        this.wa = cc.Animation.create(frameSeqEffect,0.1);
+        this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
+        this.battleAnimation = cc.Sprite.create(effect_sander,cc.rect(0,0,120,120));
+        this.battleAnimation.runAction(this.ra);
+        this.battleAnimation.setScale(1.5,1.5);
+        this.battleAnimation.setOpacity(255*0.8);
+        this.battleAnimation.setPosition(0,0);
+        this.mapNode.addChild(this.battleAnimation,999999999);
 
-
-var frameSeqOccupy= [];
-for (var y = 0; y <= 0; y++) {
-    for (var x = 0; x <= 7; x++) {
-        var frame = cc.SpriteFrame.create(effect_water,cc.rect(120*x,120*y,120,120));
-        frameSeqOccupy.push(frame);
-    }
-}
-this.wa = cc.Animation.create(frameSeqOccupy,0.1);
-this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
-this.occupyAnimation = cc.Sprite.create(effect_water,cc.rect(0,0,120,120));
-this.occupyAnimation.runAction(this.ra);
-this.occupyAnimation.setScale(1.5,1.5);
-this.occupyAnimation.setOpacity(255*0.8);
-this.occupyAnimation.setPosition(0,0);
-this.mapNode.addChild(this.occupyAnimation,999999999);
-
+        //占領エフェクト
+        var frameSeqOccupy= [];
+        for (var y = 0; y <= 0; y++) {
+            for (var x = 0; x <= 7; x++) {
+                var frame = cc.SpriteFrame.create(effect_water,cc.rect(120*x,120*y,120,120));
+                frameSeqOccupy.push(frame);
+            }
+        }
+        this.wa = cc.Animation.create(frameSeqOccupy,0.1);
+        this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
+        this.occupyAnimation = cc.Sprite.create(effect_water,cc.rect(0,0,120,120));
+        this.occupyAnimation.runAction(this.ra);
+        this.occupyAnimation.setScale(1.5,1.5);
+        this.occupyAnimation.setOpacity(255*0.8);
+        this.occupyAnimation.setPosition(0,0);
+        this.mapNode.addChild(this.occupyAnimation,999999999);
 
         //timerSprite
         this.timerSprite = cc.Sprite.create(s_timer,cc.rect(50*0,0,50,50));
@@ -97,7 +97,9 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
             this.cameraY
         );
         this.setUI();
-        this.addColleagues(50,1);
+        this.addColleagues(10,1);
+        this.addColleagues(10,2);
+        this.addColleagues(10,3);
         this.scheduleUpdate();
         this.setTouchEnabled(true);
 
@@ -308,7 +310,7 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
             this.battleAnimation.setVisible(false);
             this.occupyAnimation.setVisible(true);
             this.occupyAnimation.setPosition(this.markerSprite.getPosition().x,this.markerSprite.getPosition().y);
-        }else if(this.player.targetType == "ENEMY"){
+        }else if(this.player.targetType == "ENEMY" &&  this.player.targetEnemy != null){
             this.targetSprite.setVisible(false);
             this.markerSprite.setVisible(true);
             if(this.player.targetEnemy){
@@ -329,8 +331,6 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
             this.battleAnimation.setVisible(false);
             this.occupyAnimation.setVisible(false);
         }
-
-        
 
         //Playerの死亡時には生き残っている仲間がいれはスイッチする
         if(this.player.hp <= 0){
@@ -424,7 +424,6 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
             }
         }
 
-
         this.moveCamera();
         this.gameUI.update();
         this.markerSprite.update();
@@ -493,8 +492,8 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
         this.colleagueBullets.push(colleagueBullet);
     },
 */
-    addColleagueBullet:function(colleague){
-        var colleagueBullet = new Bullet(colleague,"colleague");
+    addColleagueBullet:function(enemy,colleague){
+        var colleagueBullet = new Bullet(enemy,"test");
         colleagueBullet.attack = 10;
         colleagueBullet.set_position(
             colleague.getPosition().x,
@@ -503,7 +502,7 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
         this.mapNode.addChild(colleagueBullet,999);
         this.colleagueBullets.push(colleagueBullet);
     },
-    
+
     collisionAll:function(){
         //プレイヤー & 仲間
         collisionPlayerAndColleague(this.player,this.colleagues,this);
@@ -650,6 +649,7 @@ this.mapNode.addChild(this.occupyAnimation,999999999);
             this.targetSprite.setPosition(tPosX,tPosY);
 
             this.player.targetType = "NONE";
+            this.player.targetEnemy = null;
             for(var i=0;i<this.enemies.length;i++){
                 var distance = cc.pDistance(this.targetSprite.getPosition(),this.enemies[i].getPosition());
                 if(distance <= 50){

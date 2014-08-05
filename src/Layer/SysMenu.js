@@ -122,7 +122,7 @@ var SysMenu = cc.Layer.extend({
             //scene.addChild(ResultLayer.create(this.storage));
             //scene.addChild(StoryLayer.create(this.storage));
             
-            cc.Director.getInstance().replaceScene(cc.TransitionSlideInR.create(1.2, scene));
+            cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
         }, this);
     },
 

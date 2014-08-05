@@ -162,7 +162,7 @@ var QuestLayer = cc.Layer.extend({
             this.storage = getStageDataFromJson(this.storage,1);
 
             scene.addChild(CharaSelectLayer.create(this.storage));
-            cc.Director.getInstance().replaceScene(cc.TransitionSlideInR.create(1.2, scene));
+            cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
         }, this);
     },
 
@@ -180,7 +180,7 @@ var QuestLayer = cc.Layer.extend({
             scene.addChild(StoryLayer.create(this.storage));
 
 
-            cc.Director.getInstance().replaceScene(cc.TransitionSlideInR.create(1.2, scene));
+            cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
         }, this);
     },
 
@@ -202,7 +202,7 @@ var QuestLayer = cc.Layer.extend({
                 //scene.addChild(CharaSelectLayer.create(this.storage));
                 scene.addChild(StoryLayer.create(this.storage));
 
-                cc.Director.getInstance().replaceScene(cc.TransitionSlideInR.create(1.2, scene));
+                cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
             }, this);
         }
     },
@@ -213,7 +213,7 @@ var QuestLayer = cc.Layer.extend({
         cc.LoaderScene.preload(g_chara_select_resources, function () {
             var scene = cc.Scene.create();
             scene.addChild(TutolialLayer.create());
-            cc.Director.getInstance().replaceScene(cc.TransitionSlideInR.create(1.2, scene));
+            cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
         }, this);
     },
 

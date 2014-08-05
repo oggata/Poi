@@ -32,9 +32,9 @@
             "items"          : [{"type":"levelup","count":0}],
             "datas"          : [
                 {"id":30,"type":"azito"  ,"img":"map/q_map_ajito.png",   "hp":100,"maxHp":100,"depTime":20,"depMaxTime":60,"reproduction":true,"destroy":false,"enemyId":2,"route":[30]},
-                {"id":16,"type":"twitter","img":"map/q_map_twitter.png","hp":5,"maxHp":5,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false  ,"enemyId":0,"route":[]},
-                {"id":22,"type":"twitter","img":"map/q_map_twitter.png","hp":5,"maxHp":5,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false  ,"enemyId":0,"route":[]},
-                {"id":4, "type":"poi"    ,"img":"map/q_map_poi.png","hp":2,"maxHp":2,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false     ,"enemyId":0,"route":[]},
+                {"id":12,"type":"poi_blue","img":"map/q_map_poi_blue.png","hp":5,"maxHp":5,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false  ,"enemyId":0,"route":[]},
+                {"id":11,"type":"poi_yellow","img":"map/q_map_poi_yellow.png","hp":5,"maxHp":5,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false  ,"enemyId":0,"route":[]},
+                {"id":4, "type":"poi_red"    ,"img":"map/q_map_poi.png","hp":2,"maxHp":2,"depTime":0,"depMaxTime":0,"reproduction":true,"destroy":false     ,"enemyId":0,"route":[]},
                 {"id":24,"type":"tree"    ,"img":"map/q_map_tree.png"  ,"hp":50  ,"maxHp":50  ,"depTime":0  ,"depMaxTime":0  ,"reproduction":false ,"destroy":false  ,"enemyId":0, "route":[]},
                 {"id":27,"type":"tree"    ,"img":"map/q_map_tree.png"  ,"hp":50  ,"maxHp":50  ,"depTime":0  ,"depMaxTime":0  ,"reproduction":false ,"destroy":false  ,"enemyId":0, "route":[]}
             ],

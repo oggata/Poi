@@ -47,12 +47,9 @@ var CharaSelectLayer = cc.Layer.extend({
                 this.addChild(selectButton);
             }
 
-
-
-this.twitterButton = new ButtonItem("Twitterからキャラを生成",250,40,this.onTwitter,this);
-this.twitterButton.setPosition(160,50);
-this.addChild(this.twitterButton);
-
+            this.twitterButton = new ButtonItem("Twitterからキャラを生成",250,40,this.onTwitter,this);
+            this.twitterButton.setPosition(160,50);
+            this.addChild(this.twitterButton);
 
             //Back Menu
             var label = cc.LabelTTF.create("-戻る-", "Arial", 20);
@@ -84,13 +81,7 @@ this.addChild(this.twitterButton);
 
             bRet = true;
         }
-
-
-
-
-
         this.scheduleUpdate();
-
         return bRet;
     },
 
@@ -152,10 +143,9 @@ this.addChild(this.twitterButton);
             storage = getCharactorDataFromJson(this.storage,charactorCode);
 
             scene.addChild(GameLayer.create(this.storage));
-            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+            cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
         },this);
     },
-
 
     onTwitter:function (stageNum) {
         playSystemButton();
@@ -163,10 +153,9 @@ this.addChild(this.twitterButton);
         cc.LoaderScene.preload(g_chara_select_resources, function () {
             var scene = cc.Scene.create();
             scene.addChild(TwitterLayer.create());
-            cc.Director.getInstance().replaceScene(cc.TransitionSlideInR.create(1.2, scene));
+            cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
         }, this);
     },
-
 });
 
 CharaSelectLayer.create = function (storage) {

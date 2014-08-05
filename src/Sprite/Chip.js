@@ -97,9 +97,19 @@ var Chip = cc.Node.extend({
         if(this.game.player.targetChip){
             if(this.game.player.targetType == "CHIP"){
                 if(this.game.player.targetChip.id == this.id){
-                    if(this.type == "poi"){
+                    if(this.type == "poi_red"){
                         if(this.hp <= 0){
                             this.game.addColleagues(5,1);
+                        }
+                    }
+                    if(this.type == "poi_blue"){
+                        if(this.hp <= 0){
+                            this.game.addColleagues(5,2);
+                        }
+                    }
+                    if(this.type == "poi_yellow"){
+                        if(this.hp <= 0){
+                            this.game.addColleagues(5,3);
                         }
                     }
                     if(this.type == "twitter"){

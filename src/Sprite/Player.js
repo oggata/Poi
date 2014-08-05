@@ -34,9 +34,7 @@ var Player = cc.Node.extend({
         this.bulletSpeed       = CONFIG.BULLET_SPEED;
         this.targetType        = "none";
         this.targetEnemy       = null;
-        this.nE                = null;
         this.targetChip        = null;
-        this.isStop            = false;
         this.initializeWalkAnimation();
         this.update();
     },
@@ -45,6 +43,7 @@ var Player = cc.Node.extend({
     },
 
     update:function() {
+        //cc.log(this.targetEnemy);
     },
 
     remove:function() {
@@ -91,9 +90,7 @@ var Player = cc.Node.extend({
     },
 
     moveToTargetMarker:function(targetSprite) {
-        if(this.isStop) return;
         if(targetSprite == null) return;
-
         if(this.getPosition().x < targetSprite.getPosition().x){
             if(Math.abs(this.getPosition().x - targetSprite.getPosition().x) > this.walkSpeed){
                 this.setPosition(

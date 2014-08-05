@@ -21,10 +21,18 @@ var Tower = cc.Node.extend({
             this.tree.setPosition(0,50);
             this.addChild(this.tree);
         }else if(this.type==2){
-            this.tree     = cc.Sprite.create(s_initSprite);
+            this.tree     = cc.Sprite.create(s_crown);
             this.tree.setPosition(0,40);
             this.addChild(this.tree);        
         }else if(this.type==3){
+            this.tree     = cc.Sprite.create(s_crown2);
+            this.tree.setPosition(0,40);
+            this.addChild(this.tree);        
+        }else if(this.type==4){
+            this.tree     = cc.Sprite.create(s_crown3);
+            this.tree.setPosition(0,40);
+            this.addChild(this.tree);        
+        }else{
             this.tree     = cc.Sprite.create(s_initSprite);
             this.tree.setPosition(0,40);
             this.addChild(this.tree);       
@@ -32,12 +40,10 @@ var Tower = cc.Node.extend({
     },
 
     update:function(){
-
         if(this.game.stage.isColored == true){
             this.tree.setVisible(false);
             return;
         }
-
         if(this.type == 2 || this.type == 3) return;
         //木がプレイヤーが画面で重なっている場合は透過する
         if(this.getPosition().x - 100 <= this.game.player.getPosition().x 
@@ -48,7 +54,6 @@ var Tower = cc.Node.extend({
         }else{
             this.setAlpha(255*1);
         }
-
     },
 
     setAlpha:function(alpha){
