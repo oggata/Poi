@@ -9,7 +9,6 @@
 var ButtonItem = cc.Node.extend({
     ctor:function (title,w,h,execute,current,pTag) {
         this._super();
-
         var tag = pTag || 1;
 
 		this.back = cc.Scale9Sprite.create(s_button001_scale9);
@@ -27,10 +26,7 @@ var ButtonItem = cc.Node.extend({
         	current
         );
         this.button.setPosition(0,0);
-
-
         this.button.setTag(tag);
-
         var menu = cc.Menu.create(
             this.button
         );

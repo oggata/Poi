@@ -9,10 +9,9 @@
 var GameUI = cc.Node.extend({
     ctor:function (game) {
         this._super();
-        this.game    = game;
-        this.storage = this.game.storage;
-
-        this.visibleCnt=0;
+        this.game       = game;
+        this.storage    = this.game.storage;
+        this.visibleCnt = 0;
 
         //header
         this.uiHeader = cc.LayerColor.create(cc.c4b(0,255,255,255 * 0),320,200);
@@ -79,15 +78,58 @@ var GameUI = cc.Node.extend({
         this.uiHeader.addChild(this.headerMenu,33);
         this.headerMenu.setPosition(0,0);
 
-        this.rectBarL = cc.LayerColor.create(cc.c4b(0,255,0,255),320,20);
-        this.rectBarL.setPosition(0,0);
+        this.criticalMessage = cc.Sprite.create(s_critical_message2);
+        this.criticalMessage.setPosition(
+            this.game.player.getPosition().x,
+            this.game.player.getPosition().y
+        );
+        this.criticalMessage.setAnchorPoint(0.5,0);
+        this.game.mapNode.addChild(this.criticalMessage,99999999);
+
+        this.criticalButton = new ButtonItem("★",50,50,this.onCritical,this);
+        this.criticalButton.setPosition(
+            this.game.player.getPosition().x,
+            this.game.player.getPosition().y
+        );
+        this.criticalButton.setPosition(0,0);
+        this.criticalButton.setAnchorPoint(0.5,0.5);
+        this.game.mapNode.addChild(this.criticalButton,99999999);
+
+        this.rectBarL = cc.LayerColor.create(cc.c4b(0,255,0,255),320,10);
+        this.rectBarL.setPosition(0,10);
         this.rectBarL.setAnchorPoint(0,0);
         this.rectBarL.setOpacity(255*0.4);
         this.addChild(this.rectBarL);
+
+        this.criticalBar = cc.LayerColor.create(cc.c4b(255,255,255,255),320,10);
+        this.criticalBar.setPosition(0,0);
+        this.criticalBar.setAnchorPoint(0,0);
+        this.criticalBar.setOpacity(255*1.0);
+        this.addChild(this.criticalBar);
     },
 
     //UIのテキストをupdateする
     update:function() {
+        if(this.game.criticalPower == this.game.criticalMaxPower){
+            this.criticalMessage.setVisible(true);
+            this.criticalButton.set_visible(true);
+        }else{
+            this.criticalMessage.setVisible(false);
+            this.criticalButton.set_visible(false);
+        }
+
+        this.criticalMessage.setPosition(
+            this.game.player.getPosition().x,
+            this.game.player.getPosition().y
+        );
+        this.criticalButton.setPosition(
+            this.game.player.getPosition().x,
+            this.game.player.getPosition().y + 30
+        );
+
+        var criticalRate = this.game.criticalPower / this.game.criticalMaxPower;
+        this.criticalBar.setScale(criticalRate,1);
+
         var rate = this.game.tapPower / 100;
         this.rectBarL.setScale(rate,1);
         if(this.game.player.targetType == "ENEMY"){
@@ -118,5 +160,10 @@ var GameUI = cc.Node.extend({
             );
         }
     },
+
+    onCritical:function(){
+        this.game.criticalPower = 0;
+        this.game.isFly = true;
+    }
 
 });

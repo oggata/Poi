@@ -21,7 +21,17 @@ var Cube = cc.Node.extend({
             this.alpha = 255 * 0;
         }
         //AttackRollingCube
-        this.rollingCube = cc.LayerColor.create(cc.c4b(255,0,0,this.alpha),5,5);
+        if(this.type == "CHIP"){
+            this.rollingCube = cc.LayerColor.create(cc.c4b(255,0,0,this.alpha),5,5);
+        }else if(this.type == "ENEMY"){
+            this.rollingCube = cc.LayerColor.create(cc.c4b(0,255,0,this.alpha),5,5);
+        }else if(this.type == "WEAPON"){
+            this.rollingCube = cc.LayerColor.create(cc.c4b(0,0,255,this.alpha),5,5);
+        }else if(this.type == "CHIP2"){
+            this.rollingCube = cc.LayerColor.create(cc.c4b(255,255,0,this.alpha),5,5);
+        }else{
+            this.rollingCube = cc.LayerColor.create(cc.c4b(0,255,255,this.alpha),5,5);
+        }
         this.addChild(this.rollingCube,999);
         this.cubeAngle   = num * 18;
     },

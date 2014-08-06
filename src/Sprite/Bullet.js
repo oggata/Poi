@@ -40,8 +40,7 @@ var Bullet = cc.Node.extend({
         this.sprite.setOpacity(255*0.8);
         this.sprite.runAction(this.ra);
         this.addChild(this.sprite);
-        this.isEffect    = true;
-        //this.sprite.setPosition(0,30);
+        this.isEffect = true;
         this.sprite.setScale(0.5,0.5);
     },
 

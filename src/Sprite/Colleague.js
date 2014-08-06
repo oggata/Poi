@@ -56,6 +56,7 @@ var Colleague = cc.Node.extend({
         this.beforeY           = this.getPosition().y;
         this.isWait            = false;
         this.bulletLncTime     = getRandNumberFromRange(1,90);
+        this.jumpTime          = 0;
         this.jumpY             = 0;
         this.jumpYDirect       = "up";
         this.waitCnt = 0;
@@ -84,7 +85,6 @@ var Colleague = cc.Node.extend({
             }
         }
     },
-
 
     moveToEscapeZone:function(){
         this.waitCnt++;
@@ -138,7 +138,37 @@ var Colleague = cc.Node.extend({
         }
     },
 
+    setFly:function(){
+        if(this.game.isFly == true){
+            this.jumpY+=3;
+            if(this.jumpY >= this.randId*10 - 10){
+                this.jumpY = this.randId*10 - 10;
+                this.jumpTime++;
+                if(this.jumpTime >= 30 * 0.5){
+                    //this.sprite.setVisible(false);
+                    //this.shadow.setVisible(false);
+                    //this.sprite.setOpacity(255*0.6);
+                    this.setPosition(
+                        this.game.player.getPosition().x + getRandNumberFromRange(1,40) - 20,
+                        this.game.player.getPosition().y + getRandNumberFromRange(1,40) - 20
+                    );
+                }
+            }
+        } else {
+            this.sprite.setOpacity(255*1);
+            this.jumpTime = 0;
+            this.sprite.setVisible(true);
+            this.shadow.setVisible(true);
+            this.jumpY-=3;
+            if(this.jumpY < 0){
+                this.jumpY = 0;
+            }
+        }
+    },
+
     update:function() {
+        this.setFly();
+
         this.sprite.setPosition(0,this.jumpY);
 
         //攻撃タイプが弾丸だった場合は、一定時間毎に弾丸を発射する
@@ -238,7 +268,9 @@ var Colleague = cc.Node.extend({
     },
 
     moveTo:function(player) {
-        this.jumpY=0;
+        //this.jumpY=0;
+
+
         this.jumpYDirect = "up";
         var dX = this.game.player.getPosition().x - this.getPosition().x;
         var dY = this.game.player.getPosition().y - this.getPosition().y;
@@ -255,8 +287,8 @@ var Colleague = cc.Node.extend({
         if(jumpType==1 && this.attackType == "JUMP"){
             if(this.jumpYDirect=="up"){
                 this.jumpY+=5;
-                if(this.jumpY >= this.randId2*5 + 50){
-                    this.jumpY = this.randId2*5 + 50;
+                if(this.jumpY >= this.randId2*5 + 20){
+                    this.jumpY = this.randId2*5 + 20;
                     this.jumpYDirect="down";
                 }
             }else if(this.jumpYDirect=="down"){

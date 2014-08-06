@@ -81,6 +81,7 @@ var s_chara002           = base_dir + "sprite/chara002.png";
 var s_chara003           = base_dir + "sprite/chara003.png";
 var s_chara004           = base_dir + "sprite/chara004.png";
 var s_chara005           = base_dir + "sprite/chara005.png";
+var s_charaBig           = base_dir + "sprite/charaBig.png";
 
 var s_enemy_devil        = base_dir + "sprite/devil_001.png";
 var s_enemy_devil_boss   = base_dir + "sprite/devil_002.png";
@@ -91,6 +92,7 @@ var s_enemy_chameleon_m  = base_dir + "sprite/chameleon_blue_m.png";
 var s_promin_pipo002     = base_dir + "sprite/pipo-mapeffect009.png";
 var s_effect_pipo113     = base_dir + "sprite/pipo-btleffect113.png";
 var s_critical_message   = base_dir + "ui/critical_message.png";
+var s_critical_message2   = base_dir + "ui/critical_message2.png";
 var s_field              = base_dir + "ui/field.jpg";
 var s_chara_make_ui      = base_dir + "ui/chara_make_ui.png";
 var s_fukidashi      = base_dir + "ui/fukidashi.png";
@@ -181,6 +183,7 @@ var g_resources       = [
     s_chara002,
     s_chara003,
     s_chara005,
+    s_charaBig,
     s_attack_rolling,
     s_break,
     s_initSprite,
@@ -190,6 +193,7 @@ var g_resources       = [
     s_mapchip_sakura,
     s_button001_scale9,
     s_critical_message,
+    s_critical_message2,
     s_chip_001,
     s_chip_002,
     s_chip_003,

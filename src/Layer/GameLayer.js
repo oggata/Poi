@@ -110,7 +110,6 @@ var GameLayer = cc.Layer.extend({
 
         this.collCnt=0;
 
-
         //ゲームオーバー or クリア後の背景
         this.back = cc.LayerColor.create(cc.c4b(0,0,0,255),320,480);
         this.back.setPosition(0,0);
@@ -165,6 +164,9 @@ var GameLayer = cc.Layer.extend({
         this.addChild(this.resultButton,CONFIG.UI_DROW_ORDER);
         this.resultButton.setVisible(false);
 
+        this.flyTime = 0;
+        this.isFly   = false;
+
         return true;
     },
 
@@ -215,6 +217,8 @@ var GameLayer = cc.Layer.extend({
         this.timeCnt         = 0;
         this.missionTimeLimit= this.storage.missionTimeLimit;
         this.tapPower        = 0;
+        this.criticalPower   = 0;
+        this.criticalMaxPower=100;
     },
 
     setUI : function(){
@@ -250,6 +254,20 @@ var GameLayer = cc.Layer.extend({
     },
 
     update:function(dt){
+
+        this.criticalPower+=0.35;
+        if(this.criticalPower >= this.criticalMaxPower){
+            this.criticalPower = this.criticalMaxPower;
+        }
+
+        if(this.isFly==true){
+            this.flyTime++;
+            if(this.flyTime>=30*5){
+                this.flyTime = 0;
+                this.isFly   = false;
+            }
+        }
+
 
         if(this.stage.isColored == true){
             this.isDamageShake();
