@@ -55,6 +55,7 @@
             'src/Sprite/Enemy.js',
             'src/Sprite/EnemyBody.js',
             'src/Sprite/Bullet.js',
+            'src/Sprite/Navi.js',
             'src/Sprite/Gauge.js',
             'src/Sprite/Coin.js',
             'src/Sprite/TargetMarker.js',

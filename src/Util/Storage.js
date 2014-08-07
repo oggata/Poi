@@ -43,6 +43,7 @@ var Storage = cc.Class.extend({
         this.mapImage         = "";
         this.maxX             = 5;
         this.mapY             = 5;
+        this.colleagues    = [];
 
         //stage difficulty
         this.stageNumber      = 1;
@@ -190,11 +191,12 @@ var getStageDataFromJson = function(storage,stageNum) {
     storage.missionNumber    = stageData["id"];
     storage.missionTitle     = stageData["title"];
     storage.missionTimeLimit = stageData["time_limit"];
-    storage.missionGenre     = stageData["genre"];
+    storage.missionGenre     = stageData["genre"];          //1.INCREASE 2.KILLENEMY 3.OCCUPY 
     storage.missionMaxCnt    = stageData["mission_count"];
     storage.mapImage         = stageData["map"]["image"];
     storage.maxX             = stageData["map"]["x"];
     storage.mapY             = stageData["map"]["y"];
+    storage.colleagues       = stageData["colleagues"];
 
     //stage difficult
     storage.stageNumber      = stageData["id"];

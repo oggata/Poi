@@ -221,6 +221,13 @@ var collisionPlayerAndEnemy = function(player,enemies,game){
                     if(colleagueCnt > 3){colleagueCnt = 3;}
                     var damage = colleagueCnt * player.attack;
                     enemies[i].damage(player.attack + damage);
+
+
+        game.criticalPower+=30;
+        if(game.criticalPower >= game.criticalMaxPower){
+            game.criticalPower = game.criticalMaxPower;
+        }
+
                 }
             }
         }

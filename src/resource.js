@@ -112,6 +112,8 @@ var s_convert_success    = base_dir + "ui/convert_success.png";
 var s_top   = base_dir + "ui/top.png";
 var s_woman = "ui/st-woman2-suit01.png";
 
+var s_navi_girl = "ui/navi_girl.png";
+
 //bgm
 var s_bgm_001            = base_dir + "res/sound/bgm/bgm_maoudamashii_cyber09.mp3";
 var s_bgm_002            = base_dir + "res/sound/bgm/bgm_maoudamashii_piano07.mp3";
@@ -215,6 +217,7 @@ var g_resources       = [
     s_hinageshi,
     s_fukidashi,
     s_woman,
+    s_navi_girl,
     s_crown,
     s_crown2,
     s_crown3

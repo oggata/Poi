@@ -137,9 +137,6 @@ var StoryLayer = cc.Layer.extend({
         cc.LoaderScene.preload(g_chara_select_resources, function () {
             var scene = cc.Scene.create();
             scene.addChild(CharaSelectLayer.create(this.storage));
-
-
-
             //scene.addChild(ResultLayer.create(this.storage));
             //scene.addChild(StoryLayer.create());      
             cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));

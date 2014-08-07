@@ -176,8 +176,11 @@ var QuestLayer = cc.Layer.extend({
             this.storage = getStageDataFromJson(this.storage,stageNum);
 
             //scene.addChild(CharaSelectLayer.create(this.storage));
+            //scene.addChild(StoryLayer.create(this.storage));
 
-            scene.addChild(StoryLayer.create(this.storage));
+            //選択したキャラクターから、プレイヤーパラメータを取得する
+            storage = getCharactorDataFromJson(this.storage,1);
+            scene.addChild(GameLayer.create(this.storage));
 
 
             cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
@@ -200,7 +203,8 @@ var QuestLayer = cc.Layer.extend({
                 this.storage = getStageDataFromJson(this.storage,this.storage.maxStageNumber);
 
                 //scene.addChild(CharaSelectLayer.create(this.storage));
-                scene.addChild(StoryLayer.create(this.storage));
+                //scene.addChild(StoryLayer.create(this.storage));
+                scene.addChild(GameLayer.create(this.storage));
 
                 cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
             }, this);

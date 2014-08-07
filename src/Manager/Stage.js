@@ -13,6 +13,7 @@ var Stage = cc.Class.extend({
         this.storage          = this.game.storage;
         this.chips            = [];
         this.trees            = [];
+        this.isMissionAchieved= false;
         this.isColored        = false;
         this.isEscaped        = false;
         this.isGameOver       = false;
@@ -128,6 +129,10 @@ var Stage = cc.Class.extend({
     },
 
     update:function(){
+
+
+
+        //エスケープゾーンに逃げ込んだ時の処理
         if(
             this.escape.getPosition().x - 50 <= this.game.player.getPosition().x &&
             this.game.player.getPosition().x <= this.escape.getPosition().x + 50 &&
@@ -139,9 +144,32 @@ var Stage = cc.Class.extend({
             }
         }
 
-        //世界が色づく
-        var cnt = this.getTerritoryCnt();
-        if(cnt >= this.clearTargetCnt){
+
+
+
+
+        if(storage.missionGenre == "INCREASE"){
+            if(this.game.colleagueCnt >= storage.missionMaxCnt){
+                this.isMissionAchieved = true;
+            }
+        }
+
+        if(storage.missionGenre == "KILLENEMY"){
+            if(this.game.killedEnemyCnt >= storage.missionMaxCnt){
+                this.isMissionAchieved = true;
+            }
+        }
+
+        if(storage.missionGenre == "OCCUPY"){
+            var cnt = this.getTerritoryCnt();
+            if(cnt >= storage.missionMaxCnt){
+                this.isMissionAchieved = true;
+            }
+        }
+
+
+
+        if(this.isMissionAchieved == true){
             //敵が増殖
             if(this.isColored == false){
                 this.isColored = true;

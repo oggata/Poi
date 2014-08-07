@@ -14,6 +14,8 @@ var Tower = cc.Node.extend({
         this.posX     = posX;
         this.posY     = posY;
         this.type     = type;
+        //this.setPosition(posX,posY);
+
         if(this.type==1){
             this.tree     = cc.Sprite.create(s_hinageshi);
             this.tree.setPosition(0,50);

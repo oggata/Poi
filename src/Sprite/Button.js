@@ -17,7 +17,7 @@ var ButtonItem = cc.Node.extend({
 		this.back.setContentSize(w,h);
 
         // new game
-        this.label = cc.LabelTTF.create(title,"Arial",18);
+        this.label = cc.LabelTTF.create(title,"Arial",14);
         this.label.setFontFillColor(cc.c4b(255,255,255,255));
         //this.label.enableStroke(cc.c4b(0,0,0,255),2,true);
         this.button = cc.MenuItemLabel.create(
