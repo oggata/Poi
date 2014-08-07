@@ -21,10 +21,17 @@ var collisionPlayerAndChip = function(game){
             //このチップと仲間全員との距離を測る
             var cnt =  game.colleagueCnt;
             if(cnt >= 5){cnt = 5;}
+
+            if(game.player.targetType == "CHIP"){
+                game.stage.chips[i].hp -= 0.05;
+                game.stage.chips[i].colleagueCnt = cnt;
+            }
+
             if(game.player.targetType == "CHIP" && game.tapPower > 50){
                 game.stage.chips[i].hp -= 0.1 + cnt * 0.02;
                 game.stage.chips[i].colleagueCnt = cnt;
             }
+
         }else{
             if(game.stage.chips[i].isOccupied == false){
                 game.stage.chips[i].hp = game.stage.chips[i].maxHp;

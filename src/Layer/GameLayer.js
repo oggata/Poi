@@ -516,8 +516,6 @@ var GameLayer = cc.Layer.extend({
             this.missionCnt = 0;
         }
 */
-
-
     },
 
     addEnemyBullet:function(enemy){

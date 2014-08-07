@@ -157,7 +157,7 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 4 && this.naviCode < 12){
+        if(this.game.storage.missionNumber == 5 && this.naviCode < 12){
             this.naviCode = 12;
             this.naviTxt = 
             "今回は卒業検定(1/2)よ。" + "\n" + 
