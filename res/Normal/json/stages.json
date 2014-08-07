@@ -76,7 +76,7 @@
             "mission_count"  : 3,
             "map"            : {"image":"sprite/ghost.png","w":32,"h":48,"x":5,"y":5},
             "reward"         : {"coin":100,"exp":100},
-            "colleagues"     : [{"colleagueId":1,"count":15},{"colleagueId":2,"count":15}],
+            "colleagues"     : [{"colleagueId":2,"count":30}],
             "item_coin"      : 0,
             "items"          : [{"type":"levelup","count":0}],
             "datas"          : [
@@ -133,7 +133,8 @@
                 {"id":27,"type":"tree"    ,"img":"map/q_map_tree.png"  ,"hp":20  ,"maxHp":20  ,"depTime":0  ,"depMaxTime":0  ,"reproduction":false ,"destroy":false  ,"enemyId":0, "route":[]}
             ],
             "enemies" : [
-
+                {"enemyId":1,"route":[23,17,18,25,29]},
+                {"enemyId":1,"route":[31,26,20,21,28]}
             ],
             "cleard_enemies" : [
                 {"enemyId":2,"route":[20]},
@@ -145,7 +146,7 @@
         },
         { 
             "id"             : 6, 
-            "title"          : "002.卒業検定 2/2",
+            "title"          : "--デバッグ用---",
             "detail"         : "",
             "time_limit"     : 2700,
             "genre"          : "OCCUPY",
