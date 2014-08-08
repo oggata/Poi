@@ -71,7 +71,7 @@ var SysMenu = cc.Layer.extend({
         this.infoTextPosX = 320;
         this.infoTextPosY = 60;
 
-        rtn = "全6ステージの体験版(ver1.01)です。データはブラウザに保存されます。SCORE---->";
+        rtn = "全6ステージの体験版(ver1.01)です。SCORE---->";
         rtn += '到達したステージ:' + this.storage.maxStageNumber + ' ';
         rtn += '合計スコア × ' + this.storage.totalGameScore + ' ';
         rtn += '占領した土地 × ' + this.storage.totalOccupiedCnt + ' ';

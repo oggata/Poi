@@ -131,6 +131,11 @@ var Enemy = cc.Node.extend({
     },
 
     move:function(){
+        var distance = cc.pDistance(
+            this.game.player.getPosition(),
+            this.getPosition()
+        );
+
         if(distance <= this.eyeSight){
             var dX = this.game.player.getPosition().x - this.getPosition().x;
             var dY = this.game.player.getPosition().y - this.getPosition().y;
@@ -240,12 +245,7 @@ var Enemy = cc.Node.extend({
                 this.sprite.setOpacity(255*1);
             }
         }
-/*
-        var distance = cc.pDistance(
-            this.game.player.getPosition(),
-            this.getPosition()
-        );
-*/
+
         if(this.damagedStopCnt==0){
             this.move();
         }
@@ -317,13 +317,12 @@ var Enemy = cc.Node.extend({
         if(this.hp < 0){
             this.hp = 0;
         }
-        
+        /*
         this.damageText = new DamageText();
         this.damageText.setScale(0.2);
         this.addChild(this.damageText,5);
-
         this.damangeTexts.push(this.damageText);
-
+        */
         this.isDamageOn = true;
     },
 

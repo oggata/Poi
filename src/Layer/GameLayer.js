@@ -391,7 +391,11 @@ var GameLayer = cc.Layer.extend({
 
         //Playerの死亡時には生き残っている仲間がいれはスイッチする
         if(this.player.hp <= 0){
-            if(this.colleagues.length == 0 && this.isMovedResult == false){
+
+            if(this.stage.isMissionAchieved == true && this.isMovedResult == false){
+                this.isMovedResult = true;
+                this.goGameOverLayer();
+            }else if(this.colleagues.length == 0 && this.isMovedResult == false){
                 this.isMovedResult = true;
                 this.goGameOverLayer();
             }else{

@@ -35,7 +35,7 @@ var Chip = cc.Node.extend({
         this.enemyDepMaxTime = 0;
         this.reproduction    = false;
         this.destroy         = false;
-        this.chipSprite      = cc.Sprite.create(s_mapchip_001);
+        this.chipSprite      = cc.Sprite.create(s_initSprite);
 
         //マップチップの作成(confに設定されている場合)
         for(var i=0;i<storage.stageDatas.length;i++){

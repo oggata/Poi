@@ -103,9 +103,9 @@ var QuestLayer = cc.Layer.extend({
 
         //score
         this.infoTextPosX = 320;
-        this.infoTextPosY = 450;
+        this.infoTextPosY = 70;
 
-        rtn = "全6ステージの体験版(ver1.01)です。データはブラウザに保存されます。SCORE---->";
+        rtn = "全5ステージの体験版(ver1.01)です。SCORE---->";
         rtn += '到達したステージ:' + this.storage.maxStageNumber + ' ';
         rtn += '合計スコア × ' + this.storage.totalGameScore + ' ';
         rtn += '占領した土地 × ' + this.storage.totalOccupiedCnt + ' ';
@@ -152,24 +152,10 @@ var QuestLayer = cc.Layer.extend({
         }
     },
 
-    onNewGame:function (pSender) {
-        playSystemButton();
-
-        cc.LoaderScene.preload(g_chara_select_resources, function () {
-            var scene = cc.Scene.create();
-
-            //ステージ情報（難易度）を取得する
-            this.storage = getStageDataFromJson(this.storage,1);
-
-            scene.addChild(CharaSelectLayer.create(this.storage));
-            cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
-        }, this);
-    },
-
     onStageGame:function (stageNum) {
         playSystemButton();
 
-        cc.LoaderScene.preload(g_chara_select_resources, function () {
+        cc.LoaderScene.preload(g_resources, function () {
             var scene = cc.Scene.create();
 
             //ステージ情報（難易度）を取得する
@@ -182,72 +168,26 @@ var QuestLayer = cc.Layer.extend({
             storage = getCharactorDataFromJson(this.storage,1);
             scene.addChild(GameLayer.create(this.storage));
 
-
-            cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
-        }, this);
-    },
-
-    onLoadGame:function (pSender) {
-        playSystemButton();
-
-        if(this.storage.maxStageNumber >= CONFIG.MAX_STAGE_NUMBER){
-            //全クリア
-            var scene = cc.Scene.create();
-            scene.addChild(StaffRollLayer.create(this.storage));
-            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
-        }else{
-            cc.LoaderScene.preload(g_chara_select_resources, function () {
-                var scene = cc.Scene.create();
-
-                //ステージ情報（難易度）を取得する
-                this.storage = getStageDataFromJson(this.storage,this.storage.maxStageNumber);
-
-                //scene.addChild(CharaSelectLayer.create(this.storage));
-                //scene.addChild(StoryLayer.create(this.storage));
-                scene.addChild(GameLayer.create(this.storage));
-
-                cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
-            }, this);
-        }
-    },
-
-    onTutorial:function (pSender) {
-        playSystemButton();
-
-        cc.LoaderScene.preload(g_chara_select_resources, function () {
-            var scene = cc.Scene.create();
-            scene.addChild(TutolialLayer.create());
             cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
         }, this);
     },
 
     onDebugMode:function (pSender) {
-
         this.storage.resetJson();
-        //var jsonFile = {"saveData":false};
-        //localStorage.setItem("gameStorage",JSON.stringify(jsonFile));
         localStorage.removeItem("gameStorage");
-
         playSystemButton();
 
         cc.LoaderScene.preload(g_resources, function () {
-
-            //ゲーム情報を記録するstorageをnewする
-            var storage = new Storage();
-
-            //プレイヤーパラメータを取得する
-            storage = getCharactorDataFromJson(storage,0);
-
-            //ステージ情報を取得する
-            storage = getStageDataFromJson(storage,CONFIG.DEBUG_STAGE_NUM);
-
-            //storage.coinAmount = 50;
-
             var scene = cc.Scene.create();
-            scene.addChild(GameLayer.create(storage));
-            //scene.addChild(StaffRollLayer.create(storage));
 
-            cc.Director.getInstance().replaceScene(cc.TransitionSlideInR.create(1.2, scene));
+            //ステージ情報（難易度）を取得する
+            this.storage = getStageDataFromJson(this.storage,1);
+
+            //選択したキャラクターから、プレイヤーパラメータを取得する
+            storage = getCharactorDataFromJson(this.storage,1);
+            scene.addChild(GameLayer.create(this.storage));
+
+            cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
         }, this);
     },
 });

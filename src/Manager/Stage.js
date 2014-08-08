@@ -130,8 +130,6 @@ var Stage = cc.Class.extend({
 
     update:function(){
 
-
-
         //エスケープゾーンに逃げ込んだ時の処理
         if(
             this.escape.getPosition().x - 50 <= this.game.player.getPosition().x &&
@@ -144,39 +142,34 @@ var Stage = cc.Class.extend({
             }
         }
 
-
-
-
-
+        //ミッションの種類によってクリア条件を変更する
         if(storage.missionGenre == "INCREASE"){
             if(this.game.colleagueCnt >= storage.missionMaxCnt){
                 this.isMissionAchieved = true;
             }
         }
-
         if(storage.missionGenre == "KILLENEMY"){
             if(this.game.killedEnemyCnt >= storage.missionMaxCnt){
                 this.isMissionAchieved = true;
             }
         }
-
         if(storage.missionGenre == "OCCUPY"){
             var cnt = this.getTerritoryCnt();
             if(cnt >= storage.missionMaxCnt){
                 this.isMissionAchieved = true;
             }
         }
-
-
-
         if(this.isMissionAchieved == true){
             //敵が増殖
             if(this.isColored == false){
                 this.isColored = true;
 
-                //Enemies 死亡時の処理、Zソート
+                for(var i=0;i<this.game.storage.clearedEnemies.length;i++){
+                    var enemyData = this.game.storage.clearedEnemies[i];
+                    this.game.addEnemyByPos(enemyData["enemyId"],enemyData["route"]);
+                }
                 for(var i=0;i<this.game.enemies.length;i++){
-                    this.game.enemies[i].eyeSight = 500;
+                    this.game.enemies[i].eyeSight = 1000;
                     this.game.enemies[i].walkSpeed = 2;
                 }
 

@@ -78,22 +78,19 @@ var GameUI = cc.Node.extend({
         this.uiHeader.addChild(this.headerMenu,33);
         this.headerMenu.setPosition(0,0);
 
-        this.criticalMessage = cc.Sprite.create(s_critical_message2);
-        this.criticalMessage.setPosition(
-            this.game.player.getPosition().x,
-            this.game.player.getPosition().y
+        //ホームボタン
+        this.criticalButton = cc.MenuItemImage.create(
+            s_critical_message2,
+            s_critical_message2,
+            this.onCritical,
+            this
         );
-        this.criticalMessage.setAnchorPoint(0.5,0);
-        this.game.mapNode.addChild(this.criticalMessage,99999999);
-
-        this.criticalButton = new ButtonItem("★",50,50,this.onCritical,this);
-        this.criticalButton.setPosition(
-            this.game.player.getPosition().x,
-            this.game.player.getPosition().y
+        //set header
+        this.menu = cc.Menu.create(
+            this.criticalButton
         );
-        this.criticalButton.setPosition(0,0);
-        this.criticalButton.setAnchorPoint(0.5,0.5);
-        this.game.mapNode.addChild(this.criticalButton,99999999);
+        this.game.mapNode.addChild(this.menu,999999999);
+        this.menu.setPosition(0,0);
 
         this.rectBarL = cc.LayerColor.create(cc.c4b(0,255,0,255),320,10);
         this.rectBarL.setPosition(0,10);
@@ -110,18 +107,15 @@ var GameUI = cc.Node.extend({
 
     //UIのテキストをupdateする
     update:function() {
-        if(this.game.criticalPower == this.game.criticalMaxPower){
-            this.criticalMessage.setVisible(true);
-            this.criticalButton.set_visible(true);
-        }else{
-            this.criticalMessage.setVisible(false);
-            this.criticalButton.set_visible(false);
-        }
 
-        this.criticalMessage.setPosition(
-            this.game.player.getPosition().x,
-            this.game.player.getPosition().y
-        );
+
+        if(this.game.criticalPower == this.game.criticalMaxPower 
+            && this.game.stage.isMissionAchieved == false
+            ){
+            this.criticalButton.setVisible(true);
+        }else{
+            this.criticalButton.setVisible(false);
+        }
         this.criticalButton.setPosition(
             this.game.player.getPosition().x,
             this.game.player.getPosition().y + 30
