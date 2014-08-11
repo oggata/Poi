@@ -24,9 +24,9 @@ var Player = cc.Node.extend({
 
         //image
         this.charactorCode     = this.storage.charactorCode;
-        this.image             = this.storage.image;
-        this.imgWidth          = this.storage.imgWidth; 
-        this.imgHeight         = this.storage.imgHeight;
+        this.image             = s_chara007;
+        this.imgWidth          = 60/3; 
+        this.imgHeight         = 112/4;
 
         //init
         this.battleInterval    = 0;
@@ -97,6 +97,9 @@ var Player = cc.Node.extend({
         this.sprite = cc.Sprite.create(this.image,cc.rect(0,0,this.imgWidth,this.imgHeight));
         this.sprite.runAction(this.ra);
         this.addChild(this.sprite);
+
+        this.sprite.setAnchorPoint(0.5,0.25);
+        this.sprite.setScale(1.4,1.4);
 
         /*
         this.shadow2 = cc.Sprite.create(s_shadow);
