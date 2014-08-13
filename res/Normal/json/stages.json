@@ -129,7 +129,7 @@
             "mission_count"  : 2,
             "map"            : {"image":"sprite/ghost.png","w":32,"h":48,"x":5,"y":5},
             "reward"         : {"coin":100,"exp":100},
-            "colleagues"     : [{"colleagueId":1,"count":30}],
+            "colleagues"     : [{"colleagueId":1,"count":0}],
             "item_coin"      : 0,
             "items"          : [{"type":"levelup","count":0}],
             "datas"          : [

@@ -32,7 +32,6 @@ var Player = cc.Node.extend({
         this.battleInterval    = 0;
         this.direction         = "front";
         this.bulletSpeed       = CONFIG.BULLET_SPEED;
-        this.targetType        = "none";
         this.targetEnemy       = null;
         this.targetChip        = null;
         this.initializeWalkAnimation();
@@ -44,23 +43,6 @@ var Player = cc.Node.extend({
     },
 
     update:function() {
-        /*
-        if(this.game.isFly == true){
-            //this.sprite2.setVisible(true);
-            //this.alpha = (this.game.flyTime * 0.01);
-            //if(this.alpha > 1){this.alpha = 1;}
-            //this.sprite2.setOpacity(255 * this.alpha);
-            //this.sprite3.setOpacity(255 * this.alpha);
-            //this.shadow2.setOpacity(255 * this.alpha);
-        }else{
-            this.alpha-=0.1;
-            if(this.alpha<0){
-                this.alpha=0;
-            }
-            this.sprite2.setOpacity(255 * this.alpha);
-            this.sprite3.setOpacity(255 * this.alpha);
-            this.shadow2.setOpacity(255 * this.alpha);
-        }*/
     },
 
     remove:function() {
@@ -100,40 +82,6 @@ var Player = cc.Node.extend({
 
         this.sprite.setAnchorPoint(0.5,0.25);
         this.sprite.setScale(1.4,1.4);
-
-        /*
-        this.shadow2 = cc.Sprite.create(s_shadow);
-        this.shadow2.setPosition(0,-10);
-        this.shadow2.setOpacity(255*0.4);
-        this.shadow2.setScale(5,5);
-        this.addChild(this.shadow2);
-
-        var frameSeq2 = [];
-        for (var i = 0; i < 3; i++) {
-            var frame = cc.SpriteFrame.create(s_charaBig,cc.rect(100*i,141*0,100,141));
-            frameSeq2.push(frame);
-        }
-        this.wa = cc.Animation.create(frameSeq2,0.2);
-        this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
-        this.sprite2 = cc.Sprite.create(this.image,cc.rect(0,0,100,141));
-        this.sprite2.runAction(this.ra);
-        this.sprite2.setAnchorPoint(0.5,0.1);
-        this.sprite2.setScale(1.3,1.3);
-        this.addChild(this.sprite2);
-
-        var frameSeq3 = [];
-        for (var i = 0; i < 10; i++) {
-            var frame = cc.SpriteFrame.create(effect_eye,cc.rect(60*i,60*0,60,60));
-            frameSeq3.push(frame);
-        }
-        this.wa = cc.Animation.create(frameSeq3,0.2);
-        this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
-        this.sprite3 = cc.Sprite.create(effect_eye,cc.rect(0,0,60,60));
-        this.sprite3.runAction(this.ra);
-        this.sprite3.setPosition(0,100);
-        this.sprite3.setScale(2.7,2.7);
-        this.addChild(this.sprite3);
-        */
         
         //デバッグ
         if(CONFIG.DEBUG_FLAG==1){

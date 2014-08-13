@@ -24,6 +24,11 @@ var Enemy = cc.Node.extend({
         //initialize
         this.initializeParam(code);
         this.initSprite();
+
+        //markerSprite
+        this.markerSprite = new TargetMarker();
+        this.addChild(this.markerSprite);
+
         this.update();
     },
 
@@ -71,7 +76,7 @@ var Enemy = cc.Node.extend({
         this.damageCnt         = 0;
         this.isDamageOn        = false;
 
-        this.damagedStopCnt             = 0;
+        this.damagedStopCnt    = 0;
         //弾丸発射用
         this.bulletLncTime     = 0;
         this.bulletLncMaxTime  = 30 * 2;
@@ -147,6 +152,7 @@ var Enemy = cc.Node.extend({
                     this.getPosition().x + speedX,
                     this.getPosition().y + speedY
                 );
+                this.battleAnimation.setVisible(false);
             }
         }else{
             if(this.routes){
@@ -173,6 +179,8 @@ var Enemy = cc.Node.extend({
     },
 
     update:function() {
+        this.markerSprite.update();
+
         if(this.routes){
             var pos = this.game.stage.getChipPosition(this.routes[this.routeId]);
             var margin = 1;
@@ -258,6 +266,20 @@ var Enemy = cc.Node.extend({
             if(this.game.player.targetEnemy == this){
                 this.game.player.targetEnemy = null;
             }
+
+            //全部の仲間のターゲットタイプを変更する
+            for(var i=0;i<this.game.colleagues.length;i++){
+                if(this.game.colleagues[i].targetEnemy == this){
+                    /*
+                    :pattern A
+                    this.game.colleagues[i].targetType = null;
+                    this.game.colleagues[i].targetEnemy = null;
+                    */
+                    //:pattern B
+                    this.game.colleagues[i].hp = 0;
+                }
+            }
+
             return false;
         }
 
@@ -301,6 +323,9 @@ var Enemy = cc.Node.extend({
     },
 
     remove:function() {
+
+        this.game.setCutIn(this);
+
         this.removeChild(this.sprite);
         this.removeChild(this.gauge);
         /*
@@ -324,6 +349,7 @@ var Enemy = cc.Node.extend({
         this.damangeTexts.push(this.damageText);
         */
         this.isDamageOn = true;
+        this.battleAnimation.setVisible(true);
     },
 
     initSprite:function(){
@@ -357,6 +383,24 @@ var Enemy = cc.Node.extend({
             this.sigh.setPosition(0,0);
             this.addChild(this.sigh);
         }
+
+        //バトルエフェクト
+        var frameSeqEffect= [];
+        for (var y = 0; y <= 0; y++) {
+            for (var x = 0; x <= 7; x++) {
+                var frame = cc.SpriteFrame.create(effect_fire,cc.rect(120*x,120*y,120,120));
+                frameSeqEffect.push(frame);
+            }
+        }
+        this.wa = cc.Animation.create(frameSeqEffect,0.1);
+        this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
+        this.battleAnimation = cc.Sprite.create(effect_sander,cc.rect(0,0,120,120));
+        this.battleAnimation.runAction(this.ra);
+        this.battleAnimation.setScale(1.5,1.5);
+        this.battleAnimation.setOpacity(255*0.8);
+        this.battleAnimation.setPosition(0,0);
+        this.addChild(this.battleAnimation,999999999);
+        this.battleAnimation.setVisible(false);
     },
 
     walkLeftDown:function(){

@@ -35,58 +35,25 @@ var GameLayer = cc.Layer.extend({
         this.player.setPosition(800,30);
         this.mapNode.addChild(this.player);
 
-        //targetSprite
-        this.targetSprite = cc.Sprite.create(s_target);
-        this.targetSprite.setPosition(800,30);
-        this.mapNode.addChild(this.targetSprite);
+        //destinationSprite
+        this.destinationSprite = cc.Sprite.create(s_target);
+        this.destinationSprite.setPosition(800,30);
+        this.mapNode.addChild(this.destinationSprite);
 
-        //markerSprite
-        this.markerSprite = new TargetMarker();
-        this.mapNode.addChild(this.markerSprite);
+        //targetedSprite
+        this.targetedSprite = cc.Sprite.create(s_marker);//s_marker
+        this.mapNode.addChild(this.targetedSprite);
+        this.targetedSprite.setVisible(false);
 
         this.shakeY = 0;
-
-        //バトルエフェクト
-        var frameSeqEffect= [];
-        for (var y = 0; y <= 0; y++) {
-            for (var x = 0; x <= 7; x++) {
-                var frame = cc.SpriteFrame.create(effect_fire,cc.rect(120*x,120*y,120,120));
-                frameSeqEffect.push(frame);
-            }
-        }
-        this.wa = cc.Animation.create(frameSeqEffect,0.1);
-        this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
-        this.battleAnimation = cc.Sprite.create(effect_sander,cc.rect(0,0,120,120));
-        this.battleAnimation.runAction(this.ra);
-        this.battleAnimation.setScale(1.5,1.5);
-        this.battleAnimation.setOpacity(255*0.8);
-        this.battleAnimation.setPosition(0,0);
-        this.mapNode.addChild(this.battleAnimation,999999999);
-
-        //占領エフェクト
-        var frameSeqOccupy= [];
-        for (var y = 0; y <= 0; y++) {
-            for (var x = 0; x <= 7; x++) {
-                var frame = cc.SpriteFrame.create(effect_water,cc.rect(120*x,120*y,120,120));
-                frameSeqOccupy.push(frame);
-            }
-        }
-        this.wa = cc.Animation.create(frameSeqOccupy,0.1);
-        this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
-        this.occupyAnimation = cc.Sprite.create(effect_water,cc.rect(0,0,120,120));
-        this.occupyAnimation.runAction(this.ra);
-        this.occupyAnimation.setScale(1.5,1.5);
-        this.occupyAnimation.setOpacity(255*0.8);
-        this.occupyAnimation.setPosition(0,0);
-        this.mapNode.addChild(this.occupyAnimation,999999999);
-
+/*
         //timerSprite
         this.timerSprite = cc.Sprite.create(s_timer,cc.rect(50*0,0,50,50));
         this.timerSprite.setPosition(800,220);
         this.mapNode.addChild(this.timerSprite,9999999);
         this.timerImage = cc.TextureCache.getInstance().addImage(s_timer);
         this.timerSprite.setTexture(this.timerImage);
-
+*/
         //initialize camera
         this.cameraX = 320/2 - this.player.getPosition().x;
         this.cameraY = 420/2 - this.player.getPosition().y;
@@ -98,17 +65,11 @@ var GameLayer = cc.Layer.extend({
         );
         this.setUI();
 
-
         for(var i=0;i<this.storage.colleagues.length;i++){
             var colleagueData = this.storage.colleagues[i];
-            this.addColleagues(colleagueData["count"],colleagueData["colleagueId"]);
+            this.addColleagues(colleagueData["count"],colleagueData["colleagueId"],null);
         }
 
-/*
-        this.addColleagues(30,1);
-        //this.addColleagues(10,2);
-        //this.addColleagues(10,3);
-*/
         this.scheduleUpdate();
         this.setTouchEnabled(true);
 
@@ -150,6 +111,12 @@ var GameLayer = cc.Layer.extend({
         this.addChild(this.txtSpecialItem,CONFIG.UI_DROW_ORDER);
         this.txtSpecialItem.setVisible(false);
 
+        //(ターゲット破壊)の文字
+        this.txtDestroy = cc.Sprite.create(s_text_destroy);
+        this.txtDestroy.setPosition(320/2,480/2);
+        this.addChild(this.txtDestroy,CONFIG.UI_DROW_ORDER);
+        this.txtDestroy.setVisible(false);
+
         //クリア後のアニメーションを作成
         var frameSeq = [];
         for (var y = 0; y <= 10; y++) {
@@ -177,6 +144,25 @@ var GameLayer = cc.Layer.extend({
         this.isFly   = false;
 
         this.isSetNavi = false;
+
+        this.isCutIn = true;
+        this.cutInTime = 0;
+
+
+        //破壊エフェクト
+        var frameSeqEffect= [];
+        for (var y = 0; y < 9; y++) {
+            for (var x = 0; x < 1; x++) {
+                var frame = cc.SpriteFrame.create(effect_destroy,cc.rect(320*x,120*y,320,120));
+                frameSeqEffect.push(frame);
+            }
+        }
+        this.wa = cc.Animation.create(frameSeqEffect,0.2);
+        this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
+        this.destroyAnimation = cc.Sprite.create(effect_destroy,cc.rect(0,0,320,120));
+        this.destroyAnimation.runAction(this.ra);
+        this.destroyAnimation.setScale(1,1.4);
+        this.mapNode.addChild(this.destroyAnimation,999999999);
 
         return true;
     },
@@ -214,7 +200,6 @@ var GameLayer = cc.Layer.extend({
         //仲間の数
         this.colleagueCnt    = 0;
         this.killedEnemyCnt  = 0;
-        
 
         this.mapScale        = 1;
         this.territoryCnt    = 0;
@@ -232,7 +217,7 @@ var GameLayer = cc.Layer.extend({
         this.missionMaxCnt   = this.storage.missionMaxCnt;
         this.timeCnt         = 0;
         this.missionTimeLimit= this.storage.missionTimeLimit;
-        this.tapPower        = 0;
+        //this.tapPower        = 0;
         this.criticalPower   = 0;
         this.criticalMaxPower=100;
 
@@ -243,7 +228,6 @@ var GameLayer = cc.Layer.extend({
         //UI
         this.gameUI = new GameUI(this);
         this.addChild(this.gameUI,999);
-
 /*
         //カットイン
         this.cutIn = new CutIn();
@@ -251,7 +235,6 @@ var GameLayer = cc.Layer.extend({
         this.addChild(this.cutIn,999);
         this.cutIn.set_text("GameStart!");
 */
-
         //背景
         this.rectBase = cc.LayerColor.create(cc.c4b(0,0,0,255 * 0.8),320,480);
         this.rectBase.setPosition(0,0);
@@ -267,24 +250,40 @@ var GameLayer = cc.Layer.extend({
         this.titleLabel.setPosition(320/2,480/2);
         this.addChild(this.titleLabel,CONFIG.UI_DROW_ORDER);
 
-/*
-        //スタートボタン
-        this.startButton = new ButtonItem("START",200,50,this.startGame,this);
-        this.startButton.setPosition(160,130);
-        this.addChild(this.startButton,CONFIG.UI_DROW_ORDER);
-*/
-
         this.navi = new Navi(this);
         this.addChild(this.navi);
     },
 
+    setCutIn:function(target){
+        this.cutInTime = 1;
+        this.cutInTarget = target;
+
+        this.destroyAnimation.setPosition(target.getPosition().x,target.getPosition().y);
+    },
+
     update:function(dt){
 
+        //this.destroyAnimation.setPosition(this.player.getPosition().x,this.player.getPosition().y);
 
+        if(this.cutInTime >= 1){
+            this.cutInTime++;
+            if(this.cutInTime>=30*2){
+                this.cutInTime=0;
+            }
+            this.moveCaera2(this.cutInTarget);
+            this.txtDestroy.setVisible(true);
+
+            this.destroyAnimation.setVisible(true);
+            return;
+        }else{
+            this.txtDestroy.setVisible(false);
+
+            this.destroyAnimation.setVisible(false);
+        }
 
         this.moveCamera();
         this.gameUI.update();
-        this.markerSprite.update();
+        //this.targetedSprite.update();
         this.stage.update();
         //this.cutIn.update();
         this.collisionAll();
@@ -337,56 +336,36 @@ var GameLayer = cc.Layer.extend({
         //ミッションが表示中はupdateは実行しない
         if(this.isMissionVisible == true) return;
 
-        //スクロールのハンドリング
-        this.tapPower-=1;
-        if(this.tapPower>100){
-            this.tapPower=100;
-        }
-        if(this.tapPower<0){
-            this.tapPower=0;
-        }
-
         //プレイヤー
         this.player.update();
         this.mapNode.reorderChild(
             this.player,
             Math.floor(this.mapHeight - this.player.getPosition().y)
         );
-        this.player.setDirection(this.targetSprite);
+        this.player.setDirection(this.destinationSprite);
 
-        this.timerSprite.setVisible(false);
-        if(this.player.targetType == "CHIP"){
-            this.targetSprite.setVisible(false);
-            this.markerSprite.setVisible(true);
-            this.player.moveToTargetMarker(this.player.targetChip);
-            this.markerSprite.setPosition(
+        //this.timerSprite.setVisible(false);
+        if(this.player.targetChip != null){
+
+            this.destinationSprite.setVisible(false);
+            this.targetedSprite.setVisible(true);
+            this.targetedSprite.setPosition(
                 this.player.targetChip.getPosition().x,
                 this.player.targetChip.getPosition().y
             );
-            this.updateTimer();
-            this.battleAnimation.setVisible(false);
-            this.occupyAnimation.setVisible(true);
-            this.occupyAnimation.setPosition(this.markerSprite.getPosition().x,this.markerSprite.getPosition().y);
-        }else if(this.player.targetType == "ENEMY" &&  this.player.targetEnemy != null){
-            this.targetSprite.setVisible(false);
-            this.markerSprite.setVisible(true);
+        }else if(this.player.targetEnemy != null){
+            this.destinationSprite.setVisible(false);
+            this.targetedSprite.setVisible(true);
             if(this.player.targetEnemy){
-                this.markerSprite.setPosition(
+                this.targetedSprite.setPosition(
                     this.player.targetEnemy.getPosition().x,
                     this.player.targetEnemy.getPosition().y
                 );
             }
-            this.player.moveToTargetMarker(this.markerSprite);
-            this.battleAnimation.setVisible(true);
-            this.occupyAnimation.setVisible(false);
-            this.battleAnimation.setPosition(this.markerSprite.getPosition().x,this.markerSprite.getPosition().y);
         }else{
-            this.targetSprite.setVisible(true);
-            this.markerSprite.setVisible(false);
-            this.player.moveToTargetMarker(this.targetSprite);
-
-            this.battleAnimation.setVisible(false);
-            this.occupyAnimation.setVisible(false);
+            this.destinationSprite.setVisible(true);
+            this.targetedSprite.setVisible(false);
+            this.player.moveToTargetMarker(this.destinationSprite);
         }
 
         //Playerの死亡時には生き残っている仲間がいれはスイッチする
@@ -522,6 +501,39 @@ var GameLayer = cc.Layer.extend({
 */
     },
 
+
+setTargetBuilding:function(){
+    //全部の仲間のターゲットタイプを変更する
+    for(var i=0;i<this.colleagues.length;i++){
+        //ターゲティングされていない仲間のみ
+        if(this.colleagues[i].targetBuilding == null && this.colleagues[i].targetEnemy == null){
+            this.colleagues[i].targetBuilding = this.player.targetChip;
+
+
+            //配列の最後に追加する
+            this.colleagues.push(this.colleagues[i]);
+            this.colleagues.splice(i,1);
+            break;
+        }
+    }
+},
+
+setTargetEnemy:function(){
+    //全部の仲間のターゲットタイプを変更する
+    for(var i=0;i<this.colleagues.length;i++){
+        //ターゲティングされていない仲間のみ
+        if(this.colleagues[i].targetBuilding == null && this.colleagues[i].targetEnemy == null){
+            this.colleagues[i].targetEnemy = this.player.targetEnemy;
+
+            //配列の最後に追加する
+            this.colleagues.push(this.colleagues[i]);
+            this.colleagues.splice(i,1);
+            break;
+        }
+    }
+},
+
+
     addEnemyBullet:function(enemy){
         var enemyBullet = new Bullet(enemy,"fire");
         enemyBullet.attack = enemy.attack;
@@ -591,6 +603,51 @@ var GameLayer = cc.Layer.extend({
 
         //プレイヤー & マップチップ
         collisionPlayerAndChip(this);
+
+        //仲間 & マップチップ
+        collisionColleagueAndChip(this);
+
+        collisionCollegueBulletsAndEnemy(this.colleagueBullets,this.enemies);
+    },
+
+
+    moveCaera2:function(target){
+        //カメラ位置はプレイヤーを追いかける
+        this.playerCameraX = target.getPosition().x + this.cameraX;
+        this.playerCameraY = target.getPosition().y + this.cameraY;
+        
+        //xの中心は320/2=16 +- 20
+        if(this.playerCameraX >= 320/2 + 20){
+            this.cameraX -= 20;
+        }
+        if(this.playerCameraX <= 320/2 - 20){
+            this.cameraX += 20;
+        }
+        //yの中心は420/2=210 +- 20
+        if(this.playerCameraY >= 420/2 - 20){
+            this.cameraY -= 20;
+        }
+        if(this.playerCameraY <= 420/2 + 20){
+            this.cameraY += 20;
+        }
+
+        if(this.cameraX < -1000){
+            this.cameraX = -1000;
+        }
+        if(this.cameraX > -160){
+            this.cameraX = -160;
+        }
+        if(this.cameraY < -230){
+            this.cameraY = -230;
+        }
+        if(this.cameraY > 80){
+            this.cameraY = 80;
+        }
+        this.mapNode.setScale(this.mapScale,this.mapScale);
+        this.mapNode.setPosition(
+            this.cameraX,
+            this.cameraY + this.shakeY
+        );
     },
 
     moveCamera:function(){
@@ -640,15 +697,24 @@ var GameLayer = cc.Layer.extend({
         }
     },
 
-    addColleagues:function(num,type){
+    addColleagues:function(num,type,chip){
         for (var i=0 ; i <  num ; i++){
             this.colleague = new Colleague(this,type);
             this.mapNode.addChild(this.colleague,100);
-            var depX = getRandNumberFromRange(this.player.getPosition().x - 50,this.player.getPosition().x + 50);
-            var depY = getRandNumberFromRange(this.player.getPosition().y - 50,this.player.getPosition().y + 50);
+
+            if(chip == null){
+                var depX = getRandNumberFromRange(this.player.getPosition().x - 50,this.player.getPosition().x + 50);
+                var depY = getRandNumberFromRange(this.player.getPosition().y - 50,this.player.getPosition().y + 50);
+            }else{
+                var depX = getRandNumberFromRange(chip.getPosition().x - 5,chip.getPosition().x + 5);
+                var depY = getRandNumberFromRange(chip.getPosition().y - 5,chip.getPosition().y + 5);
+            }
+
             this.colleague.setPosition(depX,depY);
             this.colleague.isChase = true;
             this.colleagues.push(this.colleague);
+
+            this.colleague.jumpY = 100;
         }
     },
 
@@ -657,7 +723,7 @@ var GameLayer = cc.Layer.extend({
         this.mapNode.addChild(this.enemy);
         this.enemies.push(this.enemy);
     },
-
+/*
     updateTimer:function(){
         //タイマーをset
         this.timerSprite.setVisible(true);
@@ -692,35 +758,47 @@ var GameLayer = cc.Layer.extend({
             this.timerSprite.setTextureRect(cc.rect(50*7,0,50,50));
         }
     },
-
+*/
     //デバイス入力----->
     onTouchesBegan:function (touches, event) {
         if(this.isToucheable() == false) return;
         this.touched = touches[0].getLocation();
-        if(this.touched.y <= 80 && this.player.targetType == "ENEMY"
-            || this.touched.y <= 80 && this.player.targetType == "CHIP"){
-            this.tapPower+=10;
+
+        if((this.touched.y <= 80) && (this.player.targetEnemy != null || this.player.targetChip != null)){
+            if(this.player.targetChip != null){
+                if(this.player.targetChip.type == "poi_red"){
+                    this.addColleagues(1,1,this.player.targetChip);
+                }
+                if(this.player.targetChip.type == "poi_blue"){
+                    this.addColleagues(1,2,this.player.targetChip);
+                }
+                if(this.player.targetChip.type == "poi_yellow"){
+                    this.addColleagues(1,3,this.player.targetChip);
+                }
+                if(this.player.targetChip.type == "tree"){
+                    this.setTargetBuilding();
+                }
+            }
+            if(this.player.targetEnemy != null){
+                this.setTargetEnemy();
+            }
         }else{
-            this.player.targetType = "NONE";
             var tPosX = (this.touched.x - this.cameraX) / this.mapScale;
             var tPosY = (this.touched.y - this.cameraY) / this.mapScale;   
-            this.targetSprite.setPosition(tPosX,tPosY);
-
-            this.player.targetType = "NONE";
+            this.destinationSprite.setPosition(tPosX,tPosY);
             this.player.targetEnemy = null;
+            this.player.targetChip  = null;
             for(var i=0;i<this.enemies.length;i++){
-                var distance = cc.pDistance(this.targetSprite.getPosition(),this.enemies[i].getPosition());
+                var distance = cc.pDistance(this.destinationSprite.getPosition(),this.enemies[i].getPosition());
                 if(distance <= 50){
-                    this.player.targetType  = "ENEMY";
                     this.player.targetEnemy = this.enemies[i];
                     return;
                 }
              }
              for(var i=0;i<this.stage.chips.length;i++){
-                var distance = cc.pDistance(this.targetSprite.getPosition(),this.stage.chips[i].getPosition());
+                var distance = cc.pDistance(this.destinationSprite.getPosition(),this.stage.chips[i].getPosition());
                 if(distance <= 50){
                     if(this.stage.chips[i].isOccupieType()==true){
-                        this.player.targetType = "CHIP";
                         this.player.targetChip = this.stage.chips[i];
                     }
                 }
@@ -756,8 +834,6 @@ var GameLayer = cc.Layer.extend({
         //時計回り
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.5,scene));
     },
-
-
 
     goGameOverLayer:function (pSender) {
         //this.back.setOpacity(255*0.7);

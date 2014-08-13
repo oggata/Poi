@@ -9,9 +9,7 @@
 var TargetMarker = cc.Node.extend({
     ctor:function () {
         this._super();
-        this.marker = cc.Sprite.create(s_marker);
-        this.addChild(this.marker);
-
+        
         this.enemyMotionTrack = new Array();
         for (var i=0 ; i < 20 ; i++){
             this.cube = new Cube(i,30,80,"ENEMY");

@@ -37,6 +37,7 @@ var Chip = cc.Node.extend({
         this.destroy         = false;
         this.chipSprite      = cc.Sprite.create(s_initSprite);
 
+        this.markerFlg = 0;
         //マップチップの作成(confに設定されている場合)
         for(var i=0;i<storage.stageDatas.length;i++){
             if(storage.stageDatas[i].id == this.id){
@@ -51,6 +52,28 @@ var Chip = cc.Node.extend({
                 this.destroy         = storage.stageDatas[i].destroy;
                 this.img             = storage.stageDatas[i].img;
                 this.chipSprite      = cc.Sprite.create(this.img);
+
+                //markerSprite
+                this.markerFlg    = 1;
+                this.markerSprite = new TargetMarker();
+                this.addChild(this.markerSprite);
+
+                //占領エフェクト
+                var frameSeqOccupy= [];
+                for (var y = 0; y <= 0; y++) {
+                    for (var x = 0; x <= 7; x++) {
+                        var frame = cc.SpriteFrame.create(effect_water,cc.rect(120*x,120*y,120,120));
+                        frameSeqOccupy.push(frame);
+                    }
+                }
+                this.wa = cc.Animation.create(frameSeqOccupy,0.1);
+                this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
+                this.occupyAnimation = cc.Sprite.create(effect_water,cc.rect(0,0,120,120));
+                this.occupyAnimation.runAction(this.ra);
+                this.occupyAnimation.setScale(3,3);
+                this.occupyAnimation.setOpacity(255*0.8);
+                this.occupyAnimation.setPosition(0,0);
+                this.addChild(this.occupyAnimation);
             }
         }
 
@@ -72,6 +95,9 @@ var Chip = cc.Node.extend({
         //timeNumber
         this.timeLabel = cc.LabelTTF.create("","Arial",35);
         this.addChild(this.timeLabel);
+
+        this.cutInFlg = 0;
+        this.damageCnt = 0;
     },
 
     getCirclePos:function(cubeAngle){
@@ -86,39 +112,27 @@ var Chip = cc.Node.extend({
 
     update:function() {
 
+        if(this.damageCnt >= 1){
+            this.damageCnt++;
+            if(this.damageCnt>=30*1){
+                this.damageCnt = 0;
+            }
+        }
+
+        if(this.markerFlg == 1){
+            this.markerSprite.update();
+            if(this.damageCnt == 0){
+                this.occupyAnimation.setVisible(false);
+            }else{
+                this.occupyAnimation.setVisible(true);
+            }
+        }
+
         //世界が色づいたときの処理
         if(this.colorAlpha >= 1){
             this.chipSprite.setVisible(false);
             this.timeLabel.setVisible(false);
             return;
-        }
-
-        //ポイ生成マスの場合に、仲間を生成する
-        if(this.game.player.targetChip){
-            if(this.game.player.targetType == "CHIP"){
-                if(this.game.player.targetChip.id == this.id){
-                    if(this.type == "poi_red"){
-                        if(this.hp <= 0){
-                            this.game.addColleagues(5,1);
-                        }
-                    }
-                    if(this.type == "poi_blue"){
-                        if(this.hp <= 0){
-                            this.game.addColleagues(5,2);
-                        }
-                    }
-                    if(this.type == "poi_yellow"){
-                        if(this.hp <= 0){
-                            this.game.addColleagues(5,3);
-                        }
-                    }
-                    if(this.type == "twitter"){
-                        if(this.hp <= 0){
-                            this.game.addColleagues(5,2);
-                        }
-                    }
-                }
-            }
         }
 
         //アジトとボスの場合のみ、敵を生成する
@@ -168,9 +182,32 @@ var Chip = cc.Node.extend({
             if(this.hp <= 0) this.hp = this.maxHp;
             if(this.hp >= this.maxHp) this.hp = this.maxHp;
         }else{
-            if(this.hp <= 0)   this.hp = 0;
+            if(this.hp <= 0){
+                this.hp = 0;
+                //ターゲットをnullにする
+                for(var j=0;j<this.game.colleagues.length;j++){
+                    if(this.game.colleagues[j].targetBuilding == this){
+                        if(this.cutInFlg == 0){
+                            this.cutInFlg = 1;
+                            this.game.setCutIn(this);
+                        }
+                        //:pattern A
+                        //this.game.colleagues[j].targetBuilding = null;
+                        //this.game.setCutIn(this);
+                    
+                        //:pattern B
+                        this.game.colleagues[j].hp = 0;
+                    }
+                }
+                //this.game.setCutIn(this);
+            }
             if(this.hp >= this.maxHp) this.hp = this.maxHp;
         }
+    },
+
+    damage:function(damagePoint){
+        this.hp -= damagePoint;
+        this.damageCnt = 1;
     },
 
     isOccupieType:function(){

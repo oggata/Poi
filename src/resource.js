@@ -47,6 +47,7 @@ var s_twitter_button_on  = base_dir + "button/twitterOn.png";
 
 //effect
 var effect_fire          = base_dir + "effect/pipo-btleffect002.png";
+var effect_destroy       = base_dir + "effect/pipo-btleffect012.png";
 var effect_water         = base_dir + "effect/pipo-btleffect006.png";
 var effect_wind          = base_dir + "effect/pipo-btleffect039.png";
 var effect_sander        = base_dir + "effect/pipo-btleffect040.png";
@@ -79,12 +80,16 @@ var s_item_001           = base_dir + "sprite/clockrabbit01-vx.png";
 var s_special_item       = base_dir + "sprite/special_item.png";
 var s_text_stage_clear   = base_dir + "text/stage_clear.png";
 var s_text_game_over     = base_dir + "text/game_over.png";
+var s_text_destroy       = base_dir + "text/destroy.png";
+
+
 var s_cleared_effect     = base_dir + "sprite/kamifubuki64.png";
 var s_scape_zone         = base_dir + "ui/escape_zone.png";
 var s_convert_success    = base_dir + "ui/convert_success.png";
 var s_top                = base_dir + "ui/top.png";
 var s_woman              = base_dir + "ui/st-woman2-suit01.png";
 var s_navi_girl          = base_dir + "ui/navi_girl.png";
+var s_allow              = base_dir + "ui/allow.png";
 
 //bgm
 var s_bgm_001            = base_dir + "res/sound/bgm/bgm_maoudamashii_cyber09.mp3";
@@ -178,6 +183,7 @@ var g_resources       = [
     s_fukidashi,
     s_woman,
     s_navi_girl,
+    s_allow,
     s_crown,
     s_crown2,
     s_crown3,

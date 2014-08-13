@@ -25,11 +25,72 @@ var GameUI = cc.Node.extend({
         this.uiFooter.setAnchorPoint(0,0);
         this.addChild(this.uiFooter);
 
+        this.poiSeq000 = cc.LayerColor.create(cc.c4b(0,0,0,255),10,10);
+        this.poiSeq000.setPosition(90,0);
+        this.poiSeq000.setAnchorPoint(0,0);
+        this.addChild(this.poiSeq000);
+
+        this.poiSeq001 = cc.LayerColor.create(cc.c4b(0,0,0,255),10,10);
+        this.poiSeq001.setPosition(80,0);
+        this.poiSeq001.setAnchorPoint(0,0);
+        this.addChild(this.poiSeq001);
+
+        this.poiSeq002 = cc.LayerColor.create(cc.c4b(0,0,0,255),10,10);
+        this.poiSeq002.setPosition(70,0);
+        this.poiSeq002.setAnchorPoint(0,0);
+        this.addChild(this.poiSeq002);
+
+        this.poiSeq003 = cc.LayerColor.create(cc.c4b(0,0,0,255),10,10);
+        this.poiSeq003.setPosition(60,0);
+        this.poiSeq003.setAnchorPoint(0,0);
+        this.addChild(this.poiSeq003);
+
+        this.poiSeq004 = cc.LayerColor.create(cc.c4b(0,0,0,255),10,10);
+        this.poiSeq004.setPosition(50,0);
+        this.poiSeq004.setAnchorPoint(0,0);
+        this.addChild(this.poiSeq004);
+
+        this.poiSeq005 = cc.LayerColor.create(cc.c4b(0,0,0,255),10,10);
+        this.poiSeq005.setPosition(40,0);
+        this.poiSeq005.setAnchorPoint(0,0);
+        this.addChild(this.poiSeq005);
+
+        this.poiSeq006 = cc.LayerColor.create(cc.c4b(0,0,0,255),10,10);
+        this.poiSeq006.setPosition(30,0);
+        this.poiSeq006.setAnchorPoint(0,0);
+        this.addChild(this.poiSeq006);
+
+        this.poiSeq007 = cc.LayerColor.create(cc.c4b(0,0,0,255),10,10);
+        this.poiSeq007.setPosition(20,0);
+        this.poiSeq007.setAnchorPoint(0,0);
+        this.addChild(this.poiSeq007);
+
+        this.poiSeq008 = cc.LayerColor.create(cc.c4b(0,0,0,255),10,10);
+        this.poiSeq008.setPosition(10,0);
+        this.poiSeq008.setAnchorPoint(0,0);
+        this.addChild(this.poiSeq008);
+
+        this.poiSeq009 = cc.LayerColor.create(cc.c4b(0,0,0,255),10,10);
+        this.poiSeq009.setPosition(0,0);
+        this.poiSeq009.setAnchorPoint(0,0);
+        this.addChild(this.poiSeq009);
+
+        this.poiSeq010 = cc.LayerColor.create(cc.c4b(0,0,0,255),10,10);
+        this.poiSeq010.setPosition(0,0);
+        this.poiSeq010.setAnchorPoint(0,0);
+        this.addChild(this.poiSeq010);
+
         //s_header
         this.imgHeader = cc.Sprite.create(s_header);
         this.imgHeader.setPosition(0,-30);
         this.imgHeader.setAnchorPoint(0,0);
         this.uiHeader.addChild(this.imgHeader);
+
+        //s_allow
+        this.allow = cc.Sprite.create(s_allow);
+        this.allow.setPosition(0,0);
+        this.allow.setAnchorPoint(0,0);
+        this.uiFooter.addChild(this.allow);
 
         //s_footer
         this.imgFooter = cc.Sprite.create(s_input_device);
@@ -91,23 +152,152 @@ var GameUI = cc.Node.extend({
         );
         this.game.mapNode.addChild(this.menu,999999999);
         this.menu.setPosition(0,0);
-
+/*
         this.rectBarL = cc.LayerColor.create(cc.c4b(0,255,0,255),320,10);
         this.rectBarL.setPosition(0,10);
         this.rectBarL.setAnchorPoint(0,0);
         this.rectBarL.setOpacity(255*0.4);
         this.addChild(this.rectBarL);
-
+*/
         this.criticalBar = cc.LayerColor.create(cc.c4b(255,255,255,255),320,10);
         this.criticalBar.setPosition(0,0);
         this.criticalBar.setAnchorPoint(0,0);
         this.criticalBar.setOpacity(255*1.0);
         this.addChild(this.criticalBar);
+
+
+        this.waitCollegues = [];
     },
 
     //UIのテキストをupdateする
     update:function() {
 
+        this.waitCollegues = [];
+        for(var i=0;i<this.game.colleagues.length;i++){
+            if(this.game.colleagues[i].targetEnemy == null && this.game.colleagues[i].targetBuilding == null){
+                this.waitCollegues.push(this.game.colleagues[i]);
+            }
+        }
+
+        if(this.waitCollegues[0]){
+            if(this.waitCollegues[0].type == 1){
+                this.poiSeq000.init(cc.c4b(255,0,0,255),10,10);
+            }else if(this.waitCollegues[0].type == 2){
+                this.poiSeq000.init(cc.c4b(0,0,255,255),10,10);
+            }else if(this.waitCollegues[0].type == 3){
+                this.poiSeq000.init(cc.c4b(255,255,0,255),10,10);
+            }
+        }else{
+            this.poiSeq000.init(cc.c4b(0,0,0,255),10,10)
+        }
+
+        if(this.waitCollegues[1]){
+            if(this.waitCollegues[1].type == 1){
+                this.poiSeq001.init(cc.c4b(255,0,0,255),10,10);
+            }else if(this.waitCollegues[1].type == 2){
+                this.poiSeq001.init(cc.c4b(0,0,255,255),10,10);
+            }else if(this.waitCollegues[1].type == 3){
+                this.poiSeq001.init(cc.c4b(255,255,0,255),10,10);
+            }
+        }else{
+            this.poiSeq001.init(cc.c4b(0,0,0,255),10,10)
+        }
+
+        if(this.waitCollegues[2]){
+            if(this.waitCollegues[2].type == 1){
+                this.poiSeq002.init(cc.c4b(255,0,0,255),10,10);
+            }else if(this.waitCollegues[2].type == 2){
+                this.poiSeq002.init(cc.c4b(0,0,255,255),10,10);
+            }else if(this.waitCollegues[2].type == 3){
+                this.poiSeq002.init(cc.c4b(255,255,0,255),10,10);
+            }
+        }else{
+            this.poiSeq002.init(cc.c4b(0,0,0,255),10,10)
+        }
+
+        if(this.waitCollegues[3]){
+            if(this.waitCollegues[3].type == 1){
+                this.poiSeq003.init(cc.c4b(255,0,0,255),10,10);
+            }else if(this.waitCollegues[3].type == 2){
+                this.poiSeq003.init(cc.c4b(0,0,255,255),10,10);
+            }else if(this.waitCollegues[3].type == 3){
+                this.poiSeq003.init(cc.c4b(255,255,0,255),10,10);
+            }
+        }else{
+            this.poiSeq003.init(cc.c4b(0,0,0,255),10,10)
+        }
+
+        if(this.waitCollegues[4]){
+            if(this.waitCollegues[4].type == 1){
+                this.poiSeq004.init(cc.c4b(255,0,0,255),10,10);
+            }else if(this.waitCollegues[4].type == 2){
+                this.poiSeq004.init(cc.c4b(0,0,255,255),10,10);
+            }else if(this.waitCollegues[4].type == 3){
+                this.poiSeq004.init(cc.c4b(255,255,0,255),10,10);
+            }
+        }else{
+            this.poiSeq004.init(cc.c4b(0,0,0,255),10,10)
+        }
+
+        if(this.waitCollegues[5]){
+            if(this.waitCollegues[5].type == 1){
+                this.poiSeq005.init(cc.c4b(255,0,0,255),10,10);
+            }else if(this.waitCollegues[5].type == 2){
+                this.poiSeq005.init(cc.c4b(0,0,255,255),10,10);
+            }else if(this.waitCollegues[5].type == 3){
+                this.poiSeq005.init(cc.c4b(255,255,0,255),10,10);
+            }
+        }else{
+            this.poiSeq005.init(cc.c4b(0,0,0,255),10,10)
+        }
+
+        if(this.waitCollegues[6]){
+            if(this.waitCollegues[6].type == 1){
+                this.poiSeq006.init(cc.c4b(255,0,0,255),10,10);
+            }else if(this.waitCollegues[6].type == 2){
+                this.poiSeq006.init(cc.c4b(0,0,255,255),10,10);
+            }else if(this.waitCollegues[6].type == 3){
+                this.poiSeq006.init(cc.c4b(255,255,0,255),10,10);
+            }
+        }else{
+            this.poiSeq006.init(cc.c4b(0,0,0,255),10,10)
+        }
+
+        if(this.waitCollegues[7]){
+            if(this.waitCollegues[7].type == 1){
+                this.poiSeq007.init(cc.c4b(255,0,0,255),10,10);
+            }else if(this.waitCollegues[7].type == 2){
+                this.poiSeq007.init(cc.c4b(0,0,255,255),10,10);
+            }else if(this.waitCollegues[7].type == 3){
+                this.poiSeq007.init(cc.c4b(255,255,0,255),10,10);
+            }
+        }else{
+            this.poiSeq007.init(cc.c4b(0,0,0,255),10,10)
+        }
+
+        if(this.waitCollegues[8]){
+            if(this.waitCollegues[8].type == 1){
+                this.poiSeq008.init(cc.c4b(255,0,0,255),10,10);
+            }else if(this.waitCollegues[8].type == 2){
+                this.poiSeq008.init(cc.c4b(0,0,255,255),10,10);
+            }else if(this.waitCollegues[8].type == 3){
+                this.poiSeq008.init(cc.c4b(255,255,0,255),10,10);
+            }
+        }else{
+            this.poiSeq008.init(cc.c4b(0,0,0,255),10,10)
+        }
+
+        if(this.waitCollegues[9]){
+            if(this.waitCollegues[9].type == 1){
+                this.poiSeq009.init(cc.c4b(255,0,0,255),10,10);
+            }else if(this.waitCollegues[9].type == 2){
+                this.poiSeq009.init(cc.c4b(0,0,255,255),10,10);
+            }else if(this.waitCollegues[9].type == 3){
+                this.poiSeq009.init(cc.c4b(255,255,0,255),10,10);
+            }
+        }else{
+            this.poiSeq009.init(cc.c4b(0,0,0,255),10,10)
+        }
 
         if(this.game.criticalPower == this.game.criticalMaxPower 
             && this.game.stage.isMissionAchieved == false
@@ -124,12 +314,10 @@ var GameUI = cc.Node.extend({
         var criticalRate = this.game.criticalPower / this.game.criticalMaxPower;
         this.criticalBar.setScale(criticalRate,1);
 
-        var rate = this.game.tapPower / 100;
-        this.rectBarL.setScale(rate,1);
-        if(this.game.player.targetType == "ENEMY"){
+        if(this.game.player.targetEnemy != null){
             this.imgFooter.setVisible(true);
             this.imgFooter2.setVisible(false);
-        }else if(this.game.player.targetType == "CHIP"){
+        }else if(this.game.player.targetChip != null){
             this.imgFooter.setVisible(false);
             this.imgFooter2.setVisible(true);
         }else{
