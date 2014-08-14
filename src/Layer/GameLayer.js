@@ -449,8 +449,8 @@ var GameLayer = cc.Layer.extend({
             for(var i=0;i<10;i++){
                 this.colleagues[i].activeMaxCnt = 1;
             }
-            for(var i=10;i<this.colleagueCnt.length;i++){
-                this.colleagues[i].activeMaxCnt = 2;
+            for(var i=20;i<this.colleagueCnt.length;i++){
+                this.colleagues[i].activeMaxCnt = 3;
             }
         }
         //30~100人の場合
@@ -459,13 +459,13 @@ var GameLayer = cc.Layer.extend({
                 this.colleagues[i].activeMaxCnt = 1;
             }
             for(var i=10;i<20;i++){
-                this.colleagues[i].activeMaxCnt = 2;
-            }
-            for(var i=20;i<30;i++){
                 this.colleagues[i].activeMaxCnt = 3;
             }
+            for(var i=20;i<30;i++){
+                this.colleagues[i].activeMaxCnt = 5;
+            }
             for(var i=30;i<this.colleagueCnt.length;i++){
-                this.colleagues[i].activeMaxCnt = 4;
+                this.colleagues[i].activeMaxCnt = 7;
             }
         }
 
