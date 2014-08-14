@@ -57,7 +57,7 @@ var ResultLayer = cc.Layer.extend({
             this.itemInfoText.setVisible(false);
 
             //受け取りボタン
-            this.getItemButton = new ButtonItem("-次へ-",200,40,this.onGotItem,this);
+            this.getItemButton = new ButtonSprite("-次へ-",200,40,this.onGotItem,this);
             this.getItemButton.setPosition(320/2,80);
             this.addChild(this.getItemButton,CONFIG.UI_DROW_ORDER);
             this.addChild(this.getItemButton);

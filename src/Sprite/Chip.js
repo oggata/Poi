@@ -55,7 +55,7 @@ var Chip = cc.Node.extend({
 
                 //markerSprite
                 this.markerFlg    = 1;
-                this.markerSprite = new TargetMarker();
+                this.markerSprite = new TargetMarker("BUILDING");
                 this.addChild(this.markerSprite);
 
                 //占領エフェクト

@@ -88,13 +88,13 @@ var GameLayer = cc.Layer.extend({
         this.back.setOpacity(0);
 
         //(ゲームオーバー時)retryボタン
-        this.retryButton = new ButtonItem("リトライ",200,50,this.onRetryGame,this);
+        this.retryButton = new ButtonSprite("リトライ",200,50,this.onRetryGame,this);
         this.retryButton.setPosition(160,120);
         this.addChild(this.retryButton,CONFIG.UI_DROW_ORDER);
         this.retryButton.setVisible(false);
 
         //(ゲームオーバー時)nextボタン
-        this.changeButton = new ButtonItem("キャラ選択",200,50,this.onRetryGame,this);
+        this.changeButton = new ButtonSprite("キャラ選択",200,50,this.onRetryGame,this);
         this.changeButton.setPosition(160,60);
         this.addChild(this.changeButton,CONFIG.UI_DROW_ORDER);
         this.changeButton.setVisible(false);
@@ -135,7 +135,7 @@ var GameLayer = cc.Layer.extend({
         this.clearedEffectAnimation.setVisible(false);
 
         //クリア後に表示する結果画面ボタン
-        this.resultButton = new ButtonItem("-結果画面へ-",200,40,this.goResultLayer,this);
+        this.resultButton = new ButtonSprite("-結果画面へ-",200,40,this.goResultLayer,this);
         this.resultButton.setPosition(320/2,80);
         this.addChild(this.resultButton,CONFIG.UI_DROW_ORDER);
         this.resultButton.setVisible(false);
@@ -262,7 +262,7 @@ var GameLayer = cc.Layer.extend({
     },
 
     update:function(dt){
-
+//activeMaxCnt
         //this.destroyAnimation.setPosition(this.player.getPosition().x,this.player.getPosition().y);
 
         if(this.cutInTime >= 1){
@@ -434,6 +434,38 @@ var GameLayer = cc.Layer.extend({
                     this.colleagues[i],
                     Math.floor(this.mapHeight - this.colleagues[i].getPosition().y)
                 ); 
+            }
+        }
+
+        
+        //0~10人以下の場合は、全部のpoiの描画速度=1/1
+        if(0 <= this.colleagueCnt && this.colleagueCnt <= 10){
+            for(var i=0;i<this.colleagues.length;i++){
+                this.colleagues[i].activeMaxCnt = 1;
+            }
+        }
+        //10~30人以下の場合 10人=1/1 10人以上 1/2
+        if(10 <= this.colleagueCnt && this.colleagueCnt <= 30){
+            for(var i=0;i<10;i++){
+                this.colleagues[i].activeMaxCnt = 1;
+            }
+            for(var i=10;i<this.colleagueCnt.length;i++){
+                this.colleagues[i].activeMaxCnt = 2;
+            }
+        }
+        //30~100人の場合
+        if(30 <= this.colleagueCnt){
+            for(var i=0;i<10;i++){
+                this.colleagues[i].activeMaxCnt = 1;
+            }
+            for(var i=10;i<20;i++){
+                this.colleagues[i].activeMaxCnt = 2;
+            }
+            for(var i=20;i<30;i++){
+                this.colleagues[i].activeMaxCnt = 3;
+            }
+            for(var i=30;i<this.colleagueCnt.length;i++){
+                this.colleagues[i].activeMaxCnt = 4;
             }
         }
 
@@ -699,8 +731,6 @@ setTargetEnemy:function(){
 
     addColleagues:function(num,type,chip){
         for (var i=0 ; i <  num ; i++){
-            this.colleague = new Colleague(this,type);
-            this.mapNode.addChild(this.colleague,100);
 
             if(chip == null){
                 var depX = getRandNumberFromRange(this.player.getPosition().x - 50,this.player.getPosition().x + 50);
@@ -710,7 +740,12 @@ setTargetEnemy:function(){
                 var depY = getRandNumberFromRange(chip.getPosition().y - 5,chip.getPosition().y + 5);
             }
 
-            this.colleague.setPosition(depX,depY);
+            this.colleague = new Colleague(this,type,depX,depY);
+            this.mapNode.addChild(this.colleague,100);
+
+
+
+            //this.colleague.setPosition(depX,depY);
             this.colleague.isChase = true;
             this.colleagues.push(this.colleague);
 

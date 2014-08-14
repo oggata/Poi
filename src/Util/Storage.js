@@ -56,7 +56,6 @@ var Storage = cc.Class.extend({
         this.maxHp            = 0;
         this.attack           = 0;
         this.defence          = 0;
-        this.eyeSightRange    = 0;
         this.walkSpeed        = 0;
         this.createCot        = 0;
 
@@ -148,7 +147,6 @@ var getCharactorDataFromJson = function(storage,charactorCode){
     storage.maxHp            = charactorData["hp"];
     storage.attack           = charactorData["attack"];
     storage.defence          = charactorData["defence"];
-    storage.eyeSightRange    = charactorData["eye_sight"];
     storage.walkSpeed        = charactorData["walk_speed"];
     storage.createCot        = 1;
 

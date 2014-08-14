@@ -26,7 +26,7 @@ var Enemy = cc.Node.extend({
         this.initSprite();
 
         //markerSprite
-        this.markerSprite = new TargetMarker();
+        this.markerSprite = new TargetMarker("ENEMY");
         this.addChild(this.markerSprite);
 
         this.update();

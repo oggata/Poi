@@ -120,29 +120,36 @@ var collisionColleagueAndColleague = function(colleagues){
                     if(distance < CONFIG.COLLEAGUE_AND_COLLEAGUE_KNOCK_BAKC_RANGE){
                         var diffX = colleagueTwo.getPosition().x - colleagueOne.getPosition().x;
                         var diffY = colleagueTwo.getPosition().y - colleagueOne.getPosition().y;
-                        if(diffX > 0){
-                            colleagueTwo.setPosition(
-                                colleagueTwo.getPosition().x + colleagueTwo.walkSpeed,
-                                colleagueTwo.getPosition().y
-                            );
-                        }
-                        if(diffX < 0){
-                            colleagueTwo.setPosition(
-                                colleagueTwo.getPosition().x - colleagueTwo.walkSpeed,
-                                colleagueTwo.getPosition().y
-                            );
-                        }
-                        if(diffY > 0){
-                            colleagueTwo.setPosition(
-                                colleagueTwo.getPosition().x,
-                                colleagueTwo.getPosition().y + colleagueTwo.walkSpeed
-                            );
-                        }
-                        if(diffY < 0){
-                            colleagueTwo.setPosition(
-                                colleagueTwo.getPosition().x,
-                                colleagueTwo.getPosition().y - colleagueTwo.walkSpeed
-                            );
+                        if(CONFIG.SET_POSITION_TYPE==1){
+                            if(diffX > 0){
+                                colleagueTwo.setPosition(
+                                    colleagueTwo.getPosition().x + colleagueTwo.walkSpeed/2,
+                                    colleagueTwo.getPosition().y
+                                );
+                            }
+                            if(diffX < 0){
+                                colleagueTwo.setPosition(
+                                    colleagueTwo.getPosition().x - colleagueTwo.walkSpeed/2,
+                                    colleagueTwo.getPosition().y
+                                );
+                            }
+                            if(diffY > 0){
+                                colleagueTwo.setPosition(
+                                    colleagueTwo.getPosition().x,
+                                    colleagueTwo.getPosition().y + colleagueTwo.walkSpeed/2
+                                );
+                            }
+                            if(diffY < 0){
+                                colleagueTwo.setPosition(
+                                    colleagueTwo.getPosition().x,
+                                    colleagueTwo.getPosition().y - colleagueTwo.walkSpeed/2
+                                );
+                            }
+                        }else{
+                            if(diffX > 0) colleagueTwo.mapX+=colleagueTwo.walkSpeed;
+                            if(diffX < 0) colleagueTwo.mapX-=colleagueTwo.walkSpeed;
+                            if(diffY > 0) colleagueTwo.mapY+=colleagueTwo.walkSpeed;
+                            if(diffY < 0) colleagueTwo.mapY-=colleagueTwo.walkSpeed;
                         }
                     }
                 }
@@ -231,25 +238,6 @@ var collisionPlayerAndEnemy = function(player,enemies,game){
         var enemy = enemies[i];
         var distance = cc.pDistance(player.getPosition(),enemy.getPosition());
 
-/*
-        //プレイヤ->敵 (ダメージ)
-        if(distance < player.eyeSightRange){
-            player.battleInterval++;
-            if(player.battleInterval >= 30){
-                player.battleInterval = 0;
-                if(player.targetType == "ENEMY"){
-                    var colleagueCnt = game.colleagueCnt;
-                    if(colleagueCnt > 3){colleagueCnt = 3;}
-                    var damage = colleagueCnt * player.attack;
-                    enemies[i].damage(player.attack + damage);
-                    game.criticalPower+=30;
-                    if(game.criticalPower >= game.criticalMaxPower){
-                        game.criticalPower = game.criticalMaxPower;
-                    }
-                }
-            }
-        }
-*/
         //敵->プレイヤー(ダメージ)
         if(enemies[i].type == "normal"){
             if(distance < 50){

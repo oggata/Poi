@@ -43,7 +43,7 @@ var StoryLayer = cc.Layer.extend({
             this.addChild(woman);
 
             //受け取りボタン
-            this.getItemButton = new ButtonItem("-次へ-",200,40,this.onQuestPage,this);
+            this.getItemButton = new ButtonSprite("-次へ-",200,40,this.onQuestPage,this);
             this.getItemButton.setPosition(320/2,270);
             this.addChild(this.getItemButton,CONFIG.UI_DROW_ORDER);
             this.addChild(this.getItemButton);

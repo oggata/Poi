@@ -31,7 +31,7 @@ var Navi = cc.Node.extend({
         this.addChild(this.naviLabel);
 
         //スタートボタン
-        this.okButton = new ButtonItem("OK",120,40,this.naviOff,this);
+        this.okButton = new ButtonSprite("OK",120,40,this.naviOff,this);
         this.okButton.setPosition(160,120);
         this.addChild(this.okButton);
 

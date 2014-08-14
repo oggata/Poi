@@ -30,7 +30,7 @@
         COCOS2D_DEBUG:2, //0 to turn debug off, 1 for basic debug, and 2 for full debug
         box2d:false,
         chipmunk:false,
-        showFPS:false,
+        showFPS:true,
         loadExtension:true,
         frameRate:30,
         renderMode:1,       //Choose of RenderMode: 0(default), 1(Canvas only), 2(WebGL only)
@@ -55,18 +55,18 @@
             'src/Sprite/Enemy.js',
             'src/Sprite/EnemyBody.js',
             'src/Sprite/Bullet.js',
-            'src/Sprite/Navi.js',
+            'src/UI/Navi.js',
             'src/Sprite/Gauge.js',
             'src/Sprite/Coin.js',
             'src/Sprite/TargetMarker.js',
             'src/Sprite/DamageText.js',
-            'src/Sprite/CutIn.js',
-            'src/Sprite/GameUI.js',
+            'src/UI/CutIn.js',
+            'src/UI/GameUI.js',
             'src/Sprite/Colleague.js',
             'src/Sprite/Cube.js',
             'src/Sprite/Track.js',
             'src/Sprite/Chip.js',
-            'src/Sprite/Button.js',
+            'src/Util/Button.js',
             'src/Sprite/Tower.js',
             'src/Util/HttpClient.js',
             'src/Util/Calc.js',
@@ -74,7 +74,7 @@
             'src/Util/Sound.js',
             'src/Util/Label.js',
             'src/Manager/Collision.js',
-            'src/Manager/Stage.js',
+            'src/Manager/Stage.js'
         ]
     };
 

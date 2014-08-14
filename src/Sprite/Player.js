@@ -19,7 +19,6 @@ var Player = cc.Node.extend({
         this.maxHp            = this.storage.maxHp;
         this.attack           = this.storage.attack;
         this.defence          = this.storage.defence;
-        this.eyeSightRange    = this.storage.eyeSightRange;
         this.walkSpeed        = this.storage.walkSpeed;
 
         //image

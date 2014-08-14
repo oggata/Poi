@@ -39,7 +39,7 @@ var TutolialLayer = cc.Layer.extend({
             this.changeText(this.storyNo);
 
             //new game
-            this.nextButton = new ButtonItem("NEXT",200,40,this.onNextStory,this);
+            this.nextButton = new ButtonSprite("NEXT",200,40,this.onNextStory,this);
             this.nextButton.setPosition(320/2,60);
             this.addChild(this.nextButton);
 

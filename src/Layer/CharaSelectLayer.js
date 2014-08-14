@@ -40,14 +40,14 @@ var CharaSelectLayer = cc.Layer.extend({
                 var row = Math.floor((i-1)/3);
                 var col = Math.floor((i-1)%3) + 1;
 
-                var selectButton = new ButtonItem("OK",50,30,this.openDetailWindow,this,i);
+                var selectButton = new ButtonSprite("OK",50,30,this.openDetailWindow,this,i);
                 selectButton.setAnchorPoint(0,0.5);
                 selectButton.setPosition(75 * col,80 * row + 120 + 200);
                 selectButton.setTag(i);
                 this.addChild(selectButton);
             }
 
-            this.twitterButton = new ButtonItem("Twitterからキャラを生成",250,40,this.onTwitter,this);
+            this.twitterButton = new ButtonSprite("Twitterからキャラを生成",250,40,this.onTwitter,this);
             this.twitterButton.setPosition(160,50);
             this.addChild(this.twitterButton);
 
@@ -70,12 +70,12 @@ var CharaSelectLayer = cc.Layer.extend({
             this.detailWindow.addChild(this.infoText);
 
             // ok
-            this.okButton = new ButtonItem("OK",80,40,this.okTapped,this);
+            this.okButton = new ButtonSprite("OK",80,40,this.okTapped,this);
             this.okButton.setPosition(100,30);
             this.detailWindow.addChild(this.okButton);
 
             // ng
-            this.ngButton = new ButtonItem("NG",80,40,this.closeDetailWindow,this);
+            this.ngButton = new ButtonSprite("NG",80,40,this.closeDetailWindow,this);
             this.ngButton.setPosition(190,30);
             this.detailWindow.addChild(this.ngButton);
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 http://oggata.github.io All rights reserved.
 //
 
-var ButtonItem = cc.Node.extend({
+var ButtonSprite = cc.Node.extend({
     ctor:function (title,w,h,execute,current,pTag) {
         this._super();
         var tag = pTag || 1;

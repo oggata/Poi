@@ -45,12 +45,12 @@ var GameOverLayer = cc.Layer.extend({
             this.menu.setPosition(0,0);
 
             //retryボタン
-            var retryButton = new ButtonItem("リトライ",200,50,this.onCharaSelect,this);
+            var retryButton = new ButtonSprite("リトライ",200,50,this.onCharaSelect,this);
             retryButton.setPosition(160,120);
             this.addChild(retryButton);
 
             //nextボタン
-            var changeButton = new ButtonItem("キャラ選択",200,50,this.onCharaSelect,this);
+            var changeButton = new ButtonSprite("キャラ選択",200,50,this.onCharaSelect,this);
             changeButton.setPosition(160,60);
             this.addChild(changeButton);
 */

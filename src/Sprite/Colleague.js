@@ -7,31 +7,28 @@
 //
 
 var Colleague = cc.Node.extend({
-    ctor:function (game,type) {
+    ctor:function (game,type,depX,depY) {
         this._super();
         this.game              = game;
-        this.storage           = this.game.storage;
-        this.player            = this.game.player;
         this.flashCnt          = 0;
         this.isCharaVisible    = true;
         this.damageCnt         = 0;
         this.isDamageOn        = false;
         this.actionType        = "none";
-        this.randId            = getRandNumberFromRange(1,19);
+        this.randId            = getRandNumberFromRange(1,10);
         this.randId2           = getRandNumberFromRange(1,10);
         //status
-        this.lv                = this.storage.lv;
-        this.hp                = this.storage.hp;
-        this.maxHp             = this.storage.maxHp;
-        this.attack            = this.storage.attack;
-        this.defence           = this.storage.defence;
-        this.eyeSightRange     = 20;
-        this.walkSpeed         = this.storage.walkSpeed;
-        this.createCot         = this.storage.createCot;
+        this.lv                = this.game.storage.lv;
+        this.hp                = this.game.storage.hp;
+        this.maxHp             = this.game.storage.maxHp;
+        this.attack            = this.game.storage.attack;
+        this.defence           = this.game.storage.defence;
+        this.walkSpeed         = this.game.storage.walkSpeed;
+        this.createCot         = this.game.storage.createCot;
         //image
-        this.charactorCode     = this.storage.charactorCode;
-        this.imgWidth          = this.storage.imgWidth; 
-        this.imgHeight         = this.storage.imgHeight;
+        this.charactorCode     = this.game.storage.charactorCode;
+        this.imgWidth          = this.game.storage.imgWidth; 
+        this.imgHeight         = this.game.storage.imgHeight;
 
         this.type = type;
         if(type == 1){
@@ -66,6 +63,13 @@ var Colleague = cc.Node.extend({
         this.battleIntervalToEnemy = 0;
         this.targetEnemy       = null;
         this.targetBuilding    = null;
+
+        this.setPosition(depX,depY);
+        this.mapX = this.getPosition().x;
+        this.mapY = this.getPosition().y;
+
+        this.activeCnt = getRandNumberFromRange(1,9);
+        this.activeMaxCnt = 2;
     },
     
     remove:function() {
@@ -129,27 +133,11 @@ var Colleague = cc.Node.extend({
 
     moveToBuilding:function(){
         this.actionType = "CHIP";
-
         this.moveToPositions(
             this.targetBuilding.getPosition().x + this.targetBuilding.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().x,
             this.targetBuilding.getPosition().y + this.targetBuilding.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().y,
             0
         );
-/*
-        if(this.followType=="NORMAL"){
-            this.moveToPositions(
-                this.targetBuilding.getPosition().x + this.targetBuilding.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().x,
-                this.targetBuilding.getPosition().y + this.targetBuilding.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().y,
-                0
-            );
-        }else if(this.followType=="DEFENCE"){
-            this.moveToPositions(
-                this.targetBuilding.getPosition().x + this.targetBuilding.markerSprite.weaponMotionTrack[this.randId].rollingCube.getPosition().x,
-                this.targetBuilding.getPosition().y + this.targetBuilding.markerSprite.weaponMotionTrack[this.randId].rollingCube.getPosition().y,
-                0
-            );
-        }
-*/
     },
 
     setFly:function(){
@@ -206,6 +194,12 @@ var Colleague = cc.Node.extend({
             return false;
         }
 
+        //1秒に1回だけ
+        this.activeCnt++;
+        if(this.activeCnt >= this.activeMaxCnt){
+            this.activeCnt = 0;
+        }
+
         //目標を達成した後には、皆エスケープゾーンに向かって走る
         if(this.game.stage.isColored == true){
             this.moveToEscapeZone();
@@ -216,7 +210,7 @@ var Colleague = cc.Node.extend({
                 this.moveToBuilding();
             }else{
                 this.actionType = "FOLLOW";
-                this.moveTo(this.player);
+                this.moveTo(this.game.player);
             }
         }
 
@@ -279,10 +273,22 @@ var Colleague = cc.Node.extend({
         var rad = Math.atan2(dX,dY);
         var speedX = this.walkSpeed * Math.sin(rad);
         var speedY = this.walkSpeed * Math.cos(rad);
-        this.setPosition(
-            this.getPosition().x + speedX,
-            this.getPosition().y + speedY
-        );
+
+        if(CONFIG.SET_POSITION_TYPE==1){
+            this.setPosition(
+                this.getPosition().x + speedX,
+                this.getPosition().y + speedY
+            );
+        }else{
+            this.mapX+=speedX;
+            this.mapY+=speedY;
+            if(this.activeCnt == 0){
+                this.setPosition(
+                    this.mapX,
+                    this.mapY
+                );
+            }
+        }
     },
 
     moveToPositions:function(posX,posY,jumpType) {
@@ -303,15 +309,25 @@ var Colleague = cc.Node.extend({
         }
         var dX = posX - this.getPosition().x;
         var dY = posY - this.getPosition().y;
-        //if(Math.abs(dX)>3 && Math.abs(dY)>3){
-            var rad = Math.atan2(dX,dY);
-            var speedX = this.walkSpeed * Math.sin(rad);
-            var speedY = this.walkSpeed * Math.cos(rad);
+        var rad = Math.atan2(dX,dY);
+        var speedX = this.walkSpeed * Math.sin(rad);
+        var speedY = this.walkSpeed * Math.cos(rad);
+        
+        if(CONFIG.SET_POSITION_TYPE==1){
             this.setPosition(
                 this.getPosition().x + speedX,
                 this.getPosition().y + speedY
             );
-        //}
+        }else{
+            this.mapX+=speedX;
+            this.mapY+=speedY;
+            if(this.activeCnt == 0){
+                this.setPosition(
+                    this.mapX,
+                    this.mapY
+                );
+            }
+        }
     },
 
     setDirection:function(DX,DY){

@@ -7,7 +7,7 @@
 //
 
 var FriendLayer = cc.Layer.extend({
-_box1: null,
+    _box1: null,
 
     ctor:function () {
         this._super();
@@ -41,7 +41,7 @@ _box1: null,
         this.addChild(this._box1);
 
             //new game
-            this.nextButton = new ButtonItem("CONVERT",120,60,this.setConvertResult,this);
+            this.nextButton = new ButtonSprite("CONVERT",120,60,this.setConvertResult,this);
             this.nextButton.setPosition(320/2,200);
             this.addChild(this.nextButton);
 

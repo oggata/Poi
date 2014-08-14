@@ -46,26 +46,9 @@ var SysMenu = cc.Layer.extend({
         this.addChild(sp,0,1);
 
         //タイトルの一覧を取得
-        getStageTitlesFromJson(this.storage);
-
-        this.stage001Button = new ButtonItem("クエストに出発する",250,60,this.onQuestPage,this);
-        this.stage001Button.setPosition(160,110);
-        this.addChild(this.stage001Button);
-
-        // debug
-        this.label = cc.LabelTTF.create("DEBUG", "Arial", 18);
-        this.debugModeButton = cc.MenuItemLabel.create(this.label,this.onDebugMode,this);
-        this.debugModeButton.setPosition(320/2,400);
-        if(CONFIG.DEBUG_FLAG == 1){
-            this.debugModeButton.setVisible(true);
-        }else{
-            this.debugModeButton.setVisible(false);
-        }
-        var menu = cc.Menu.create(
-            this.debugModeButton
-        );
-        menu.setPosition(0,0);
-        this.addChild(menu);
+        this.goToQuestButton = new ButtonSprite("クエストに出発する",250,60,this.goToQuestLayer,this);
+        this.goToQuestButton.setPosition(160,110);
+        this.addChild(this.goToQuestButton);
 
         //score
         this.infoTextPosX = 320;
@@ -86,7 +69,6 @@ var SysMenu = cc.Layer.extend({
 
         this.scheduleUpdate();
         this.setTouchEnabled(true);
-
         return true;
     },
 
@@ -99,73 +81,16 @@ var SysMenu = cc.Layer.extend({
         }
     },
 
-    onNewGame:function (pSender) {
+    goToQuestLayer:function (stageNum) {
         playSystemButton();
-
         cc.LoaderScene.preload(g_chara_select_resources, function () {
             var scene = cc.Scene.create();
-
-            //ステージ情報（難易度）を取得する
-            this.storage = getStageDataFromJson(this.storage,1);
-
-            scene.addChild(CharaSelectLayer.create(this.storage));
-            cc.Director.getInstance().replaceScene(cc.TransitionSlideInR.create(1.2, scene));
-        }, this);
-    },
-
-    onQuestPage:function (stageNum) {
-        playSystemButton();
-
-        cc.LoaderScene.preload(g_chara_select_resources, function () {
-            var scene = cc.Scene.create();
-            scene.addChild(QuestLayer.create());
+            scene.addChild(QuestLayer.create(this.storage));
             //scene.addChild(ResultLayer.create(this.storage));
             //scene.addChild(StoryLayer.create(this.storage));
-            
             cc.Director.getInstance().replaceScene(cc.TransitionProgressHorizontal.create(1.2, scene));
         }, this);
     },
-
-    onTutorial:function (pSender) {
-        playSystemButton();
-
-        cc.LoaderScene.preload(g_chara_select_resources, function () {
-            var scene = cc.Scene.create();
-            scene.addChild(TutolialLayer.create());
-            cc.Director.getInstance().replaceScene(cc.TransitionSlideInR.create(1.2, scene));
-        }, this);
-    },
-
-    onDebugMode:function (pSender) {
-
-        this.storage.resetJson();
-        //var jsonFile = {"saveData":false};
-        //localStorage.setItem("gameStorage",JSON.stringify(jsonFile));
-        localStorage.removeItem("gameStorage");
-
-        playSystemButton();
-
-        cc.LoaderScene.preload(g_resources, function () {
-
-            //ゲーム情報を記録するstorageをnewする
-            var storage = new Storage();
-
-            //プレイヤーパラメータを取得する
-            storage = getCharactorDataFromJson(storage,0);
-
-            //ステージ情報を取得する
-            storage = getStageDataFromJson(storage,CONFIG.DEBUG_STAGE_NUM);
-
-            //storage.coinAmount = 50;
-
-            var scene = cc.Scene.create();
-            scene.addChild(GameLayer.create(storage));
-            //scene.addChild(StaffRollLayer.create(storage));
-
-            cc.Director.getInstance().replaceScene(cc.TransitionSlideInR.create(1.2, scene));
-        }, this);
-    },
-
 });
 
 SysMenu.create = function () {
