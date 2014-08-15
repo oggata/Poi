@@ -33,12 +33,12 @@ var collisionPlayerAndColleague = function(player,colleagues,game){
     for(var i=0;i<colleagues.length;i++){
         var colleague = colleagues[i];
         var distance = cc.pDistance(player.getPosition(),colleague.getPosition());
-        /*
+        
         //近づき過ぎたら止まる
         colleague.isStop = false;
-        if(distance < CONFIG.PLAYER_AND_COLLEAGUE_KNOCK_BACK_RANGE){
+        if(distance < CONFIG.PLAYER_AND_COLLEAGUE_KNOCK_BACK_RANGE && colleagues[i].isTargetFollowPlayer() == true){
             colleague.isStop = true;
-        }*/
+        }
     }
 };
 

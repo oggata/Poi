@@ -8,7 +8,16 @@ var adjustRenderPerformance = function(game){
         if(distance >= 250){
             game.colleagues[i].renderingMaxCnt = 25;
         }else{
-            adustColleagues.push(game.colleagues[i]);
+            if(game.colleagues[i].depTimeCnt <= 30 * 1){
+                game.colleagues[i].renderingMaxCnt = 1;
+            }else{
+                adustColleagues.push(game.colleagues[i]);
+            }
+            //if(game.colleagues[i].isTargetFollowPlayer()){
+                //adustColleagues.push(game.colleagues[i]);
+            //}else{
+            //    game.colleagues[i].renderingMaxCnt = 25;
+            //}
         }
     }
 
@@ -54,7 +63,7 @@ var adjustRenderPerformance = function(game){
             adustColleagues[i].renderingMaxCnt = 3;
         }
         for(var i=30;i<adustColleagues.length;i++){
-            adustColleagues[i].renderingMaxCnt = 4;
+            adustColleagues[i].renderingMaxCnt = 8;
         }
     }
 
@@ -70,7 +79,7 @@ var adjustRenderPerformance = function(game){
             adustColleagues[i].renderingMaxCnt = 3;
         }
         for(var i=30;i<40;i++){
-            adustColleagues[i].renderingMaxCnt = 4;
+            adustColleagues[i].renderingMaxCnt = 8;
         }
         for(var i=40;i<adustColleagues.length;i++){
             adustColleagues[i].renderingMaxCnt = 10;

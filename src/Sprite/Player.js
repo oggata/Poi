@@ -146,6 +146,29 @@ var Player = cc.Node.extend({
         }
     },
 
+    isTargetEnemy:function(){
+        if(this.targetEnemy != null) return true;
+        return false;
+    },
+
+    isTargetEnemyBuilding:function(){
+        if(this.targetChip != null){
+            if(this.targetChip.type == "tree"){
+                return true;
+            }
+        }
+        return false;
+    },
+
+    isTargetMyBuilding:function(){
+        if(this.targetChip != null){
+            if(this.targetChip.type != "tree"){
+                return true;
+            }
+        }
+        return false;
+    },
+
     setDirection:function(targetSprite){
         //横の距離が大きいとき
         var diffX = Math.floor(targetSprite.getPosition().x - this.getPosition().x);

@@ -25,6 +25,7 @@ var GameLayer = cc.Layer.extend({
         else if ('mouse' in sys.capabilities)
                 this.setMouseEnabled(true);
 
+        this.stageInformation = new stageInformation(this);
 
         this.setParams();
         this.setScrollView();
@@ -212,6 +213,7 @@ var GameLayer = cc.Layer.extend({
         this.beforeSlideButtonX = -320*1;
         this.slideButtonX     = -320*1;
         this.firstTouchX      = 0;
+        this.launchColleagueType = 1;
     },
 
     setUI : function(){
@@ -251,26 +253,34 @@ var GameLayer = cc.Layer.extend({
     },
 
     update:function(dt){
+        //左 0 
         if(0 < this.slideButtonX){
+            this.launchColleagueType = 2;
             this.slideButtonX-=10;
         }
         if(-160 < this.slideButtonX && this.slideButtonX < 0){
+            this.launchColleagueType = 2;
             this.slideButtonX+=10;
         }
+        //中央 320
         if(-320 < this.slideButtonX && this.slideButtonX < -160){
+            this.launchColleagueType = 1;
             this.slideButtonX-=10;
         }
         if(-480 < this.slideButtonX && this.slideButtonX < -320){
+            this.launchColleagueType = 1;
             this.slideButtonX+=10;
         }
+        //右 640
         if(-640 < this.slideButtonX && this.slideButtonX < -480){
+            this.launchColleagueType = 3;
             this.slideButtonX-=10;
         }
         if(this.slideButtonX < -640){
+            this.launchColleagueType = 3;
             this.slideButtonX+=10;
         }
         this.beforeSlideButtonX = this.slideButtonX;
-
         this.gameUI.slideButton.setPosition(this.slideButtonX,0);
 
         if(this.cutInTime >= 1){
@@ -491,34 +501,6 @@ var GameLayer = cc.Layer.extend({
         return this.colleagues.length;
     },
 
-    setTargetBuilding:function(){
-        //全部の仲間のターゲットタイプを変更する
-        for(var i=0;i<this.colleagues.length;i++){
-            //ターゲティングされていない仲間のみ
-            if(this.colleagues[i].targetBuilding == null && this.colleagues[i].targetEnemy == null){
-                this.colleagues[i].targetBuilding = this.player.targetChip;
-                //配列の最後に追加する
-                this.colleagues.push(this.colleagues[i]);
-                this.colleagues.splice(i,1);
-                break;
-            }
-        }
-    },
-
-    setTargetEnemy:function(){
-        //全部の仲間のターゲットタイプを変更する
-        for(var i=0;i<this.colleagues.length;i++){
-            //ターゲティングされていない仲間のみ
-            if(this.colleagues[i].targetBuilding == null && this.colleagues[i].targetEnemy == null){
-                this.colleagues[i].targetEnemy = this.player.targetEnemy;
-                //配列の最後に追加する
-                this.colleagues.push(this.colleagues[i]);
-                this.colleagues.splice(i,1);
-                break;
-            }
-        }
-    },
-
     addEnemyBullet:function(enemy){
         var enemyBullet = new Bullet(enemy,"fire");
         enemyBullet.attack = enemy.attack;
@@ -732,6 +714,26 @@ var GameLayer = cc.Layer.extend({
         if(this.isToucheable() == false) return;
         this.touched = touches[0].getLocation();
 
+        //どのタイプが一番多いか確認する
+        var type1Cnt = this.stageInformation.getColleaguesCnt(1);
+        var type2Cnt = this.stageInformation.getColleaguesCnt(2);
+        var type3Cnt = this.stageInformation.getColleaguesCnt(3);
+        if((type1Cnt > 0) && (type2Cnt == 0) && (type3Cnt == 0)){
+            this.slideButtonX = -320;
+            this.launchColleagueType = 1;
+        }
+        if((type1Cnt == 0) && (type2Cnt > 0) && (type3Cnt == 0)){
+            this.slideButtonX = 0;
+            this.launchColleagueType = 2;
+        }
+        if((type1Cnt == 0) && (type2Cnt == 0) && (type3Cnt > 0)){
+            this.slideButtonX = -640;
+            this.launchColleagueType = 3;
+        }
+
+
+
+
         if((this.touched.y <= 80) && (this.player.targetEnemy != null || this.player.targetChip != null)){
             if(this.player.targetChip != null){
                 if(this.player.targetChip.type == "poi_red"){
@@ -744,11 +746,11 @@ var GameLayer = cc.Layer.extend({
                     this.addColleagues(1,3,this.player.targetChip);
                 }
                 if(this.player.targetChip.type == "tree"){
-                    this.setTargetBuilding();
+                    setTargetBuilding(this);
                 }
             }
             if(this.player.targetEnemy != null){
-                this.setTargetEnemy();
+                setTargetEnemy(this);
             }
         }else{
             var tPosX = (this.touched.x - this.cameraX) / this.mapScale;

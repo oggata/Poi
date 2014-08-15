@@ -31,26 +31,13 @@ var GameUI = cc.Node.extend({
         this.imgHeader.setAnchorPoint(0,0);
         this.uiHeader.addChild(this.imgHeader);
 
-        //s_allow
-        this.allow = cc.Sprite.create(s_allow);
-        this.allow.setPosition(0,0);
-        this.allow.setAnchorPoint(0,0);
-        this.uiFooter.addChild(this.allow);
-
-        //s_footer
-        this.imgFooter = cc.Sprite.create(s_input_device);
-        this.imgFooter.setPosition(0,0);
-        this.imgFooter.setAnchorPoint(0,0);
-        this.uiFooter.addChild(this.imgFooter);
-
-        this.imgFooter2 = cc.Sprite.create(s_input_device2);
-        this.imgFooter2.setPosition(0,0);
-        this.imgFooter2.setAnchorPoint(0,0);
-        this.uiFooter.addChild(this.imgFooter2);
+        this.getCharactorButton = cc.Sprite.create(s_input_device2);
+        this.getCharactorButton.setPosition(0,0);
+        this.getCharactorButton.setAnchorPoint(0,0);
+        this.uiFooter.addChild(this.getCharactorButton);
 
         this.slideButton = cc.Sprite.create(s_slideButton);
         this.slideButton.setPosition(0,0);
-        this.slideButton.setOpacity(255*0.5);
         this.slideButton.setAnchorPoint(0,0);
         this.uiFooter.addChild(this.slideButton);
 
@@ -115,19 +102,24 @@ var GameUI = cc.Node.extend({
     update:function() {
         var criticalRate = this.game.criticalPower / this.game.criticalMaxPower;
         this.criticalBar.setScale(criticalRate,1);
-        if(this.game.player.targetEnemy != null){
-            this.imgFooter.setVisible(true);
-            this.imgFooter2.setVisible(false);
+
+        if(this.game.player.isTargetEnemy()){
+            //敵を破壊
             this.slideButton.setVisible(true);
-        }else if(this.game.player.targetChip != null){
-            this.imgFooter.setVisible(false);
-            this.imgFooter2.setVisible(true);
+            this.getCharactorButton.setVisible(false);
+        }else if(this.game.player.isTargetEnemyBuilding()){
+            //敵の建物を破壊
+            this.slideButton.setVisible(true);
+            this.getCharactorButton.setVisible(false);
+        }else if(this.game.player.isTargetMyBuilding()){
+            //ポイを増やす
             this.slideButton.setVisible(false);
+            this.getCharactorButton.setVisible(true);
         }else{
-            this.imgFooter.setVisible(false);
-            this.imgFooter2.setVisible(false);
             this.slideButton.setVisible(false);
+            this.getCharactorButton.setVisible(false);
         }
+
         this.visibleCnt++;
         if(this.visibleCnt>=30*1){
             this.visibleCnt=0;

@@ -166,7 +166,7 @@ var getStageTitlesFromJson = function(storage){
     for(var i=0;i<stageData.length;i++){
         storage.stageTitles.push(stageData[i]["title"]);
     }
-cc.log(storage.stageTitles);
+
     return storage;
 }
 
@@ -174,12 +174,6 @@ var getStageDataFromJson = function(storage,stageNum) {
     var jsonFile             = cc.FileUtils.getInstance().getStringFromFile(stages_json);
     this.jsonData            = JSON.parse(jsonFile);
     var stageData            = this.jsonData["stages"][stageNum];
-
-    //ステージがなかったら終了する
-    //if(stageData == null){
-        //cc.log("ending");
-        //return;
-    //}
 
     //init
     storage.killedEnemyCnt   = 0;

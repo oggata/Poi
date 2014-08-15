@@ -70,6 +70,13 @@ var Colleague = cc.Node.extend({
         this.renderingCnt      = getRandNumberFromRange(1,5);
         this.renderingMaxCnt   = 1;
         this.isStop = false;
+
+        this.launchTimeCnt = 0;
+        this.setPosition(this.mapX,this.mapY);
+    },
+
+    setMapPosition:function(){
+        this.setPosition();
     },
     
     remove:function() {
@@ -163,7 +170,21 @@ var Colleague = cc.Node.extend({
         }
     },
 
+    setLaunchMotion:function(){
+        /*
+        //出発時に飛び出す
+        this.launchTimeCnt++;
+        if(this.launchTimeCnt <= 30 * 1){
+            this.jumpY+=5;
+        }else{
+            this.launchTimeCnt = 999;
+            this.jumpYDirect="up";
+            this.jumpY = 0;
+        }*/
+    },
+
     update:function() {
+        this.setLaunchMotion();
         this.setFly();
         this.sprite.setPosition(0,this.jumpY);
 
@@ -191,7 +212,7 @@ var Colleague = cc.Node.extend({
             return false;
         }
 
-        //1秒に1回だけ
+        //パフォーマンスによってフレーム毎にsetPositionを行う回数を制限する
         this.renderingCnt++;
         if(this.renderingCnt >= this.renderingMaxCnt){
             this.renderingCnt = 0;
