@@ -74,7 +74,8 @@
             'src/Util/Sound.js',
             'src/Util/Label.js',
             'src/Manager/Collision.js',
-            'src/Manager/Stage.js'
+            'src/Manager/Stage.js',
+            'src/Manager/Performance.js'
         ]
     };
 

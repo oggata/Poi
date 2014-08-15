@@ -57,7 +57,7 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 1 && this.game.stage.isMissionAchieved == true && this.naviCode < 2){
+        if(this.game.storage.missionNumber == 1 && this.game.stage.isMissionClear() == true && this.naviCode < 2){
             this.naviCode = 2;
             this.naviTxt = 
             "おめでとう、クリア目的達成だわ!" + "\n" + 
@@ -87,7 +87,7 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 /*
-        if(this.game.storage.missionNumber == 2 && this.game.colleagueCnt < 10 && this.naviCode < 5){
+        if(this.game.storage.missionNumber == 2 && this.game.getColleagueCnt() < 10 && this.naviCode < 5){
             this.naviCode = 5;
             this.naviTxt = 
             "ポイの数が少なくなってきたわ!" + "\n" + 
@@ -97,7 +97,7 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 */
-        if(this.game.storage.missionNumber == 2 && this.game.stage.isMissionAchieved == true && this.naviCode < 6){
+        if(this.game.storage.missionNumber == 2 && this.game.stage.isMissionClear() == true && this.naviCode < 6){
             this.naviCode = 6;
             this.naviTxt = 
             "おめでとう、クリア目的達成だわ!" + "\n" + 
@@ -127,7 +127,7 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 3 && this.game.stage.isMissionAchieved == true && this.naviCode < 9){
+        if(this.game.storage.missionNumber == 3 && this.game.stage.isMissionClear() == true && this.naviCode < 9){
             this.naviCode = 9;
             this.naviTxt = 
             "おめでとう！ミッション達成!" + "\n" + 
@@ -147,7 +147,7 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 4 && this.game.stage.isMissionAchieved == true　&& this.naviCode < 11){
+        if(this.game.storage.missionNumber == 4 && this.game.stage.isMissionClear() == true　&& this.naviCode < 11){
             this.naviCode = 11;
             this.naviTxt = 
             "さぁ、エスケープゾーンに逃げて！" + "\n" + 

@@ -48,6 +48,12 @@ var GameUI = cc.Node.extend({
         this.imgFooter2.setAnchorPoint(0,0);
         this.uiFooter.addChild(this.imgFooter2);
 
+        this.slideButton = cc.Sprite.create(s_slideButton);
+        this.slideButton.setPosition(0,0);
+        this.slideButton.setOpacity(255*0.5);
+        this.slideButton.setAnchorPoint(0,0);
+        this.uiFooter.addChild(this.slideButton);
+
         //ミッション文字
         this.missionLabel = cc.LabelTTF.create("","Arial",14);        
         this.missionLabel.setPosition(90,420);
@@ -97,40 +103,31 @@ var GameUI = cc.Node.extend({
         );
         this.game.mapNode.addChild(this.menu,999999999);
         this.menu.setPosition(0,0);
-/*
-        this.rectBarL = cc.LayerColor.create(cc.c4b(0,255,0,255),320,10);
-        this.rectBarL.setPosition(0,10);
-        this.rectBarL.setAnchorPoint(0,0);
-        this.rectBarL.setOpacity(255*0.4);
-        this.addChild(this.rectBarL);
-*/
+
         this.criticalBar = cc.LayerColor.create(cc.c4b(255,255,255,255),320,10);
         this.criticalBar.setPosition(0,0);
         this.criticalBar.setAnchorPoint(0,0);
         this.criticalBar.setOpacity(255*1.0);
         this.addChild(this.criticalBar);
-
-
-        this.waitCollegues = [];
     },
 
     //UIのテキストをupdateする
     update:function() {
-
         var criticalRate = this.game.criticalPower / this.game.criticalMaxPower;
         this.criticalBar.setScale(criticalRate,1);
-
         if(this.game.player.targetEnemy != null){
             this.imgFooter.setVisible(true);
             this.imgFooter2.setVisible(false);
+            this.slideButton.setVisible(true);
         }else if(this.game.player.targetChip != null){
             this.imgFooter.setVisible(false);
             this.imgFooter2.setVisible(true);
+            this.slideButton.setVisible(false);
         }else{
             this.imgFooter.setVisible(false);
             this.imgFooter2.setVisible(false);
+            this.slideButton.setVisible(false);
         }
-
         this.visibleCnt++;
         if(this.visibleCnt>=30*1){
             this.visibleCnt=0;
@@ -144,7 +141,7 @@ var GameUI = cc.Node.extend({
                 "" + time + "秒"
             );
             this.territoryNumLable.setString(
-                "×"+ getZeroPaddingNumber(Math.floor(this.game.colleagueCnt + 1),2) + ""
+                "×"+ getZeroPaddingNumber(Math.floor(this.game.getColleagueCnt() + 1),2) + ""
             );
         }
     },

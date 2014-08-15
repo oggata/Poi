@@ -8,39 +8,6 @@
 
 //プレイヤとマップチップの衝突判定
 var collisionPlayerAndChip = function(game){
-    /*
-    //game.player.targetChip = null;
-    for(var i=0;i<game.stage.chips.length;i++){
-        if(
-            game.stage.chips[i].getPosition().x -50 <= game.player.getPosition().x 
-        &&  game.player.getPosition().x <= game.stage.chips[i].getPosition().x + 50
-
-        &&  game.stage.chips[i].getPosition().y -50 <= game.player.getPosition().y
-        &&  game.player.getPosition().y <= game.stage.chips[i].getPosition().y + 50
-
-        ){
-            //このチップと仲間全員との距離を測る
-            var cnt =  game.colleagueCnt;
-            if(cnt >= 5){cnt = 5;}
-
-            if(game.player.targetType == "CHIP"){
-                game.stage.chips[i].hp -= 0.05;
-                game.stage.chips[i].colleagueCnt = cnt;
-            }
-
-            if(game.player.targetType == "CHIP" && game.tapPower > 50){
-                game.stage.chips[i].hp -= 0.1 + cnt * 0.02;
-                game.stage.chips[i].colleagueCnt = cnt;
-            }
-
-        }else{
-            if(game.stage.chips[i].isOccupied == false){
-                game.stage.chips[i].hp = game.stage.chips[i].maxHp;
-            }
-        }
-    }
-    */
-    
 };
 
 //仲間とマップチップの衝突判定
@@ -66,13 +33,12 @@ var collisionPlayerAndColleague = function(player,colleagues,game){
     for(var i=0;i<colleagues.length;i++){
         var colleague = colleagues[i];
         var distance = cc.pDistance(player.getPosition(),colleague.getPosition());
-        
-        
+        /*
         //近づき過ぎたら止まる
         colleague.isStop = false;
         if(distance < CONFIG.PLAYER_AND_COLLEAGUE_KNOCK_BACK_RANGE){
             colleague.isStop = true;
-        } 
+        }*/
     }
 };
 
@@ -105,60 +71,57 @@ var collisionColleguesAndEnemyBullet = function(colleagues,bullets){
     }
 };
 
-//仲間同士のあたり判定(ノックバックする)
-var collisionColleagueAndColleague = function(colleagues){
-    //ColleagueとColleagueの衝突判定
-    for(var j=0;j<colleagues.length;j++){
-        var colleagueOne = colleagues[j];
-        for(var k=0;k<colleagues.length;k++){
-            var colleagueTwo = colleagues[k];
-
+//同じsprite同士の判定(仲間同士、敵同士etc..)
+var collisionSpriteAndSprite = function(sprites){
+    for(var j=0;j<sprites.length;j++){
+        if(sprites[j].isTargetEnemy){
+            if(sprites[j].isTargetEnemy()) continue;
+        }
+        var spritesOne = sprites[j];
+        for(var k=0;k<sprites.length;k++){
+            var spritesTwo = sprites[k];
             if(j != k){
-                var distance = cc.pDistance(colleagueOne.getPosition(),colleagueTwo.getPosition());
-                if(colleagues[j].actionType == "ENEMY"){}else{
-                    //ノックバック
-                    if(distance < CONFIG.COLLEAGUE_AND_COLLEAGUE_KNOCK_BAKC_RANGE){
-                        var diffX = colleagueTwo.getPosition().x - colleagueOne.getPosition().x;
-                        var diffY = colleagueTwo.getPosition().y - colleagueOne.getPosition().y;
-                        if(CONFIG.SET_POSITION_TYPE==1){
-                            if(diffX > 0){
-                                colleagueTwo.setPosition(
-                                    colleagueTwo.getPosition().x + colleagueTwo.walkSpeed/2,
-                                    colleagueTwo.getPosition().y
-                                );
-                            }
-                            if(diffX < 0){
-                                colleagueTwo.setPosition(
-                                    colleagueTwo.getPosition().x - colleagueTwo.walkSpeed/2,
-                                    colleagueTwo.getPosition().y
-                                );
-                            }
-                            if(diffY > 0){
-                                colleagueTwo.setPosition(
-                                    colleagueTwo.getPosition().x,
-                                    colleagueTwo.getPosition().y + colleagueTwo.walkSpeed/2
-                                );
-                            }
-                            if(diffY < 0){
-                                colleagueTwo.setPosition(
-                                    colleagueTwo.getPosition().x,
-                                    colleagueTwo.getPosition().y - colleagueTwo.walkSpeed/2
-                                );
-                            }
-                        }else{
-                            if(diffX > 0) colleagueTwo.mapX+=colleagueTwo.walkSpeed;
-                            if(diffX < 0) colleagueTwo.mapX-=colleagueTwo.walkSpeed;
-                            if(diffY > 0) colleagueTwo.mapY+=colleagueTwo.walkSpeed;
-                            if(diffY < 0) colleagueTwo.mapY-=colleagueTwo.walkSpeed;
+                var distance = cc.pDistance(spritesOne.getPosition(),spritesTwo.getPosition());
+                //ノックバック
+                if(distance < CONFIG.COLLEAGUE_AND_COLLEAGUE_KNOCK_BAKC_RANGE){
+                    var diffX = spritesTwo.getPosition().x - spritesOne.getPosition().x;
+                    var diffY = spritesTwo.getPosition().y - spritesOne.getPosition().y;
+                    if(CONFIG.SET_POSITION_TYPE==1){
+                        if(diffX > 0){
+                            spritesTwo.setPosition(
+                                spritesTwo.getPosition().x + spritesTwo.walkSpeed/2,
+                                spritesTwo.getPosition().y
+                            );
                         }
+                        if(diffX < 0){
+                            spritesTwo.setPosition(
+                                spritesTwo.getPosition().x - spritesTwo.walkSpeed/2,
+                                spritesTwo.getPosition().y
+                            );
+                        }
+                        if(diffY > 0){
+                            spritesTwo.setPosition(
+                                spritesTwo.getPosition().x,
+                                spritesTwo.getPosition().y + spritesTwo.walkSpeed/2
+                            );
+                        }
+                        if(diffY < 0){
+                            spritesTwo.setPosition(
+                                spritesTwo.getPosition().x,
+                                spritesTwo.getPosition().y - spritesTwo.walkSpeed/2
+                            );
+                        }
+                    }else{
+                        if(diffX > 0) spritesTwo.mapX+=spritesTwo.walkSpeed/2;
+                        if(diffX < 0) spritesTwo.mapX-=spritesTwo.walkSpeed/2;
+                        if(diffY > 0) spritesTwo.mapY+=spritesTwo.walkSpeed/2;
+                        if(diffY < 0) spritesTwo.mapY-=spritesTwo.walkSpeed/2;
                     }
                 }
             }
         }
     }
 };
-
-
 
 var collisionCollegueBulletsAndEnemy = function(colleagueBullets,enemies){
     for(var j=0;j<colleagueBullets.length;j++){
@@ -196,34 +159,32 @@ var collisionColleagueAndEnemy = function(colleagues,enemies){
 
             //ノックバック
             if(distance < 40){
-                if(colleagues[j].actionType == "ENEMY"){
-                }else{
-                    var diffX = colleagues[j].getPosition().x - enemies[k].getPosition().x;
-                    var diffY = colleagues[j].getPosition().y - enemies[k].getPosition().y;
-                    if(diffX > 0){
-                        colleagues[j].setPosition(
-                            colleagues[j].getPosition().x + 10,
-                            colleagues[j].getPosition().y
-                        );
-                    }
-                    if(diffX < 0){
-                        colleagues[j].setPosition(
-                            colleagues[j].getPosition().x - 10,
-                            colleagues[j].getPosition().y
-                        );
-                    }
-                    if(diffY > 0){
-                        colleagues[j].setPosition(
-                            colleagues[j].getPosition().x,
-                            colleagues[j].getPosition().y + 10
-                        );
-                    }
-                    if(diffY < 0){
-                        colleagues[j].setPosition(
-                            colleagues[j].getPosition().x,
-                            colleagues[j].getPosition().y - 10
-                        );
-                    }
+                if(colleagues[j].isTargetEnemy()) continue;
+                var diffX = colleagues[j].getPosition().x - enemies[k].getPosition().x;
+                var diffY = colleagues[j].getPosition().y - enemies[k].getPosition().y;
+                if(diffX > 0){
+                    colleagues[j].setPosition(
+                        colleagues[j].getPosition().x + 10,
+                        colleagues[j].getPosition().y
+                    );
+                }
+                if(diffX < 0){
+                    colleagues[j].setPosition(
+                        colleagues[j].getPosition().x - 10,
+                        colleagues[j].getPosition().y
+                    );
+                }
+                if(diffY > 0){
+                    colleagues[j].setPosition(
+                        colleagues[j].getPosition().x,
+                        colleagues[j].getPosition().y + 10
+                    );
+                }
+                if(diffY < 0){
+                    colleagues[j].setPosition(
+                        colleagues[j].getPosition().x,
+                        colleagues[j].getPosition().y - 10
+                    );
                 }
             }
 

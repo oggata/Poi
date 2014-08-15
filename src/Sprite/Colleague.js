@@ -14,7 +14,7 @@ var Colleague = cc.Node.extend({
         this.isCharaVisible    = true;
         this.damageCnt         = 0;
         this.isDamageOn        = false;
-        this.actionType        = "none";
+
         this.randId            = getRandNumberFromRange(1,10);
         this.randId2           = getRandNumberFromRange(1,10);
         //status
@@ -31,54 +31,55 @@ var Colleague = cc.Node.extend({
         this.imgHeight         = this.game.storage.imgHeight;
 
         this.type = type;
-        if(type == 1){
-            this.image         = s_chara001;
-            this.attackType    = "JUMP";
-            this.followType    = "DEFENCE";
-        }else if(type == 2){
-            this.image         = s_chara002;
-            this.attackType    = "BULLET";
-            this.followType    = "DEFENCE";
-        }else if(type == 3){
-            this.image         = s_chara003;
-            this.attackType    = "BULLET";
-            this.followType    = "NORMAL";   
+        if(this.type == 1){
+            this.image            = s_chara001;
+            this.attackMotionCode = "JUMP";
+        }else if(this.type == 2){
+            this.image            = s_chara002;
+            this.attackMotionCode = "BULLET";
+        }else if(this.type == 3){
+            this.image            = s_chara003;
+            this.attackMotionCode = "BULLET";  
         }
 
         //init
-        this.direction         = "front";
         this.initSprite();
-        this.damangeTexts      = new Array();
+        //this.damangeTexts      = new Array();
+        //方向制御用
+        this.direction         = "front";
         this.directionCnt      = 0;
         this.beforeX           = this.getPosition().x;
         this.beforeY           = this.getPosition().y;
         this.isWait            = false;
         this.bulletLncTime     = getRandNumberFromRange(1,90);
+        //ジャンプさせるための位置
         this.jumpTime          = 0;
         this.jumpY             = 0;
         this.jumpYDirect       = "up";
-        this.waitCnt           = 0;
-        this.waitMaxCnt        = this.randId * 10;
-
+        //脱出時の順番
+        this.escapeWaitCnt     = 0;
+        this.escapeWaitMaxCnt  = this.randId * 10;
+        //敵との戦闘
         this.battleIntervalToEnemy = 0;
         this.targetEnemy       = null;
         this.targetBuilding    = null;
-
-        this.setPosition(depX,depY);
-        this.mapX = this.getPosition().x;
-        this.mapY = this.getPosition().y;
-
-        this.activeCnt = getRandNumberFromRange(1,9);
-        this.activeMaxCnt = 2;
+        //マップ上の位置
+        this.mapX              = depX;
+        this.mapY              = depY;
+        //レンダリング用
+        this.renderingCnt      = getRandNumberFromRange(1,5);
+        this.renderingMaxCnt   = 1;
+        this.isStop = false;
     },
     
     remove:function() {
         this.removeChild(this.sprite);
         //this.removeChild(this.gauge);
         //damage text
+        /*
         for(var i=0;i<this.damangeTexts.length;i++){
             this.removeChild(this.damangeTexts[i]);
-        }
+        }*/
     },
 
     addFlashCnt:function(){
@@ -96,8 +97,8 @@ var Colleague = cc.Node.extend({
     },
 
     moveToEscapeZone:function(){
-        this.waitCnt++;
-        if(this.waitCnt>= this.waitMaxCnt){
+        this.escapeWaitCnt++;
+        if(this.escapeWaitCnt>= this.escapeWaitMaxCnt){
             this.moveToPositions(
                 this.game.stage.escape.getPosition().x,
                 this.game.stage.escape.getPosition().y,
@@ -114,15 +115,13 @@ var Colleague = cc.Node.extend({
     },
 
     moveToEnemy:function(){
-        this.actionType = "ENEMY";
-
-        if(this.attackType == "JUMP"){
+        if(this.attackMotionCode == "JUMP"){
             this.moveToPositions(
                 this.targetEnemy.getPosition().x + this.targetEnemy.markerSprite.enemyMotionTrack[this.randId].rollingCube.getPosition().x,
                 this.targetEnemy.getPosition().y + this.targetEnemy.markerSprite.enemyMotionTrack[this.randId].rollingCube.getPosition().y,
                 1
             );
-        }else if(this.attackType == "BULLET"){
+        }else if(this.attackMotionCode == "BULLET"){
             this.moveToPositions(
                 this.targetEnemy.getPosition().x + this.targetEnemy.markerSprite.enemyFarMotionTrack[this.randId].rollingCube.getPosition().x,
                 this.targetEnemy.getPosition().y + this.targetEnemy.markerSprite.enemyFarMotionTrack[this.randId].rollingCube.getPosition().y,
@@ -132,7 +131,6 @@ var Colleague = cc.Node.extend({
     },
 
     moveToBuilding:function(){
-        this.actionType = "CHIP";
         this.moveToPositions(
             this.targetBuilding.getPosition().x + this.targetBuilding.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().x,
             this.targetBuilding.getPosition().y + this.targetBuilding.markerSprite.mapMotionTrack[this.randId].rollingCube.getPosition().y,
@@ -167,11 +165,10 @@ var Colleague = cc.Node.extend({
 
     update:function() {
         this.setFly();
-
         this.sprite.setPosition(0,this.jumpY);
 
         //攻撃タイプが弾丸だった場合は、一定時間毎に弾丸を発射する
-        if(this.targetEnemy != null && this.attackType == "BULLET"){
+        if(this.targetEnemy != null && this.attackMotionCode == "BULLET"){
             this.bulletLncTime++;
             if(this.bulletLncTime>=30*3){
                 this.bulletLncTime = 0;
@@ -195,21 +192,21 @@ var Colleague = cc.Node.extend({
         }
 
         //1秒に1回だけ
-        this.activeCnt++;
-        if(this.activeCnt >= this.activeMaxCnt){
-            this.activeCnt = 0;
+        this.renderingCnt++;
+        if(this.renderingCnt >= this.renderingMaxCnt){
+            this.renderingCnt = 0;
         }
 
         //目標を達成した後には、皆エスケープゾーンに向かって走る
-        if(this.game.stage.isColored == true){
+        if(this.game.stage.isMissionClear()){
             this.moveToEscapeZone();
         }else{
-            if(this.targetEnemy != null){
+            if(this.isStop) return;
+            if(this.isTargetEnemy()){
                 this.moveToEnemy();
-            }else if(this.targetBuilding != null){
+            }else if(this.isTargetBuilding()){
                 this.moveToBuilding();
-            }else{
-                this.actionType = "FOLLOW";
+            }else if(this.isTargetFollowPlayer()){
                 this.moveTo(this.game.player);
             }
         }
@@ -282,7 +279,7 @@ var Colleague = cc.Node.extend({
         }else{
             this.mapX+=speedX;
             this.mapY+=speedY;
-            if(this.activeCnt == 0){
+            if(this.renderingCnt == 0){
                 this.setPosition(
                     this.mapX,
                     this.mapY
@@ -292,7 +289,7 @@ var Colleague = cc.Node.extend({
     },
 
     moveToPositions:function(posX,posY,jumpType) {
-        if(jumpType==1 && this.attackType == "JUMP"){
+        if(jumpType==1 && this.attackMotionCode == "JUMP"){
             if(this.jumpYDirect=="up"){
                 this.jumpY+=5;
                 if(this.jumpY >= this.randId2*5 + 20){
@@ -321,13 +318,28 @@ var Colleague = cc.Node.extend({
         }else{
             this.mapX+=speedX;
             this.mapY+=speedY;
-            if(this.activeCnt == 0){
+            if(this.renderingCnt == 0){
                 this.setPosition(
                     this.mapX,
                     this.mapY
                 );
             }
         }
+    },
+
+    isTargetEnemy:function(){
+        if(this.targetEnemy != null) return true;
+        return false;
+    },
+
+    isTargetBuilding:function(){
+        if(this.targetBuilding != null) return true;
+        return false;
+    },
+
+    isTargetFollowPlayer:function(){
+        if(this.targetEnemy == null && this.targetBuilding == null) return true;
+        return false
     },
 
     setDirection:function(DX,DY){

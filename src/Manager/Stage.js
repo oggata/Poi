@@ -13,10 +13,8 @@ var Stage = cc.Class.extend({
         this.storage          = this.game.storage;
         this.chips            = [];
         this.trees            = [];
-        this.isMissionAchieved= false;
-        this.isColored        = false;
-        this.isEscaped        = false;
-        this.isGameOver       = false;
+        this.status           = "GAMING";
+
         this.clearTargetCnt   = 0;
         this.field = cc.Sprite.create(s_field);
         this.field.setPosition(795,318);
@@ -102,6 +100,114 @@ var Stage = cc.Class.extend({
         }
     },
 
+    update:function(){
+
+        //エスケープゾーンに逃げ込んだ時の処理
+        if(
+            this.escape.getPosition().x - 50 <= this.game.player.getPosition().x &&
+            this.game.player.getPosition().x <= this.escape.getPosition().x + 50 &&
+            this.escape.getPosition().y - 50 <= this.game.player.getPosition().y &&
+            this.game.player.getPosition().y <= this.escape.getPosition().y + 50
+        ){
+            this.setGameClearStatus();
+        }
+
+        //ミッションの種類によってクリア条件を変更する
+        if(storage.missionGenre == "INCREASE"){
+            if(this.game.getColleagueCnt() >= storage.missionMaxCnt){
+                this.setMissionClearStatus();
+            }
+        }
+        if(storage.missionGenre == "KILLENEMY"){
+            if(this.game.killedEnemyCnt >= storage.missionMaxCnt){
+                this.setMissionClearStatus();
+            }
+        }
+        if(storage.missionGenre == "OCCUPY"){
+            var cnt = this.getTerritoryCnt();
+            if(cnt >= storage.missionMaxCnt){
+                this.setMissionClearStatus();
+            }
+        }
+
+        for(var i=0;i<this.chips.length;i++){
+            this.chips[i].update();
+            if(this.chips[i].type == "tree"){
+                //占領が完了した場合に木がたつ
+                if(this.chips[i].isOccupied == true && this.chips[i].type == "tree"){
+                    this.trees[i].setVisible(false);
+                }
+                this.trees[i].update();
+            }
+        }
+    },
+
+    //<-------ステータス制御---------> GAMING->MISSIONCLEAR->GAMECLEAR
+
+    setGameOverStatus:function(){
+        if(this.status == "GAMING"){
+            this.status = "GAMEOVER";
+        }
+    },
+
+    setGameClearStatus:function(){
+        if(this.status == "MISSIONCLEAR"){
+            this.status = "GAMECLEAR";
+        }
+    },
+
+    setMissionClearStatus:function(){
+        if(this.status == "GAMING"){
+            this.setMissionClearEvent();
+            this.status = "MISSIONCLEAR";
+        }
+    },
+
+    setMissionClearEvent:function(){
+        for(var i=0;i<this.game.storage.clearedEnemies.length;i++){
+            var enemyData = this.game.storage.clearedEnemies[i];
+            this.game.addEnemyByPos(enemyData["enemyId"],enemyData["route"]);
+        }
+        for(var i=0;i<this.game.enemies.length;i++){
+            this.game.enemies[i].eyeSight = 1000;
+            this.game.enemies[i].walkSpeed = 2;
+        }
+        for(var i=0;i<this.chips.length;i++){
+            var pos = this.chips[i].getPosition();
+            this.game.stage.addCoin(pos.x,pos.y);
+            this.chips[i].isOccupied = false;
+            if(this.chips[i].colorAlpha == 0){
+                this.chips[i].colorAlpha=1;
+            }
+        }
+    },
+
+    isGameOver:function(){
+        if(this.status == "GAMEOVER") return true;
+        return false;
+    },
+
+    isGameClear:function(){
+        if(this.status == "GAMECLEAR") return true;
+        return false;
+    },
+
+    isMissionClear:function(){
+        if(this.status == "MISSIONCLEAR") return true;
+        return false;
+    },
+
+    //<----Getter------>
+    getChipByTypeID:function(chipType){
+        var rtnChip = null;
+        for(var i=0;i<this.chips.length;i++){
+            if(this.chips[i].type == chipType){
+                rtnChip = this.chips[i];
+            }
+        }
+        return rtnChip;
+    },
+
     getChipPosition:function(id){
         for(var i=0;i<this.chips.length;i++){
             if(this.chips[i].id == id){
@@ -128,79 +234,6 @@ var Stage = cc.Class.extend({
         return CONFIG.MAX_X_CNT * CONFIG.MAX_Y_CNT;
     },
 
-    update:function(){
-
-        //エスケープゾーンに逃げ込んだ時の処理
-        if(
-            this.escape.getPosition().x - 50 <= this.game.player.getPosition().x &&
-            this.game.player.getPosition().x <= this.escape.getPosition().x + 50 &&
-            this.escape.getPosition().y - 50 <= this.game.player.getPosition().y &&
-            this.game.player.getPosition().y <= this.escape.getPosition().y + 50
-        ){
-            if(this.isColored == true){
-                this.isEscaped = true;
-            }
-        }
-
-        //ミッションの種類によってクリア条件を変更する
-        if(storage.missionGenre == "INCREASE"){
-            if(this.game.colleagueCnt >= storage.missionMaxCnt){
-                this.isMissionAchieved = true;
-            }
-        }
-        if(storage.missionGenre == "KILLENEMY"){
-            if(this.game.killedEnemyCnt >= storage.missionMaxCnt){
-                this.isMissionAchieved = true;
-            }
-        }
-        if(storage.missionGenre == "OCCUPY"){
-            var cnt = this.getTerritoryCnt();
-            if(cnt >= storage.missionMaxCnt){
-                this.isMissionAchieved = true;
-            }
-        }
-        if(this.isMissionAchieved == true){
-            //敵が増殖
-            if(this.isColored == false){
-                this.isColored = true;
-
-                for(var i=0;i<this.game.storage.clearedEnemies.length;i++){
-                    var enemyData = this.game.storage.clearedEnemies[i];
-                    this.game.addEnemyByPos(enemyData["enemyId"],enemyData["route"]);
-                }
-                for(var i=0;i<this.game.enemies.length;i++){
-                    this.game.enemies[i].eyeSight = 1000;
-                    this.game.enemies[i].walkSpeed = 2;
-                }
-
-                for(var i=0;i<this.chips.length;i++){
-                    var pos = this.chips[i].getPosition();
-                    this.game.stage.addCoin(pos.x,pos.y);
-                    this.chips[i].isOccupied = false;
-                    if(this.chips[i].colorAlpha == 0){
-                        this.chips[i].colorAlpha=1;
-                    }
-                }
-/*
-                //仲間が姿を消す
-                for(var i=0;i<this.game.colleagues.length;i++){
-                    this.game.colleagues[i].hp = 0;
-                }
-*/
-            }
-        }
-
-        for(var i=0;i<this.chips.length;i++){
-            this.chips[i].update();
-            if(this.chips[i].type == "tree"){
-                //占領が完了した場合に木がたつ
-                if(this.chips[i].isOccupied == true && this.chips[i].type == "tree"){
-                    this.trees[i].setVisible(false);
-                }
-                this.trees[i].update();
-            }
-        }
-    },
 
     addCoin:function(x,y){
         var coin = new Coin();

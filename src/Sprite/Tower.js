@@ -40,7 +40,7 @@ var Tower = cc.Node.extend({
     },
 
     update:function(){
-        if(this.game.stage.isColored == true){
+        if(this.game.stage.isMissionClear()){
             this.tree.setVisible(false);
             return;
         }

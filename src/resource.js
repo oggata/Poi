@@ -26,6 +26,8 @@ var s_input_device       = base_dir + "ui/input_device.png";
 var s_editbox_frame      = base_dir + "ui/editbox-frame.png";
 var s_marker             = base_dir + "ui/marker.png";
 
+var s_slideButton        = "ui/slideButton.png";
+
 //map
 var s_chip_001           = base_dir + "map/q_map_ajito.png";
 var s_chip_003           = base_dir + "map/q_map_poi.png";
@@ -175,6 +177,7 @@ var g_resources       = [
     s_timer,
     s_field,
     s_marker,
+    s_slideButton,
     s_item_001,
     s_cleared_effect,
     s_text_stage_clear,
