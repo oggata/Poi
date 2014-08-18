@@ -23,10 +23,10 @@ var s_input_device       = base_dir + "ui/input_device.png";
 var s_input_device2      = base_dir + "ui/input_device2.png"; 
 var s_timer              = base_dir + "ui/timer.png"; 
 var s_input_device       = base_dir + "ui/input_device.png"; 
-var s_editbox_frame      = base_dir + "ui/editbox-frame.png";
 var s_marker             = base_dir + "ui/marker.png";
 
 var s_slideButton        = "ui/slideButton.png";
+var s_colleague_cnt      = "ui/colleague_cnt.png";
 
 //map
 var s_chip_001           = base_dir + "map/q_map_ajito.png";
@@ -55,6 +55,10 @@ var effect_wind          = base_dir + "effect/pipo-btleffect039.png";
 var effect_sander        = base_dir + "effect/pipo-btleffect040.png";
 var effect_eye           = base_dir + "effect/pipo-btleffect072.png";
 var effect_circle        = base_dir + "effect/pipo-btleffect109f.png";
+var effect_energy        = base_dir + "effect/pipo-btleffect008.png";
+var effect_hart          = base_dir + "effect/pipo-btleffect116g.png";
+var effect_sand          = base_dir + "effect/pipo-btleffect028.png";
+var effect_tsunami       = base_dir + "effect/pipo-btleffect031.png";
 
 //sprite
 var s_hinageshi          = base_dir + "sprite/hinageshi.png";
@@ -69,6 +73,8 @@ var s_chara003           = base_dir + "sprite/chara003.png";
 var s_chara004           = base_dir + "sprite/chara004.png";
 var s_chara005           = base_dir + "sprite/chara005.png";
 var s_chara007           = base_dir + "sprite/chara007.png";
+var s_chara008           = base_dir + "sprite/chara008.png";
+var s_chara009           = base_dir + "sprite/chara009.png";
 
 var s_enemy_devil        = base_dir + "sprite/devil_001.png";
 var s_enemy_devil_boss   = base_dir + "sprite/devil_002.png";
@@ -91,7 +97,6 @@ var s_convert_success    = base_dir + "ui/convert_success.png";
 var s_top                = base_dir + "ui/top.png";
 var s_woman              = base_dir + "ui/st-woman2-suit01.png";
 var s_navi_girl          = base_dir + "ui/navi_girl.png";
-var s_allow              = base_dir + "ui/allow.png";
 
 //bgm
 var s_bgm_001            = base_dir + "res/sound/bgm/bgm_maoudamashii_cyber09.mp3";
@@ -157,6 +162,10 @@ var g_resources       = [
     effect_sander,
     effect_eye,
     effect_circle,
+    effect_energy,
+    effect_hart,
+    effect_sand,
+    effect_tsunami,
     s_enargy,
     s_header,
     s_shadow,
@@ -165,6 +174,8 @@ var g_resources       = [
     s_chara003,
     s_chara005,
     s_chara007,
+    s_chara008,
+    s_chara009,
     s_initSprite,
     s_button001_scale9,
     s_chip_001,
@@ -173,11 +184,11 @@ var g_resources       = [
     s_chip_005,
     s_scape_zone,
     s_input_device,
-    s_editbox_frame,
     s_timer,
     s_field,
     s_marker,
     s_slideButton,
+    s_colleague_cnt,
     s_item_001,
     s_cleared_effect,
     s_text_stage_clear,
@@ -186,7 +197,6 @@ var g_resources       = [
     s_fukidashi,
     s_woman,
     s_navi_girl,
-    s_allow,
     s_crown,
     s_crown2,
     s_crown3,

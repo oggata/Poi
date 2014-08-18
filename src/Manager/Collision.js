@@ -332,8 +332,8 @@ var collisionPlayerAndCoin = function(game){
         if(distance < 30){
             playSE(s_se_coin);
             game.coins[i].remove();
+            game.storage.coinAmount+=game.coins[i].powerCnt;
             game.coins.splice(i,1);
-            game.storage.coinAmount+=1;
         } 
     }
 };

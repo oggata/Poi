@@ -31,6 +31,26 @@ var GameUI = cc.Node.extend({
         this.imgHeader.setAnchorPoint(0,0);
         this.uiHeader.addChild(this.imgHeader);
 
+        this.colleagueCntBase = cc.Sprite.create(s_colleague_cnt);
+        this.colleagueCntBase.setPosition(0,0);
+        this.colleagueCntBase.setAnchorPoint(0,0);
+        this.uiFooter.addChild(this.colleagueCntBase);
+
+        this.redCntLabel = cc.LabelTTF.create("00","Arial",20);
+        this.redCntLabel.setPosition(320/4 * 1,0);
+        this.redCntLabel.setAnchorPoint(0.5,0);
+        this.colleagueCntBase.addChild(this.redCntLabel);
+
+        this.blueCntLabel = cc.LabelTTF.create("00","Arial",20);
+        this.blueCntLabel.setPosition(320/4 * 2,0);
+        this.blueCntLabel.setAnchorPoint(0.5,0);
+        this.colleagueCntBase.addChild(this.blueCntLabel);
+
+        this.yellowCntLabel = cc.LabelTTF.create("00","Arial",20);
+        this.yellowCntLabel.setPosition(320/4 * 3,0);
+        this.yellowCntLabel.setAnchorPoint(0.5,0);
+        this.colleagueCntBase.addChild(this.yellowCntLabel);
+
         this.getCharactorButton = cc.Sprite.create(s_input_device2);
         this.getCharactorButton.setPosition(0,0);
         this.getCharactorButton.setAnchorPoint(0,0);
@@ -47,12 +67,21 @@ var GameUI = cc.Node.extend({
         this.missionLabel.setAnchorPoint(0,0);
         this.addChild(this.missionLabel);
 
+        //game.storage.coinAmount
+        //CoinAmount
+        this.coinAmountLabel = cc.LabelTTF.create("","Arial",25);
+        this.coinAmountLabel.setPosition(30,-25);
+        this.coinAmountLabel.setAnchorPoint(0,0);
+        this.uiHeader.addChild(this.coinAmountLabel);
+
         //Territory
-        this.territoryNumLable = cc.LabelTTF.create("","Arial",25);        
+        /*
+        this.territoryNumLable = cc.LabelTTF.create("","Arial",25);
         this.territoryNumLable.setPosition(20,-25);
         this.territoryNumLable.setAnchorPoint(0,0);
         this.territoryNumLable.setHorizontalAlignment(cc.TEXT_ALIGNMENT_CENTER);
         this.uiHeader.addChild(this.territoryNumLable);
+        */
 
         //タイムリミット
         this.timeLabel = cc.LabelTTF.create("","Arial",20);
@@ -100,24 +129,33 @@ var GameUI = cc.Node.extend({
 
     //UIのテキストをupdateする
     update:function() {
+        this.redCntLabel.setString(this.game.stageInformation.getFollowColleagueCnt(2));
+        this.blueCntLabel.setString(this.game.stageInformation.getFollowColleagueCnt(1));
+        this.yellowCntLabel.setString(this.game.stageInformation.getFollowColleagueCnt(3));
+
         var criticalRate = this.game.criticalPower / this.game.criticalMaxPower;
         this.criticalBar.setScale(criticalRate,1);
+        this.coinAmountLabel.setString("×" + getZeroPaddingNumber(this.game.storage.coinAmount),3);
 
         if(this.game.player.isTargetEnemy()){
             //敵を破壊
             this.slideButton.setVisible(true);
             this.getCharactorButton.setVisible(false);
+            this.colleagueCntBase.setPosition(0,75);
         }else if(this.game.player.isTargetEnemyBuilding()){
             //敵の建物を破壊
             this.slideButton.setVisible(true);
             this.getCharactorButton.setVisible(false);
+            this.colleagueCntBase.setPosition(0,75);
         }else if(this.game.player.isTargetMyBuilding()){
             //ポイを増やす
             this.slideButton.setVisible(false);
             this.getCharactorButton.setVisible(true);
+            this.colleagueCntBase.setPosition(0,75);
         }else{
             this.slideButton.setVisible(false);
             this.getCharactorButton.setVisible(false);
+            this.colleagueCntBase.setPosition(0,0);
         }
 
         this.visibleCnt++;
@@ -132,9 +170,11 @@ var GameUI = cc.Node.extend({
             this.timeLabel.setString(
                 "" + time + "秒"
             );
+            /*
             this.territoryNumLable.setString(
                 "×"+ getZeroPaddingNumber(Math.floor(this.game.getColleagueCnt() + 1),2) + ""
             );
+*/
         }
     },
 

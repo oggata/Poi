@@ -41,7 +41,24 @@ var Colleague = cc.Node.extend({
             this.image            = s_chara003;
             this.attackMotionCode = "BULLET";  
         }
-
+        /*
+        if(this.type == 1){
+            this.image            = s_chara008;
+            this.imgWidth          = 72/3; 
+            this.imgHeight         = 112/4;
+            this.attackMotionCode = "JUMP";
+        }else if(this.type == 2){
+            this.image             = s_chara009;
+            this.imgWidth          = 72/3; 
+            this.imgHeight         = 120/4;
+            this.attackMotionCode = "BULLET";
+        }else if(this.type == 3){
+            this.image             = s_chara003;
+            this.imgWidth          = this.game.storage.imgWidth; 
+            this.imgHeight         = this.game.storage.imgHeight;
+            this.attackMotionCode = "BULLET";  
+        }
+        */
         //init
         this.initSprite();
         //this.damangeTexts      = new Array();

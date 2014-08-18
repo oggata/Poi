@@ -15,7 +15,7 @@ var Chip = cc.Node.extend({
         this.isOccupied        = false;
         this.posX              = posX;
         this.posY              = posY;
-        this.colorAlpha        = 0;
+        //this.colorAlpha        = 0;
         this.isSetTower        = false;
 
         //デバッグ用の中心を表示するサインマーカー
@@ -98,6 +98,25 @@ var Chip = cc.Node.extend({
 
         this.cutInFlg = 0;
         this.damageCnt = 0;
+/*
+        //崩壊
+        var frameSeqEffect2= [];
+        for (var y = 0; y < 1; y++) {
+            for (var x = 0; x < 8; x++) {
+                var frame = cc.SpriteFrame.create(effect_sand,cc.rect(120*x,60*y,120,60));
+                frameSeqEffect2.push(frame);
+            }
+        }
+        this.wa = cc.Animation.create(frameSeqEffect2,0.2);
+        this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
+        this.destroyAnimation2 = cc.Sprite.create(effect_sand,cc.rect(0,0,120,60));
+        this.destroyAnimation2.runAction(this.ra);
+        this.destroyAnimation2.setScale(3.2,3.2);
+        this.destroyAnimation2.setAnchorPoint(0.5,0.5);
+        this.destroyAnimation2.setOpacity(255*0.7);
+        this.addChild(this.destroyAnimation2,999999999);
+        this.destroyAnimation2.setVisible(false);
+*/
     },
 
     getCirclePos:function(cubeAngle){
@@ -128,12 +147,11 @@ var Chip = cc.Node.extend({
             }
         }
 
-        //世界が色づいたときの処理
-        if(this.colorAlpha >= 1){
-            this.chipSprite.setVisible(false);
-            this.timeLabel.setVisible(false);
-            return;
+/*
+        if(this.game.stage.isMissionClear()){
+            this.destroyAnimation2.setVisible(true);
         }
+*/
 
         //アジトとボスの場合のみ、敵を生成する
         if(this.type == "azito" || this.type == "boss"){

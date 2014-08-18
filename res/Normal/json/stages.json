@@ -25,7 +25,7 @@
             "detail"         : "",
             "time_limit"     : 2700,
             "genre"          : "INCREASE",
-            "mission_count"  : 50,
+            "mission_count"  : 30,
             "map"            : {"image":"sprite/ghost.png","w":32,"h":48,"x":5,"y":5},
             "reward"         : {"coin":100,"exp":100},
             "colleagues"     : [{"colleagueId":1,"count":1}],

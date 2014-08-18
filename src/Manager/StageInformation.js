@@ -13,6 +13,16 @@ var stageInformation = cc.Class.extend({
         	}
         }
     	return num;
-    }
+    },
+
+    getFollowColleagueCnt:function(typeCode){
+        var num = 0;
+        for(var i=0;i<this.game.colleagues.length;i++){
+            if(this.game.colleagues[i].type == typeCode && this.game.colleagues[i].isTargetFollowPlayer() == true){
+                num++;
+            }
+        }
+        return num;
+    },
 
 });

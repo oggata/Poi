@@ -30,6 +30,7 @@ var GameLayer = cc.Layer.extend({
         this.setParams();
         this.setScrollView();
         this.stage = new Stage(this);
+        
 
         //set player
         this.player = new Player(this);
@@ -66,11 +67,7 @@ var GameLayer = cc.Layer.extend({
         );
         this.setUI();
 
-        var depChip = this.stage.getChipByTypeID("poi_red");
-        for(var i=0;i<this.storage.colleagues.length;i++){
-            var colleagueData = this.storage.colleagues[i];
-            this.addColleagues(colleagueData["count"],colleagueData["colleagueId"],depChip);
-        }
+        this.launchColleague = new launchColleague(this);
 
         for(var i=0;i<this.storage.stageEnemies.length;i++){
             var enemyData = this.storage.stageEnemies[i];
@@ -113,6 +110,31 @@ var GameLayer = cc.Layer.extend({
         this.txtDestroy.setPosition(320/2,480/2);
         this.addChild(this.txtDestroy,CONFIG.UI_DROW_ORDER);
         this.txtDestroy.setVisible(false);
+
+        this.destroyAnimation3 = cc.LayerColor.create(cc.c4b(25,25,112,255),320,480);
+        this.destroyAnimation3.setAnchorPoint(0,0);
+        this.mapNode.addChild(this.destroyAnimation3,9999999999999998);
+
+        //崩壊
+        var frameSeqEffect2= [];
+        for (var y = 0; y < 9; y++) {
+            for (var x = 0; x < 1; x++) {
+                var frame = cc.SpriteFrame.create(effect_tsunami,cc.rect(320*x,120*y,320,120));
+                frameSeqEffect2.push(frame);
+            }
+        }
+        this.wa = cc.Animation.create(frameSeqEffect2,0.2);
+        this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
+        this.destroyAnimation2 = cc.Sprite.create(effect_sand,cc.rect(0,0,320,120));
+        this.destroyAnimation2.runAction(this.ra);
+        //this.destroyAnimation2.setScale(3,3);
+        this.destroyAnimation2.setAnchorPoint(0,0);
+        //this.destroyAnimation2.setPosition(400,0);
+        this.mapNode.addChild(this.destroyAnimation2,9999999999999999);
+
+
+
+
 
         //クリア後のアニメーションを作成
         var frameSeq = [];
@@ -179,6 +201,7 @@ var GameLayer = cc.Layer.extend({
     },
 
     setParams : function() {
+        this.storage.coinAmount = 15;
         this.mapWidth         = 1000;
         this.mapHeight        = 1000;
         this.isMissionVisible = true;
@@ -214,6 +237,7 @@ var GameLayer = cc.Layer.extend({
         this.slideButtonX     = -320*1;
         this.firstTouchX      = 0;
         this.launchColleagueType = 1;
+        this.destroyY = -200;
     },
 
     setUI : function(){
@@ -253,6 +277,20 @@ var GameLayer = cc.Layer.extend({
     },
 
     update:function(dt){
+        this.destroyAnimation3.setPosition(this.cameraX * -1,this.destroyY - 480);
+        this.destroyAnimation2.setPosition(this.cameraX * -1,this.destroyY);
+        if(this.stage.isMissionClear()){
+            this.destroyY+=1.4;
+        }
+
+        //常にステージ上に5個はコインをばらまく
+        if(this.coins.length < 10){
+            this.stage.addCoin(
+                getRandNumberFromRange(230,1200),
+                getRandNumberFromRange(1,500)
+            );     
+        }
+
         //左 0 
         if(0 < this.slideButtonX){
             this.launchColleagueType = 2;
@@ -495,6 +533,7 @@ var GameLayer = cc.Layer.extend({
         if(second <=  5){
             this.cutIn.set_text("ノコリ " + second + "秒..");
         }*/
+        this.launchColleague.update();
     },
 
     getColleagueCnt:function(){
@@ -667,7 +706,24 @@ var GameLayer = cc.Layer.extend({
             this.colleague.jumpY = 100;
         }
     },
-
+/*
+    addColleaguesByInterval:function(num,type,chip){
+        var addColleagueCnt += num;
+        for (var i=0 ; i <  addColleagueCnt ; i++){            
+            if(chip == null){
+                var depX = getRandNumberFromRange(this.player.getPosition().x - 5,this.player.getPosition().x + 5);
+                var depY = getRandNumberFromRange(this.player.getPosition().y - 5,this.player.getPosition().y + 5);
+            }else{
+                var depX = getRandNumberFromRange(chip.getPosition().x - 5,chip.getPosition().x + 5);
+                var depY = getRandNumberFromRange(chip.getPosition().y - 5,chip.getPosition().y + 5);
+            }
+            this.colleague = new Colleague(this,type,depX,depY);
+            this.mapNode.addChild(this.colleague);
+            this.colleagues.push(this.colleague);
+            this.colleague.jumpY = 100;
+        }
+    },
+*/
     addEnemyByPos : function(code,routes){
         this.enemy = new Enemy(this,code,routes);
         this.mapNode.addChild(this.enemy);
@@ -731,19 +787,25 @@ var GameLayer = cc.Layer.extend({
             this.launchColleagueType = 3;
         }
 
-
-
-
         if((this.touched.y <= 80) && (this.player.targetEnemy != null || this.player.targetChip != null)){
             if(this.player.targetChip != null){
                 if(this.player.targetChip.type == "poi_red"){
-                    this.addColleagues(1,1,this.player.targetChip);
+                    if(this.storage.coinAmount>=1){
+                        this.storage.coinAmount-=1;
+                        this.addColleagues(1,1,this.player.targetChip);
+                    }
                 }
                 if(this.player.targetChip.type == "poi_blue"){
-                    this.addColleagues(1,2,this.player.targetChip);
+                    if(this.storage.coinAmount>=1){
+                        this.storage.coinAmount-=1;
+                        this.addColleagues(1,2,this.player.targetChip);
+                    }
                 }
                 if(this.player.targetChip.type == "poi_yellow"){
-                    this.addColleagues(1,3,this.player.targetChip);
+                    if(this.storage.coinAmount>=1){
+                        this.storage.coinAmount-=1;
+                        this.addColleagues(1,3,this.player.targetChip);
+                    }
                 }
                 if(this.player.targetChip.type == "tree"){
                     setTargetBuilding(this);

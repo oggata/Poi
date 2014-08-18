@@ -132,6 +132,10 @@ var Stage = cc.Class.extend({
 
         for(var i=0;i<this.chips.length;i++){
             this.chips[i].update();
+
+            if(this.chips[i].type == "poi_red" || this.chips[i].type == "poi_blue" || this.chips[i].type == "poi_yellow"){
+                this.trees[i].update();
+            }
             if(this.chips[i].type == "tree"){
                 //占領が完了した場合に木がたつ
                 if(this.chips[i].isOccupied == true && this.chips[i].type == "tree"){
@@ -172,6 +176,7 @@ var Stage = cc.Class.extend({
             this.game.enemies[i].eyeSight = 1000;
             this.game.enemies[i].walkSpeed = 2;
         }
+        /*
         for(var i=0;i<this.chips.length;i++){
             var pos = this.chips[i].getPosition();
             this.game.stage.addCoin(pos.x,pos.y);
@@ -179,7 +184,7 @@ var Stage = cc.Class.extend({
             if(this.chips[i].colorAlpha == 0){
                 this.chips[i].colorAlpha=1;
             }
-        }
+        }*/
     },
 
     isGameOver:function(){
@@ -234,9 +239,11 @@ var Stage = cc.Class.extend({
         return CONFIG.MAX_X_CNT * CONFIG.MAX_Y_CNT;
     },
 
-
     addCoin:function(x,y){
-        var coin = new Coin();
+        var randNum = getRandNumberFromRange(1,5)
+        var power = 1;
+        if(randNum == 1) power = 5;
+        var coin = new Coin("HEART",power);
         this.game.mapNode.addChild(coin,999);
         coin.set_position(x,y);
         this.game.coins.push(coin);

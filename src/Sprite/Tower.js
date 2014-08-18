@@ -40,8 +40,20 @@ var Tower = cc.Node.extend({
     },
 
     update:function(){
+        if(this.type==1) return;
+        //エネルギー量が無い場合は表示しない
+        if(this.game.storage.coinAmount <= 0){
+            if(this.game.launchColleague.isDepLaunchFinished()){
+                this.setVisible(false);
+            }else{
+                this.setVisible(true);
+            }
+        }else{
+            this.setVisible(true);
+        }
+        //クリア時には表示しない
         if(this.game.stage.isMissionClear()){
-            this.tree.setVisible(false);
+            this.setVisible(false);
             return;
         }
         if(this.type == 2 || this.type == 3) return;
