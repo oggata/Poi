@@ -7,7 +7,7 @@
 //
 
 var Colleague = cc.Node.extend({
-    ctor:function (game,type,depX,depY) {
+    ctor:function (game,type) {
         this._super();
         this.game              = game;
         this.flashCnt          = 0;
@@ -81,19 +81,19 @@ var Colleague = cc.Node.extend({
         this.targetEnemy       = null;
         this.targetBuilding    = null;
         //マップ上の位置
-        this.mapX              = depX;
-        this.mapY              = depY;
+
         //レンダリング用
         this.renderingCnt      = getRandNumberFromRange(1,5);
         this.renderingMaxCnt   = 1;
         this.isStop = false;
 
         this.launchTimeCnt = 0;
-        this.setPosition(this.mapX,this.mapY);
     },
 
-    setMapPosition:function(){
-        this.setPosition();
+    setPos:function(mapX,mapY){
+        this.mapX  = mapX;
+        this.mapY  = mapY;
+        this.setPosition(mapX,mapY);
     },
     
     remove:function() {
@@ -208,6 +208,13 @@ var Colleague = cc.Node.extend({
     },
 
     update:function() {
+
+        if(this.game.isCameraRange(this.mapX,this.mapY)){
+            this.setVisible(true);
+        }else{
+            this.setVisible(false);
+        }
+
         this.setLaunchMotion();
         this.setFly();
         this.sprite.setPosition(0,this.jumpY);
@@ -340,12 +347,12 @@ var Colleague = cc.Node.extend({
         }else{
             this.mapX+=speedX;
             this.mapY+=speedY;
-            if(this.renderingCnt == 0){
+            //if(this.renderingCnt == 0){
                 this.setPosition(
                     this.mapX,
                     this.mapY
                 );
-            }
+            //}
         }
     },
 
@@ -379,12 +386,12 @@ var Colleague = cc.Node.extend({
         }else{
             this.mapX+=speedX;
             this.mapY+=speedY;
-            if(this.renderingCnt == 0){
+            //if(this.renderingCnt == 0){
                 this.setPosition(
                     this.mapX,
                     this.mapY
                 );
-            }
+            //}
         }
     },
 

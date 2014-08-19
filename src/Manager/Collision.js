@@ -116,6 +116,7 @@ var collisionSpriteAndSprite = function(sprites){
                         if(diffX < 0) spritesTwo.mapX-=spritesTwo.walkSpeed/2;
                         if(diffY > 0) spritesTwo.mapY+=spritesTwo.walkSpeed/2;
                         if(diffY < 0) spritesTwo.mapY-=spritesTwo.walkSpeed/2;
+                        spritesTwo.setPosition(spritesTwo.mapX,spritesTwo.mapY);
                     }
                 }
             }
@@ -127,8 +128,10 @@ var collisionCollegueBulletsAndEnemy = function(colleagueBullets,enemies){
     for(var j=0;j<colleagueBullets.length;j++){
         for(var k=0;k<enemies.length;k++){
             var distance = cc.pDistance(colleagueBullets[j].getPosition(),enemies[k].getPosition());
-            if(distance <= 10){
+            if(distance <= 10 && colleagueBullets[j].isEffect == true){
                  enemies[k].damage(1);
+                 colleagueBullets[j].isEffect = false;
+                 colleagueBullets[j].effect_time = CONFIG.BULLET_EFFECT_TIME - 2;
             }
         }
     }

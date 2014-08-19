@@ -17,6 +17,7 @@ var Bullet = cc.Node.extend({
         this.dy          = 0;
         this.id = id;
         CONFIG.BULLET_EFFECT_TIME = 30*1;
+        
 
         var frameSeq = [];
 /*

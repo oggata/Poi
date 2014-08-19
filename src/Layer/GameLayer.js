@@ -171,6 +171,30 @@ var GameLayer = cc.Layer.extend({
         this.destroyAnimation.setScale(1,1.4);
         this.mapNode.addChild(this.destroyAnimation,999999999);
 
+        this.safeMarker001Sprite = cc.Sprite.create(s_marker1);
+        this.mapNode.addChild(this.safeMarker001Sprite);
+
+        this.safeMarker002Sprite = cc.Sprite.create(s_marker1);
+        this.mapNode.addChild(this.safeMarker002Sprite);
+
+        this.safeMarker003Sprite = cc.Sprite.create(s_marker1);
+        this.mapNode.addChild(this.safeMarker003Sprite);
+
+        this.safeMarker004Sprite = cc.Sprite.create(s_marker1);
+        this.mapNode.addChild(this.safeMarker004Sprite);
+
+/*
+        //左上
+        this.safeMarker001Sprite.setPosition(this.cameraX * -1 + 60, this.cameraY * -1 + 390);
+        //右上
+        this.safeMarker002Sprite.setPosition(this.cameraX * -1 + 260,this.cameraY * -1 + 390);
+        //左下
+        this.safeMarker003Sprite.setPosition(this.cameraX * -1 + 60, this.cameraY * -1 + 90);
+        //右下
+        this.safeMarker004Sprite.setPosition(this.cameraX * -1 + 260,this.cameraY * -1 + 90);
+
+*/
+
         this.scheduleUpdate();
         this.setTouchEnabled(true);
         return true;
@@ -184,6 +208,15 @@ var GameLayer = cc.Layer.extend({
             this.rectBase.setVisible(false);
             this.titleLimit.setVisible(false);
         }
+    },
+
+    isCameraRange:function(posX,posY){
+        if(this.cameraX * -1 + 10 < posX && posX < this.cameraX * -1 + 310
+            && this.cameraY * -1 + 10 < posY && posY < this.cameraY * -1 + 470
+        ){
+            return true;
+        }
+        return false;
     },
 
     setScrollView : function() {
@@ -276,6 +309,16 @@ var GameLayer = cc.Layer.extend({
     },
 
     update:function(dt){
+
+        //左上
+        this.safeMarker001Sprite.setPosition(this.cameraX * -1 + 10, this.cameraY * -1 + 470);
+        //右上
+        this.safeMarker002Sprite.setPosition(this.cameraX * -1 + 310,this.cameraY * -1 + 470);
+        //左下
+        this.safeMarker003Sprite.setPosition(this.cameraX * -1 + 10, this.cameraY * -1 + 10);
+        //右下
+        this.safeMarker004Sprite.setPosition(this.cameraX * -1 + 310,this.cameraY * -1 + 10);
+
 
         //ダメージを受けたら表示する漫画テキスト
         for(var i=0;i<this.damangeTexts.length;i++){
@@ -730,12 +773,11 @@ var GameLayer = cc.Layer.extend({
                 var depX = getRandNumberFromRange(chip.getPosition().x - 5,chip.getPosition().x + 5);
                 var depY = getRandNumberFromRange(chip.getPosition().y - 5,chip.getPosition().y + 5);
             }
-            this.colleague = new Colleague(this,type,depX,depY);
+            this.colleague = new Colleague(this,type);
+            this.colleague.setPos(depX,depY);
             this.mapNode.addChild(this.colleague);
             this.colleagues.push(this.colleague);
             this.colleague.jumpY = 100;
-
-
             this.addDamageText2(depX,depY);
         }
     },

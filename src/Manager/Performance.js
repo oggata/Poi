@@ -47,7 +47,7 @@ var adjustRenderPerformance = function(game){
             adustColleagues[i].renderingMaxCnt = 1;
         }
         for(var i=20;i<adustColleagues.length;i++){
-            adustColleagues[i].renderingMaxCnt = 2;
+            adustColleagues[i].renderingMaxCnt = 1;
         }
     }
 
@@ -60,10 +60,10 @@ var adjustRenderPerformance = function(game){
             adustColleagues[i].renderingMaxCnt = 1;
         }
         for(var i=20;i<30;i++){
-            adustColleagues[i].renderingMaxCnt = 3;
+            adustColleagues[i].renderingMaxCnt = 1;
         }
         for(var i=30;i<adustColleagues.length;i++){
-            adustColleagues[i].renderingMaxCnt = 8;
+            adustColleagues[i].renderingMaxCnt = 1;
         }
     }
 
@@ -76,13 +76,13 @@ var adjustRenderPerformance = function(game){
             adustColleagues[i].renderingMaxCnt = 1;
         }
         for(var i=20;i<30;i++){
-            adustColleagues[i].renderingMaxCnt = 3;
+            adustColleagues[i].renderingMaxCnt = 1;
         }
         for(var i=30;i<40;i++){
-            adustColleagues[i].renderingMaxCnt = 8;
+            adustColleagues[i].renderingMaxCnt = 1;
         }
         for(var i=40;i<adustColleagues.length;i++){
-            adustColleagues[i].renderingMaxCnt = 10;
+            adustColleagues[i].renderingMaxCnt = 1;
         }
     }
 };

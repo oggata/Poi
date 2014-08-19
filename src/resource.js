@@ -24,6 +24,7 @@ var s_input_device2      = base_dir + "ui/input_device2.png";
 var s_timer              = base_dir + "ui/timer.png"; 
 var s_input_device       = base_dir + "ui/input_device.png"; 
 var s_marker             = base_dir + "ui/marker.png";
+var s_marker1             = base_dir + "ui/marker1.png";
 
 var s_slideButton        = "ui/slideButton.png";
 var s_colleague_cnt      = "ui/colleague_cnt.png";
