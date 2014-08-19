@@ -7,8 +7,9 @@
 //
 
 var Bullet = cc.Node.extend({
-    ctor:function (enemy,id) {
+    ctor:function (enemy,id,game) {
         this._super();
+        this.game = game;
         this.enemy = enemy;
         this.effect_time = 0;
         this.hitTime     = 0;

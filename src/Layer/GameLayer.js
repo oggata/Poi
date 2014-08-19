@@ -611,7 +611,7 @@ var GameLayer = cc.Layer.extend({
     },
 
     addColleagueBullet:function(enemy,colleague){
-        var colleagueBullet = new Bullet(enemy,"test");
+        var colleagueBullet = new Bullet(enemy,"test",this);
         colleagueBullet.attack = 10;
         colleagueBullet.set_position(
             colleague.getPosition().x,
