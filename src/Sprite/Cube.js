@@ -40,7 +40,6 @@ var Cube = cc.Node.extend({
     },
 
     update:function() {
-
         if(this.type == "CHIP"){
             this.eyeSightRange = this.rangeMin;
             this.cubeAngle+=2;

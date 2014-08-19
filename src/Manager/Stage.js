@@ -243,7 +243,7 @@ var Stage = cc.Class.extend({
         var randNum = getRandNumberFromRange(1,5)
         var power = 1;
         if(randNum == 1) power = 5;
-        var coin = new Coin("HEART",power);
+        var coin = new Coin("HEART",power,this.game);
         this.game.mapNode.addChild(coin,999);
         coin.set_position(x,y);
         this.game.coins.push(coin);

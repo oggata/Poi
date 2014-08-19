@@ -564,6 +564,7 @@ var GameLayer = cc.Layer.extend({
 
         //コイン
         for(var i=0;i<this.coins.length;i++){
+            this.coins[i].update();
             //zソートする
             this.mapNode.reorderChild(
                 this.coins[i],

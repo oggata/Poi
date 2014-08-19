@@ -65,6 +65,13 @@ var Bullet = cc.Node.extend({
     },
 
     update:function() {
+
+        if(this.game.isCameraRange(this.getPosition().x,this.getPosition().y)){
+            this.setVisible(true);
+        }else{
+            this.setVisible(false);
+        }
+
         if(this.enemy != null){
             this.moveTo(this.enemy);
         }

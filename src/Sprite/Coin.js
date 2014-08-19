@@ -7,8 +7,9 @@
 //
 
 var Coin = cc.Node.extend({
-    ctor:function (typeId,powerCnt) {
+    ctor:function (typeId,powerCnt,game) {
         this._super();
+        this.game = game;
         this.typeId = typeId;
         this.powerCnt = powerCnt;
         var scale = 0.3;
@@ -55,6 +56,14 @@ var Coin = cc.Node.extend({
             this.sigh = cc.LayerColor.create(cc.c4b(255,0,0,255),3,3);
             this.sigh.setPosition(0,0);
             this.addChild(this.sigh);
+        }
+    },
+
+    update:function(){
+        if(this.game.isCameraRange(this.getPosition().x,this.getPosition().y)){
+            this.setVisible(true);
+        }else{
+            this.setVisible(false);
         }
     },
 

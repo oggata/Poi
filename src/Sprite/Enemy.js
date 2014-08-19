@@ -179,6 +179,13 @@ var Enemy = cc.Node.extend({
     },
 
     update:function() {
+        if(this.game.isCameraRange(this.getPosition().x,this.getPosition().y)){
+            this.setVisible(true);
+        }else{
+            this.setVisible(false);
+        }
+
+        
         this.markerSprite.update();
 
         if(this.routes){

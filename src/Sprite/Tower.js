@@ -41,6 +41,14 @@ var Tower = cc.Node.extend({
 
     update:function(){
         if(this.type==1) return;
+
+        if(this.game.isCameraRange(this.getPosition().x,this.getPosition().y)){
+            this.setVisible(true);
+        }else{
+            this.setVisible(false);
+            return;
+        }
+
         //エネルギー量が無い場合は表示しない
         if(this.game.storage.coinAmount <= 0){
             if(this.game.launchColleague.isDepLaunchFinished()){

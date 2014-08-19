@@ -30,7 +30,7 @@ var DamageText = cc.Node.extend({
         
     },
 
-    update:function() {        
+    update:function() {
         this.effectTime++;
         if(this.effectTime<=30){
             var pp = this.getPosition();

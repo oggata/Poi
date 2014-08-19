@@ -131,6 +131,12 @@ var Chip = cc.Node.extend({
 
     update:function() {
 
+        if(this.game.isCameraRange(this.getPosition().x,this.getPosition().y)){
+            this.setVisible(true);
+        }else{
+            this.setVisible(false);
+        }
+
         if(this.damageCnt >= 1){
             this.damageCnt++;
             if(this.damageCnt>=30*1){
