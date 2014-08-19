@@ -47,18 +47,38 @@ var Navi = cc.Node.extend({
             this.setVisible(true);
         }
 
-        if(this.game.storage.missionNumber == 1 && this.naviCode < 1){
-            this.naviCode = 1;
+        if(this.game.storage.missionNumber == 1 && this.naviCode < 1.01){
+            this.naviCode = 1.01;
             this.naviTxt = 
             "ゲームのポイントは、まずポイを増やす事!" + "\n" + 
             "中央のタワーをターゲットすると" + "\n" + 
             "どんどんポイを増殖することができるわ。" + "\n" + 
-            "まずは５０匹まで増やしてみて。";
+            "３０匹を目標に増やしてみて！";
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 1 && this.game.stage.isMissionClear() == true && this.naviCode < 2){
-            this.naviCode = 2;
+        if(this.game.storage.missionNumber == 1 && this.game.storage.coinAmount <= 0 && this.naviCode < 1.02){
+            this.naviCode = 1.02;
+            this.naviTxt = 
+            "ポイの生成には「ハート」が必要よ。" + "\n" + 
+            "ハートはステージ上に落ちているから" + "\n" + 
+            "15個のハートを拾ってみて!" + "\n" + 
+            "大きいハートは小さいハートの5個分よ。";
+            this.setNavi(this.naviTxt);
+        }
+
+        if(this.game.storage.missionNumber == 1 && this.game.storage.coinAmount >= 15 && this.naviCode > 1.01 && this.naviCode < 1.03){
+            this.naviCode = 1.03;
+            this.naviTxt = 
+            "「ハート」が15個溜まったわね。" + "\n" + 
+            "じゃぁ、最初にやってみたいに" + "\n" + 
+            "中央のタワーをターゲットして、" + "\n" + 
+            "ポイを生成してみて!";
+            this.setNavi(this.naviTxt);
+        }
+
+        if(this.game.storage.missionNumber == 1 && this.game.stage.isMissionClear() == true && this.naviCode < 1.04){
+            this.naviCode = 1.04;
             this.naviTxt = 
             "おめでとう、クリア目的達成だわ!" + "\n" + 
             "ステージクリアは、もう一息、" + "\n" + 
@@ -67,8 +87,8 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 2 && this.naviCode < 3){
-            this.naviCode = 3;
+        if(this.game.storage.missionNumber == 2 && this.naviCode < 2.01){
+            this.naviCode = 2.01;
             this.naviTxt = 
             "敵にターゲットを合わせると" + "\n" + 
             "攻撃を行う事ができるわ!" + "\n" + 
@@ -77,8 +97,8 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 2 && this.game.criticalPower == this.game.criticalMaxPower && this.naviCode < 4){
-            this.naviCode = 4;
+        if(this.game.storage.missionNumber == 2 && this.game.criticalPower == this.game.criticalMaxPower && this.naviCode < 2.02){
+            this.naviCode = 2.02;
             this.naviTxt = 
             "敵にダメージを与えると" + "\n" + 
             "ボーナスゲージが溜まるわ。" + "\n" + 
@@ -97,8 +117,8 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 */
-        if(this.game.storage.missionNumber == 2 && this.game.stage.isMissionClear() == true && this.naviCode < 6){
-            this.naviCode = 6;
+        if(this.game.storage.missionNumber == 2 && this.game.stage.isMissionClear() == true && this.naviCode < 2.03){
+            this.naviCode = 2.03;
             this.naviTxt = 
             "おめでとう、クリア目的達成だわ!" + "\n" + 
             "今回もエスケープゾーンに逃げんで!" + "\n" + 
@@ -107,8 +127,8 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 3 && this.naviCode < 7){
-            this.naviCode = 7;
+        if(this.game.storage.missionNumber == 3 && this.naviCode < 3.01){
+            this.naviCode = 3.01;
             this.naviTxt = 
             "ポイはいくつかの種類があるの。" + "\n" + 
             "前回使った赤色は近接攻撃。" + "\n" + 
@@ -117,8 +137,8 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 3 && this.game.storage.killedEnemyCnt == 1 && this.naviCode < 8){
-            this.naviCode = 8;
+        if(this.game.storage.missionNumber == 3 && this.game.storage.killedEnemyCnt == 1 && this.naviCode < 3.02){
+            this.naviCode = 3.02;
             this.naviTxt = 
             "青は敵から離れている分、自身が" + "\n" + 
             "ダメージを受けにくいのが分かった？" + "\n" + 
@@ -127,8 +147,8 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 3 && this.game.stage.isMissionClear() == true && this.naviCode < 9){
-            this.naviCode = 9;
+        if(this.game.storage.missionNumber == 3 && this.game.stage.isMissionClear() == true && this.naviCode < 3.03){
+            this.naviCode = 3.03;
             this.naviTxt = 
             "おめでとう！ミッション達成!" + "\n" + 
             "じゃぁエスケープゾーンに逃げて!" + "\n" + 
@@ -137,8 +157,8 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 4 && this.naviCode < 10){
-            this.naviCode = 10;
+        if(this.game.storage.missionNumber == 4 && this.naviCode < 4.01){
+            this.naviCode = 4.01;
             this.naviTxt = 
             "今回は敵の拠点を制圧することが" + "\n" + 
             "ミッションの目的になるわ!" + "\n" + 
@@ -147,8 +167,8 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 4 && this.game.stage.isMissionClear() == true　&& this.naviCode < 11){
-            this.naviCode = 11;
+        if(this.game.storage.missionNumber == 4 && this.game.stage.isMissionClear() == true　&& this.naviCode < 4.02){
+            this.naviCode = 4.02;
             this.naviTxt = 
             "さぁ、エスケープゾーンに逃げて！" + "\n" + 
             "今回は敵がいなかったけど、" + "\n" + 
@@ -157,8 +177,8 @@ var Navi = cc.Node.extend({
             this.setNavi(this.naviTxt);
         }
 
-        if(this.game.storage.missionNumber == 5 && this.naviCode < 12){
-            this.naviCode = 12;
+        if(this.game.storage.missionNumber == 5 && this.naviCode < 5.01){
+            this.naviCode = 5.01;
             this.naviTxt = 
             "今回は卒業検定(1/2)よ。" + "\n" + 
             "クリア目的は拠点を２つ制圧すること。" + "\n" + 

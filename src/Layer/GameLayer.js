@@ -107,7 +107,8 @@ var GameLayer = cc.Layer.extend({
 
         //(ターゲット破壊)の文字
         this.txtDestroy = cc.Sprite.create(s_text_destroy);
-        this.txtDestroy.setPosition(320/2,480/2);
+        this.txtDestroy.setAnchorPoint(0,0);
+        //this.txtDestroy.setPosition(320/2,480/2);
         this.addChild(this.txtDestroy,CONFIG.UI_DROW_ORDER);
         this.txtDestroy.setVisible(false);
 
@@ -669,7 +670,7 @@ var GameLayer = cc.Layer.extend({
     addDamageText3:function(mapX,mapY){
         this.damageText = new DamageText(3);
         this.mapNode.addChild(this.damageText,99999999999);
-        this.damageText.setPosition(mapX + getRandNumberFromRange(-100,100),mapY + getRandNumberFromRange(-100,10));
+        this.damageText.setPosition(mapX,mapY);
         this.damangeTexts.push(this.damageText);
     },
 
