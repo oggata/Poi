@@ -662,8 +662,14 @@ var GameLayer = cc.Layer.extend({
     addDamageText2:function(mapX,mapY){
         this.damageText = new DamageText(2);
         this.mapNode.addChild(this.damageText,99999999999);
+        this.damageText.setPosition(mapX + getRandNumberFromRange(-100,100),mapY + getRandNumberFromRange(-20,100));
+        this.damangeTexts.push(this.damageText);
+    },
 
-        this.damageText.setPosition(mapX + getRandNumberFromRange(-50,50),mapY + getRandNumberFromRange(-50,50));
+    addDamageText3:function(mapX,mapY){
+        this.damageText = new DamageText(3);
+        this.mapNode.addChild(this.damageText,99999999999);
+        this.damageText.setPosition(mapX + getRandNumberFromRange(-100,100),mapY + getRandNumberFromRange(-100,10));
         this.damangeTexts.push(this.damageText);
     },
 
@@ -813,7 +819,10 @@ var GameLayer = cc.Layer.extend({
             this.launchColleagueType = 3;
         }
 
+
         if((this.touched.y <= 80) && (this.player.targetEnemy != null || this.player.targetChip != null)){
+            
+this.gameUI.isSetUIEffect();
             if(this.player.targetChip != null){
                 if(this.player.targetChip.type == "poi_red"){
                     if(this.storage.coinAmount>=1){

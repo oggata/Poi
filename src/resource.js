@@ -100,8 +100,9 @@ var s_woman              = base_dir + "ui/st-woman2-suit01.png";
 var s_navi_girl          = base_dir + "ui/navi_girl.png";
 
 var s_damage_001          = "text/damage001.png";
-var s_damage_002          = "text/so004.png";
+var s_damage_002          = "text/so011.png";
 var s_damage_003          = "text/so022.png";
+var s_damage_004          = "text/ef021.png";
 
 //bgm
 var s_bgm_001            = base_dir + "res/sound/bgm/bgm_maoudamashii_cyber09.mp3";
@@ -204,6 +205,9 @@ var g_resources       = [
     s_woman,
     s_navi_girl,
     s_damage_001,
+    s_damage_002,
+    s_damage_003,
+    s_damage_004,
     s_crown,
     s_crown2,
     s_crown3,

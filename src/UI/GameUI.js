@@ -12,6 +12,7 @@ var GameUI = cc.Node.extend({
         this.game       = game;
         this.storage    = this.game.storage;
         this.visibleCnt = 0;
+        this.uiEffectCnt = 0;
 
         //header
         this.uiHeader = cc.LayerColor.create(cc.c4b(0,255,255,255 * 0),320,200);
@@ -24,6 +25,14 @@ var GameUI = cc.Node.extend({
         this.uiFooter.setPosition(0,0);
         this.uiFooter.setAnchorPoint(0,0);
         this.addChild(this.uiFooter);
+
+        //effect s_damage_004
+        this.uiEffect = cc.Sprite.create(s_damage_004);
+        this.uiEffect.setOpacity(255 * 0.7);
+        this.uiEffect.setPosition(0,0);
+        this.uiEffect.setAnchorPoint(0,0);
+        this.addChild(this.uiEffect,99999999999);
+        this.uiEffect.setVisible(false);
 
         //s_header
         this.imgHeader = cc.Sprite.create(s_header);
@@ -129,6 +138,16 @@ var GameUI = cc.Node.extend({
 
     //UIのテキストをupdateする
     update:function() {
+        
+        if(this.uiEffectCnt>=1){
+            this.uiEffectCnt++;
+            this.uiEffect.setVisible(true);
+            if(this.uiEffectCnt>=5){
+                this.uiEffectCnt = 0;
+                this.uiEffect.setVisible(false);
+            }
+        }
+
         this.redCntLabel.setString(this.game.stageInformation.getFollowColleagueCnt(2));
         this.blueCntLabel.setString(this.game.stageInformation.getFollowColleagueCnt(1));
         this.yellowCntLabel.setString(this.game.stageInformation.getFollowColleagueCnt(3));
@@ -176,6 +195,10 @@ var GameUI = cc.Node.extend({
             );
 */
         }
+    },
+
+    isSetUIEffect:function(){
+        this.uiEffectCnt = 1;
     },
 
     onCritical:function(){

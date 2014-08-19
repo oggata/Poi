@@ -61,7 +61,7 @@ var setTargetBuilding = function(game){
                 game.colleagues.splice(i,1);
 
 
-                game.addDamageText(game.colleagues[i].getPosition().x,game.colleagues[i].getPosition().y);
+                game.addDamageText3(game.colleagues[i].getPosition().x,game.colleagues[i].getPosition().y);
                 break;
             }
         }
@@ -80,7 +80,7 @@ var setTargetEnemy = function(game){
                 game.colleagues.push(game.colleagues[i]);
                 game.colleagues.splice(i,1);
 
-                game.addDamageText(game.colleagues[i].getPosition().x,game.colleagues[i].getPosition().y);
+                game.addDamageText3(game.colleagues[i].getPosition().x,game.colleagues[i].getPosition().y);
                 break;
             }
         }
