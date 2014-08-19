@@ -132,10 +132,6 @@ var GameLayer = cc.Layer.extend({
         //this.destroyAnimation2.setPosition(400,0);
         this.mapNode.addChild(this.destroyAnimation2,9999999999999999);
 
-
-
-
-
         //クリア後のアニメーションを作成
         var frameSeq = [];
         for (var y = 0; y <= 10; y++) {
@@ -238,6 +234,8 @@ var GameLayer = cc.Layer.extend({
         this.firstTouchX      = 0;
         this.launchColleagueType = 1;
         this.destroyY = -200;
+
+        this.damangeTexts = [];
     },
 
     setUI : function(){
@@ -277,6 +275,16 @@ var GameLayer = cc.Layer.extend({
     },
 
     update:function(dt){
+
+        //ダメージを受けたら表示する漫画テキスト
+        for(var i=0;i<this.damangeTexts.length;i++){
+            if(this.damangeTexts[i].update() == false){
+                //ここでRemoveしないと、spriteがどんどん増えていく
+                this.removeChild(this.damangeTexts[i]);
+                this.damangeTexts.splice(i, 1);
+            }
+        }
+
         this.destroyAnimation3.setPosition(this.cameraX * -1,this.destroyY - 480);
         this.destroyAnimation2.setPosition(this.cameraX * -1,this.destroyY);
         if(this.stage.isMissionClear()){
@@ -644,6 +652,21 @@ var GameLayer = cc.Layer.extend({
         );
     },
 
+    addDamageText:function(mapX,mapY){
+        this.damageText = new DamageText();
+        this.mapNode.addChild(this.damageText,99999999999);
+        this.damageText.setPosition(mapX,mapY);
+        this.damangeTexts.push(this.damageText);
+    },
+
+    addDamageText2:function(mapX,mapY){
+        this.damageText = new DamageText(2);
+        this.mapNode.addChild(this.damageText,99999999999);
+
+        this.damageText.setPosition(mapX + getRandNumberFromRange(-50,50),mapY + getRandNumberFromRange(-50,50));
+        this.damangeTexts.push(this.damageText);
+    },
+
     moveCamera:function(){
         //カメラ位置はプレイヤーを追いかける
         this.playerCameraX = this.player.getPosition().x + this.cameraX;
@@ -704,6 +727,9 @@ var GameLayer = cc.Layer.extend({
             this.mapNode.addChild(this.colleague);
             this.colleagues.push(this.colleague);
             this.colleague.jumpY = 100;
+
+
+            this.addDamageText2(depX,depY);
         }
     },
 /*

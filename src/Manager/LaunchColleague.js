@@ -55,10 +55,13 @@ var setTargetBuilding = function(game){
         if(game.colleagues[i].isTargetFollowPlayer()){
             if(game.colleagues[i].type == game.launchColleagueType){
                 game.colleagues[i].targetBuilding = game.player.targetChip;
-                game.colleagues[i].launchTimeCnt = 0;
+                game.colleagues[i].launchTimeCnt = 1;
                 //配列の最後に追加する
                 game.colleagues.push(game.colleagues[i]);
                 game.colleagues.splice(i,1);
+
+
+                game.addDamageText(game.colleagues[i].getPosition().x,game.colleagues[i].getPosition().y);
                 break;
             }
         }
@@ -72,10 +75,12 @@ var setTargetEnemy = function(game){
         if(game.colleagues[i].isTargetFollowPlayer()){
             if(game.colleagues[i].type == game.launchColleagueType){
                 game.colleagues[i].targetEnemy = game.player.targetEnemy;
-                game.colleagues[i].launchTimeCnt = 0;
+                game.colleagues[i].launchTimeCnt = 1;
                 //配列の最後に追加する
                 game.colleagues.push(game.colleagues[i]);
                 game.colleagues.splice(i,1);
+
+                game.addDamageText(game.colleagues[i].getPosition().x,game.colleagues[i].getPosition().y);
                 break;
             }
         }

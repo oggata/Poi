@@ -342,12 +342,12 @@ var Enemy = cc.Node.extend({
         if(this.hp < 0){
             this.hp = 0;
         }
-        /*
+        
         this.damageText = new DamageText();
-        this.damageText.setScale(0.2);
+        //this.damageText.setScale(0.2);
         this.addChild(this.damageText,5);
         this.damangeTexts.push(this.damageText);
-        */
+        
         this.isDamageOn = true;
         this.battleAnimation.setVisible(true);
     },

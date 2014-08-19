@@ -7,13 +7,22 @@
 //
 
 var DamageText = cc.Node.extend({
-    ctor:function () {
+    ctor:function (typeCode) {
         this._super();
         this.effectTime     = 0;
         this.dx             = 0;
         this.dy             = 2;
         this.isEffect       = true;
-        this.comicText = cc.Sprite.create(s_damage_001);
+
+        if(typeCode==1){
+            this.comicText = cc.Sprite.create(s_damage_001);
+        }else if(typeCode==2){
+            this.comicText = cc.Sprite.create(s_damage_002);
+        }else if(typeCode==3){
+            this.comicText = cc.Sprite.create(s_damage_003);
+        }else{
+            this.comicText = cc.Sprite.create(s_damage_001);
+        }
         this.addChild(this.comicText);
         var randX = getRandNumberFromRange(-30,30);
         var randY = getRandNumberFromRange(-30,30);

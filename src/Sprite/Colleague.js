@@ -188,6 +188,13 @@ var Colleague = cc.Node.extend({
     },
 
     setLaunchMotion:function(){
+        if(this.launchTimeCnt>=1){
+            this.depAnimation.setVisible(true);
+            this.launchTimeCnt++;
+            if(this.launchTimeCnt>=30*3){
+                this.depAnimation.setVisible(false);
+            }
+        }
         /*
         //出発時に飛び出す
         this.launchTimeCnt++;
@@ -280,6 +287,22 @@ var Colleague = cc.Node.extend({
         this.shadow.setPosition(0,-8);
         this.shadow.setOpacity(255*0.4);
         this.addChild(this.shadow);
+
+        var frameSeq = [];
+        for (var y = 0; y < 1; y++) {
+            for (var x = 0; x < 10; x++) {
+                var frame = cc.SpriteFrame.create(effect_allow_up,cc.rect(120*x,120*y,120,120));
+                frameSeq.push(frame);
+            }
+        }
+        this.wa = cc.Animation.create(frameSeq,0.1);
+        this.ra = cc.RepeatForever.create(cc.Animate.create(this.wa));
+        this.depAnimation = cc.Sprite.create(effect_allow_up,cc.rect(0,0,120,120));
+        this.depAnimation.runAction(this.ra);
+        this.addChild(this.depAnimation);
+        this.depAnimation.setPosition(0,25);
+        this.depAnimation.setScale(0.5,1);
+        this.depAnimation.setVisible(false);
 
         var frameSeq = [];
         for (var i = 0; i < 3; i++) {
